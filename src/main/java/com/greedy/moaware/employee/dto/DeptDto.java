@@ -28,11 +28,4 @@ public class DeptDto {
 		this.lowDept = lowDept;
 	}
 
-
-	
-	@Override
-	public String toString() {
-		return "DeptDto [deptCode=" + deptCode + ", deptName=" + deptName + ", refDeptCode=" + refDeptCode + "]";
-	}
-	
 }

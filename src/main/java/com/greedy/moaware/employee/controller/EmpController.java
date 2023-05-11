@@ -37,5 +37,7 @@ public class EmpController {
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", empDtoList ));
 		
 	}
+	
+	
 
 }

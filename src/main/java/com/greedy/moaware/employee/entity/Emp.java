@@ -36,6 +36,9 @@ public class Emp {
 	@Column(name="EMP_ID")
 	private String empID;
 	
+	@Column(name="EMP_PWD")
+	private String empPwd;
+	
 	@Column(name="EMAIL")
 	private String email;
 	
