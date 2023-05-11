@@ -18,9 +18,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="Employee")
+@Table(name="EMPLOYEE")
 @SequenceGenerator(name="EMP_SEQ_GENERATOR", sequenceName="SEQ_EMP_CODE", initialValue=1, allocationSize=1)
-public class Employee {
+public class Emp {
 	
 	@Id
 	@Column(name="EMP_CODE")
@@ -57,7 +57,7 @@ public class Employee {
 	
 	@ManyToOne
 	@JoinColumn(name="DEPT_CODE")
-	private Department dept;
+	private Dept dept;
 	
 	
 
