@@ -47,21 +47,5 @@ public class EmpService {
 		
 	}
 	
-	public List<DeptDto> selectDeptList() {
-		
-		log.info("[EmpService] selectDeptList start ============================== ");
-		
-		List<Dept> DeptList = deptRepository.findAll();
-		
-		log.info("{}", DeptList.get(0).getDeptCode());
-		
-		List<DeptDto> DeptDtoList = DeptList.stream().map(dept -> modelMapper.map(dept, DeptDto.class)).collect(Collectors.toList());
-		
-		
-		log.info("[EmpService] selectEmpList end ================================ ");
-		
-		return DeptDtoList;
-		
-	}
 
 }

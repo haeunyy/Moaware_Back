@@ -25,7 +25,7 @@ public class OrganizationController {
 		this.organizationService = organizationService;
 	}
 	
-	@GetMapping("/List")
+	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> selectOrganizationList(){
 		
 		log.info("[EmpController] selectOrganizationList start ============================== ");
@@ -37,7 +37,7 @@ public class OrganizationController {
 		log.info("[EmpController] selectOrganizationList end ================================ ");
 		
 		
-		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", orgDtoList ));
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 사원 조회가 성공하였습니다.", orgDtoList ));
 		
 	}
 
