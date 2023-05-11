@@ -20,7 +20,6 @@ public class Leave {
 	@Column(name="LEAVE_TOTAL_DAY")
 	private String leaveTotalDay;
 
-	
 	@Column(name="LEAVE_USE_DAY")
 	private String leaveUseDay;
 	
