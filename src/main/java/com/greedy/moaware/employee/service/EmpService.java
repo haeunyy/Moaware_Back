@@ -57,10 +57,10 @@ public class EmpService {
 		Emp emp = empRepository.findById(empCode)
 				.orElseThrow( ()-> new IllegalArgumentException("해당 사번을 가진 사원이 없습니다. 사번 = " + empCode));
 		
-		
+		EmpDto empDto = modelMapper.map(emp, EmpDto.class);
 		
 		log.info("[EmpService] selectEmpList end ================================ ");
-		return null;
+		return empDto;
 	}
 	
 

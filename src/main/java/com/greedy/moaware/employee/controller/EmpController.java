@@ -26,7 +26,8 @@ public class EmpController {
 		this.empService = empService;
 	}
 	
-	@GetMapping("/List")
+	/* 사원 전체 조회 */
+	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> selectEmpList(){
 		
 		log.info("[EmpController] selectEmpList start ============================== ");
@@ -41,12 +42,12 @@ public class EmpController {
 		
 	}
 	
+	/* 사원 상세 조회*/
 	@GetMapping("/detail/{empCode}")
 	public ResponseEntity<ResponseDto> selectEmpDetail(@PathVariable Integer empCode){
 		
 		log.info("[EmpController] selectEmpDetail start ============================== ");
 		log.info("empCode : {}" , empCode);
-		
 		
 		
 		log.info("[EmpController] selectEmpDetail end ================================ ");
