@@ -1,14 +1,14 @@
 # port config
 server:
-  port: 8001  
+  port: 8005
   
 # datasource config
 spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
     url: jdbc:oracle:thin:@localhost:1521:xe
-    username: 
-    password: 
+    username: C##MOAWARE
+    password: MOAWARE
 
 # jpa config
   jpa:
@@ -21,13 +21,12 @@ spring:
         
 # image 관련 값 설정
 image: 
-  image-url: http://localhost:8001/productimgs/
+  image-url: http://localhost:8005/productimgs/
   image-dir: src/main/resources/static/productimgs
 
-# HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
-# Secret 값은 특정 문자열을 Base64 로 인코딩한 값 사용
+
 jwt:
-  secret: asdfjp298pafo1320efqw0udvnh0er0h412r08byfdq9dsvh02143908hfeqwn80fdqs0nfdqs0n412013rq0nqefn08dfas0das730732g86923
+  secret: 6rCV67OR7Jik7Iug7ZiE7KSA7J207Jyg66qF6raM7ZWY7J2A7KCE7Zqo7KeE7Jqw66as6rCA66qo7JWE64uk66as642V7Iqk7YOA7YyM7J6Q67CU64+E7YOA7YyM7Jqw66as64qU7ZWg7IiY7J6I6r647ZaJ67O17ZWY7J6Q64K07J28IOyVhOy5qOq5jOyngCDsubjrsJjrs7Trk5wgNOyjvOy5mCAoIO2PieydvCA47Iuc6rCEICwg7KO866eQIDXsi5zqsITsnLzroZwg7Y+s7J247Yq4IOyLnOqwhOuLuSAx7KCQ7Jy866GcIOqzhOyCsCkg7J6R7ISx6rCA642w7J207YSwIOyZhOyEsSDtm4QgIOuzuOyduCDrp6HsnYAg67aA67aEIOy7tO2PrOuEjO2KuCDrp4zrk5zsi5zrqbTshJwgUkVTVCBBUEnripQg6rCc67Cc7ZWY7Iuc66m07IScIOyekeyEse2VmOyLrCDrkKnri4jri6Qu
 
 
 
