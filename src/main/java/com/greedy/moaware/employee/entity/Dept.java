@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="DEPARTMENT")
 @SequenceGenerator(name="DEPT_SEQ_GENERATOR", sequenceName="SEQ_DEPT_CODE", initialValue=1, allocationSize=1)
-public class Department {
+public class Dept {
 	
 	@Id
 	@Column(name="DEPT_CODE")
@@ -31,10 +31,10 @@ public class Department {
 	private String refDeptCode;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="REF_DEPT_CODE")
-	private Department highDept;
+	@JoinColumn(name="REF_DEPT_CODE", referencedColumnName="deptCode")
+	private Dept highDept;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="highDept")
-	private List<Department> lowDept;
+	private List<Dept> lowDept;
 
 }
