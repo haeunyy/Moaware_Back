@@ -46,8 +46,8 @@ public class LeavePayment {
 	private String lPayStatus;
 	
 	@ManyToOne
-	@JoinColumn(name="EMP_CODE")
-	private Emp payEmp;
+	@JoinColumn(name="L_PAY_EMP")
+	private Emp lPayEmp;
 	
 	@Column(name="L_PAY_DATE")
 	private Date lPayDate;
@@ -56,8 +56,8 @@ public class LeavePayment {
 	private Date lFinalPayDate;
 	
 	@ManyToOne
-	@JoinColumn(name="EMP_CODE")
-	private Emp payFinalEmp;
+	@JoinColumn(name="L_FINAL_PAY_EMP")
+	private Emp lFinalPayEmp;
 	
 	@Column(name="LEAVE_END_DATE")
 	private Date leaveEndDate;
