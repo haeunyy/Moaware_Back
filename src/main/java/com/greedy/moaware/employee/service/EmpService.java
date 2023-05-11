@@ -30,6 +30,8 @@ public class EmpService {
 		
 		List<Emp> empList = empRepository.findAll();
 		
+		log.info("{}", empList.get(0).getDept());
+		
 		List<EmpDto>empDtoList = empList.stream().map( emp -> modelMapper.map(emp, EmpDto.class)).collect(Collectors.toList());
 		
 		
