@@ -32,7 +32,7 @@ public class DeptDto {
 	
 	@Override
 	public String toString() {
-		return "DeptDto [deptCode=" + deptCode + ", deptName=" + deptName + "]";
+		return "DeptDto [deptCode=" + deptCode + ", deptName=" + deptName + "]" ;
 	}
 
 }
