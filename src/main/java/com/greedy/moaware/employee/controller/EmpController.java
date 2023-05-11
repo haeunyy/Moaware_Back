@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.common.ResponseDto;
+import com.greedy.moaware.employee.dto.DeptDto;
 import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.service.EmpService;
 
@@ -39,5 +40,7 @@ public class EmpController {
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", empDtoList ));
 		
 	}
+	
+
 
 }
