@@ -4,11 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.greedy.moaware.employee.dto.DeptDto;
 import com.greedy.moaware.employee.dto.EmpDto;
-import com.greedy.moaware.employee.entity.Dept;
 import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.repository.DeptRepository;
 import com.greedy.moaware.employee.repository.EmpRepository;
@@ -22,6 +21,9 @@ public class EmpService {
 	private final EmpRepository empRepository;
 	private final DeptRepository deptRepository;
 	private final ModelMapper modelMapper;
+	
+	@Value("${image.image-url}")
+	private String IMAGE_URL;
 	
 	public EmpService( EmpRepository empRepository, ModelMapper modelMapper
 			, DeptRepository deptRepository) {
@@ -45,6 +47,20 @@ public class EmpService {
 		
 		return empDtoList;
 		
+	}
+	
+	public EmpDto selectEmpDetail(Integer empCode ) {
+		
+		log.info("[EmpService] selectEmpList start ============================== ");
+		log.info("[EmpService] empCode : {}" , empCode);
+		
+		Emp emp = empRepository.findById(empCode)
+				.orElseThrow( ()-> new IllegalArgumentException("해당 사번을 가진 사원이 없습니다. 사번 = " + empCode));
+		
+		
+		
+		log.info("[EmpService] selectEmpList end ================================ ");
+		return null;
 	}
 	
 

@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -58,6 +59,9 @@ public class Emp {
 	@ManyToOne
 	@JoinColumn(name="DEPT_CODE")
 	private Dept dept;
+	
+	@OneToOne(mappedBy="emp")
+	private FileCategory fileCategory;
 	
 	
 
