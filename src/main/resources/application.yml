@@ -1,7 +1,7 @@
 # port config
 server:
   port: 8005  
-  
+ 
 # datasource config
 spring:
   datasource:
