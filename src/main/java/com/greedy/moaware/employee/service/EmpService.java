@@ -6,8 +6,11 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.greedy.moaware.employee.dto.DeptDto;
 import com.greedy.moaware.employee.dto.EmpDto;
+import com.greedy.moaware.employee.entity.Dept;
 import com.greedy.moaware.employee.entity.Emp;
+import com.greedy.moaware.employee.repository.DeptRepository;
 import com.greedy.moaware.employee.repository.EmpRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 public class EmpService {
 	
 	private final EmpRepository empRepository;
+	private final DeptRepository deptRepository;
 	private final ModelMapper modelMapper;
 	
-	public EmpService( EmpRepository empRepository, ModelMapper modelMapper ) {
+	public EmpService( EmpRepository empRepository, ModelMapper modelMapper
+			, DeptRepository deptRepository) {
 		this.empRepository = empRepository;
+		this.deptRepository = deptRepository;
 		this.modelMapper = modelMapper;
 	}
 	
@@ -38,6 +44,23 @@ public class EmpService {
 		log.info("[EmpService] selectEmpList end ================================ ");
 		
 		return empDtoList;
+		
+	}
+	
+	public List<DeptDto> selectDeptList() {
+		
+		log.info("[EmpService] selectDeptList start ============================== ");
+		
+		List<Dept> DeptList = deptRepository.findAll();
+		
+		log.info("{}", DeptList.get(0).getDeptCode());
+		
+		List<DeptDto> DeptDtoList = DeptList.stream().map(dept -> modelMapper.map(dept, DeptDto.class)).collect(Collectors.toList());
+		
+		
+		log.info("[EmpService] selectEmpList end ================================ ");
+		
+		return DeptDtoList;
 		
 	}
 
