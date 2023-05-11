@@ -5,11 +5,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.work.entity.Work;
 
 public interface WorkRepository extends JpaRepository<Work, Integer>{
 	
 	@EntityGraph(attributePaths= {"employee"})
-	Page<Work> findAll(Pageable pageable);
+	Page<Work> findAllByEmployee(Emp emp, Pageable pageable);
 	
 }

@@ -17,7 +17,7 @@ import lombok.Setter;
 @Entity
 @Table(name="LEAVE")
 public class Leave {
-
+	
 	@Id
 	@ManyToOne
 	@JoinColumn(name="EMP_CODE")
@@ -26,6 +26,7 @@ public class Leave {
 	@Column(name="LEAVE_TOTAL_DAY")
 	private String leaveTotalDay;
 	
+	@Id
 	@Column(name="LEAVE_YEAR")
 	private int leaveYear;
 	
