@@ -28,11 +28,13 @@ public class EmpController {
 	@GetMapping("/List")
 	public ResponseEntity<ResponseDto> selectEmpList(){
 		
-		log.info("[EmpService] selectEmpList start ============================== ");
+		log.info("[EmpController] selectEmpList start ============================== ");
 		
 		List<EmpDto> empDtoList =  empService.selectEmpList();
 		
-		log.info("[EmpService] selectEmpList end ================================ ");
+		log.info("empDtoList : {}" , empDtoList);
+		log.info("[EmpController] selectEmpList end ================================ ");
+		
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", empDtoList ));
 		
