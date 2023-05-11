@@ -31,7 +31,7 @@ public class Dept {
 	private String refDeptCode;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="REF_DEPT_CODE", referencedColumnName="deptCode")
+	@JoinColumn(name="REF_DEPT_CODE", referencedColumnName="DEPT_CODE", insertable = false, updatable = false )
 	private Dept highDept;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="highDept")
