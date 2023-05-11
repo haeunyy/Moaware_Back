@@ -98,6 +98,11 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>com.greedy</groupId>
+			<artifactId>comprehensive</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
