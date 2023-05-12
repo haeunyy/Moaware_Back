@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.greedy.moaware.employee.dto.DeptDto;
@@ -62,6 +66,44 @@ public class EmpService {
 		
 		return DeptDtoList;
 		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//retireYn
+	
+	
+	
+	public Page<EmpDto> findByEmpName(String empName, int page) {
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
+		
+		Page<Emp> empList = empRepository.findByEmpName(empName, pageable);
+		
+		
+		
+		Page<EmpDto> empDtoList = empList.map(emp -> modelMapper.map(emp, EmpDto.class));
+		
+		return empDtoList;
 	}
 
 }

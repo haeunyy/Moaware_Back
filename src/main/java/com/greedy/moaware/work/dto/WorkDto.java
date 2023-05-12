@@ -9,13 +9,15 @@ import lombok.Data;
 @Data
 public class WorkDto {
 
+	private WorkPkDto workPk;
+	
 	private Date workTime;
 
 	private Date quitTimel;
 	
 	private String workStatus;
 	
-	private EmpDto employee;
+//	private EmpDto employee;	
 	
-	private Date workDate;
+//	private Date workDate;
 }
