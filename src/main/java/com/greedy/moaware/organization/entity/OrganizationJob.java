@@ -1,4 +1,4 @@
-package com.greedy.moaware.employee.entity;
+package com.greedy.moaware.organization.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @Entity
 @Table(name="JOB")
 @SequenceGenerator(name="JOB_SEQ_GENERATOR", sequenceName="SEQ_JOB_CODE", initialValue=1, allocationSize=1)
-public class Job {
+public class OrganizationJob {
 	
 	@Id
 	@Column(name="JOB_CODE")

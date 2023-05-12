@@ -1,4 +1,6 @@
-package com.greedy.moaware.employee.entity;
+package com.greedy.moaware.organization.entity;
+
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,18 +10,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @Entity
 @Table(name="DEPARTMENT")
 @SequenceGenerator(name="DEPT_SEQ_GENERATOR", sequenceName="SEQ_DEPT_CODE", initialValue=1, allocationSize=1)
-public class Dept {
+public class Organization {
 	
 	@Id
 	@Column(name="DEPT_CODE")
@@ -32,9 +36,12 @@ public class Dept {
 	@Column(name="REF_DEPT_CODE")
 	private String refDeptCode;
 	
+	@OneToMany
+	@JoinColumn(name="DEPT_CODE")
+	private List<OrganizationEmp> orgEmp;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="REF_DEPT_CODE", referencedColumnName="DEPT_CODE", insertable = false, updatable = false )
-	private Dept highDept;
-	
+	private Organization highDept;
 
 }

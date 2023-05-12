@@ -1,4 +1,4 @@
-package com.greedy.moaware.employee.entity;
+package com.greedy.moaware.organization.entity;
 
 import java.util.Date;
 
@@ -20,7 +20,7 @@ import lombok.Setter;
 @Entity
 @Table(name="EMPLOYEE")
 @SequenceGenerator(name="EMP_SEQ_GENERATOR", sequenceName="SEQ_EMP_CODE", initialValue=1, allocationSize=1)
-public class Emp {
+public class OrganizationEmp {
 	
 	@Id
 	@Column(name="EMP_CODE")
@@ -53,12 +53,9 @@ public class Emp {
 	
 	@ManyToOne
 	@JoinColumn(name="JOB_CODE")
-	private Job job;
+	private OrganizationJob job;
 	
-	@ManyToOne
-	@JoinColumn(name="DEPT_CODE")
-	private Dept dept;
-	
+
 	
 	
 

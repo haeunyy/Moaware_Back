@@ -1,7 +1,5 @@
 package com.greedy.moaware.employee.dto;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,19 +11,17 @@ public class DeptDto {
 	private String deptName;
 	private String refDeptCode;
 	private DeptDto highDept;
-	private List<DeptDto> lowDept;
 	
 	
 	public DeptDto() {}
 	
 
-	public DeptDto(Integer deptCode, String deptName, String refDeptCode, DeptDto highDept, List<DeptDto> lowDept) {
+	public DeptDto(Integer deptCode, String deptName, String refDeptCode, DeptDto highDept) {
 		super();
 		this.deptCode = deptCode;
 		this.deptName = deptName;
 		this.refDeptCode = refDeptCode;
 		this.highDept = highDept;
-		this.lowDept = lowDept;
 	}
 
 }

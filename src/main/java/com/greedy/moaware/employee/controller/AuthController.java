@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.common.ResponseDto;
+import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.service.AuthService;
 
@@ -21,8 +22,10 @@ public class AuthController {
 		this.authService = authService;
 	}
 	
+	/* 로그인하기 */
 	@PostMapping("/login")
-	public ResponseEntity<ResponseDto> login(@RequestBody EmpDto emp){
+	public ResponseEntity<ResponseDto> login(@RequestBody AuthEmpDto emp){
+		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "로그인 완료", authService.login(emp)));
 	}
 	

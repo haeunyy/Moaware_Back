@@ -1,12 +1,13 @@
-package com.greedy.moaware.employee.dto;
+package com.greedy.moaware.organization.dto;
 
 import java.util.Date;
 
 import lombok.Data;
 
 @Data
-public class EmpDto {
+public class OrganizationEmpDto {
 
+	
 	private Integer empCode;
 	private String empName;
 	private String phone;
@@ -16,7 +17,5 @@ public class EmpDto {
 	private Date hireDate;
 	private String extensionNum;
 	private String empSsi;
-	private JobDto job;
-	private DeptDto dept;
-	
+	private OrganizationJobDto job;
 }
