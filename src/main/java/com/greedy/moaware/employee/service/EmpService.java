@@ -8,14 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.greedy.moaware.employee.dto.DeptDto;
 import com.greedy.moaware.employee.dto.EmpDto;
-import com.greedy.moaware.employee.entity.Dept;
 import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.repository.DeptRepository;
 import com.greedy.moaware.employee.repository.EmpRepository;
+import com.greedy.moaware.organization.dto.OrganizationDto;
+import com.greedy.moaware.organization.entity.Organization;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +27,9 @@ public class EmpService {
 	private final EmpRepository empRepository;
 	private final DeptRepository deptRepository;
 	private final ModelMapper modelMapper;
+	
+	@Value("${image.image-url}")
+	private String IMAGE_URL;
 	
 	public EmpService( EmpRepository empRepository, ModelMapper modelMapper
 			, DeptRepository deptRepository) {
@@ -50,56 +54,29 @@ public class EmpService {
 		return empDtoList;
 		
 	}
-	
-	public List<DeptDto> selectDeptList() {
+
+	public EmpDto selectEmpDetail(Integer empCode) {
+		log.info("[EmpService] selectOrgDetail start ============================== ");
+		log.info("[EmpService] empCode : {}" , empCode);
 		
-		log.info("[EmpService] selectDeptList start ============================== ");
+		Emp empList = empRepository.findById(empCode)
+				.orElseThrow( ()-> new IllegalArgumentException("해당 사번을 가진 사원이 없습니다. 사번 = " + empCode));
+		log.info("[EmpService] empList : {}" , empList);
 		
-		List<Dept> DeptList = deptRepository.findAll();
+		EmpDto empDto = modelMapper.map(empList, EmpDto.class);
+		log.info("[EmpService] empDto : {}" , empDto);
 		
-		log.info("{}", DeptList.get(0).getDeptCode());
-		
-		List<DeptDto> DeptDtoList = DeptList.stream().map(dept -> modelMapper.map(dept, DeptDto.class)).collect(Collectors.toList());
-		
-		
-		log.info("[EmpService] selectEmpList end ================================ ");
-		
-		return DeptDtoList;
+		log.info("[EmpService] selectOrgDetail end ================================ ");
+		return empDto;
 		
 	}
-
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//retireYn
-	
-	
-	
+  /* 이름으로 조회 페이징 처리*/
 	public Page<EmpDto> findByEmpName(String empName, int page) {
 		
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
 		
 		Page<Emp> empList = empRepository.findByEmpName(empName, pageable);
-		
-		
 		
 		Page<EmpDto> empDtoList = empList.map(emp -> modelMapper.map(emp, EmpDto.class));
 		

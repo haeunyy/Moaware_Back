@@ -36,12 +36,11 @@ public class Organization {
 	@Column(name="REF_DEPT_CODE")
 	private String refDeptCode;
 	
-	@OneToMany
-	@JoinColumn(name="DEPT_CODE")
-	private List<OrganizationEmp> orgEmp;
-	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="REF_DEPT_CODE", referencedColumnName="DEPT_CODE", insertable = false, updatable = false )
 	private Organization highDept;
 
+	@OneToMany
+	@JoinColumn(name="DEPT_CODE")
+	private List<OrganizationEmp> orgEmp;
 }
