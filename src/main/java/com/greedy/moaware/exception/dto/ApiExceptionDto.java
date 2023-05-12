@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class ApiExceptionDto {
-	
+
 	private int state;
 	private String message;
 	
@@ -14,5 +14,5 @@ public class ApiExceptionDto {
 		this.state = status.value();
 		this.message = message;
 	}
-
+	
 }

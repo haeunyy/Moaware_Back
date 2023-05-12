@@ -1,9 +1,5 @@
 package com.greedy.moaware.employee.dto;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,13 +22,6 @@ public class DeptDto {
 		this.deptName = deptName;
 		this.refDeptCode = refDeptCode;
 		this.highDept = highDept;
-	}
-
-
-	
-	@Override
-	public String toString() {
-		return "DeptDto [deptCode=" + deptCode + ", deptName=" + deptName + "]" ;
 	}
 
 }

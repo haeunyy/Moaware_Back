@@ -1,7 +1,9 @@
 package com.greedy.moaware.employee.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -21,7 +23,7 @@ import lombok.Setter;
 @Entity
 @Table(name="EMPLOYEE")
 @SequenceGenerator(name="EMP_SEQ_GENERATOR", sequenceName="SEQ_EMP_CODE", initialValue=1, allocationSize=1)
-public class Emp {
+public class AuthEmp {
 	
 	@Id
 	@Column(name="EMP_CODE")
@@ -35,7 +37,10 @@ public class Emp {
 	private String phone;
 	
 	@Column(name="EMP_ID")
-	private String empID;
+	private String empId;
+	
+	@Column(name="EMP_PWD")
+	private String empPwd;
 	
 	@Column(name="EMAIL")
 	private String email;
@@ -52,16 +57,10 @@ public class Emp {
 	@Column(name="EMP_SSI")
 	private String empSsi;
 	
-	@ManyToOne
-	@JoinColumn(name="JOB_CODE")
-	private Job job;
+	@OneToMany
+	@JoinColumn(name="EMP_CODE")
+	private List<Role> roleList;
 	
-	@ManyToOne
-	@JoinColumn(name="DEPT_CODE")
-	private Dept dept;
-	
-	@OneToOne(mappedBy="emp")
-	private FileCategory fileCategory;
 	
 	
 	
