@@ -42,22 +42,6 @@ public class EmpUserDetailService implements UserDetailsService{
 				.orElseThrow(()-> new UserNotFoundException(userId + "를 찾을 수 없습니다. "));
 	}
 	
-//	private AuthEmpDto addAuthorities(AuthEmp emp) {
-//		
-//		/* */
-////		String role = authEmpRepository.findByAuth
-//		
-//		AuthEmpDto empDto = modelMapper.map(emp, AuthEmpDto.class);
-//		
-//		List<String> roles = emp.getRoleList()
-//			    .stream()
-//			    .map(role -> role.getAuth().getAuthTitle())
-//			    .collect(Collectors.toList());
-//		
-//		empDto.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(emp.getRoleList())));
-//		
-//		return empDto;
-//	}
 	
 	private AuthEmpDto addAuthorities(AuthEmp emp) {
 	    AuthEmpDto empDto = modelMapper.map(emp, AuthEmpDto.class);

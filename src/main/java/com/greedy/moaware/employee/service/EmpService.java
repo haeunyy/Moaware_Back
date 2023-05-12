@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -67,7 +71,16 @@ public class EmpService {
 		
 	}
 	
-
-	
+  /* 이름으로 조회 페이징 처리*/
+	public Page<EmpDto> findByEmpName(String empName, int page) {
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
+		
+		Page<Emp> empList = empRepository.findByEmpName(empName, pageable);
+		
+		Page<EmpDto> empDtoList = empList.map(emp -> modelMapper.map(emp, EmpDto.class));
+		
+		return empDtoList;
+	}
 
 }

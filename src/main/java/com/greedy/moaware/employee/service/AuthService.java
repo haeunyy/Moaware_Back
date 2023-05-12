@@ -43,7 +43,6 @@ public class AuthService {
 		/* 아이디 매칭 조회 */
 		AuthEmp emp = authEmpRepository.findByEmpId(empDto.getEmpId())
 				.orElseThrow(()-> new LoginFailException("아이디와 비밀번호를 다시 확인해주세요."));
-		log.info("[AuthService]아이디 매칭 조회-----------------: {}", emp);
 		log.info("[AuthService]아이디 매칭 조회-----------------: {}", emp.getRoleList().get(0));
 
 
@@ -51,9 +50,7 @@ public class AuthService {
 		if(!passwordEncoder.matches(empDto.getEmpPwd(), emp.getEmpPwd())) {
 			throw new LoginFailException("아이디와 비밀번호를 다시 확인해주세요.");
 		}
-		log.info("[AuthService]비밀번호 매칭 조회-----------------");
 		/* 토큰 발급 */
-		log.info("[AuthService]토큰  매칭 조회-----------------: {}", emp.getEmpCode());
 		TokenDto tokenDto = tokenProvider.generateTokenDto(medelMapper.map(emp, AuthEmpDto.class));
 		log.info("[AuthService] tokenDto : {}", tokenDto);
 		
