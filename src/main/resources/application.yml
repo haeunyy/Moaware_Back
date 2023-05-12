@@ -9,7 +9,8 @@ spring:
     url: jdbc:oracle:thin:@localhost:1521:xe
     username: C##MOAWARE
     password: MOAWARE
-
+  jackson:
+    time-zone: Asia/Seoul
 # jpa config
   jpa:
     generate-ddl: false
