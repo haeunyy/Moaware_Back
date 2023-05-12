@@ -15,7 +15,7 @@ public interface EmpRepository extends JpaRepository<Emp, Integer>{
 	
 	
 	
-	@EntityGraph(attributePaths = {"job", "dept"})
+	@EntityGraph(attributePaths = {"job", "dept","fileCategory"})
 	List<Emp> findAll();
 	
 
