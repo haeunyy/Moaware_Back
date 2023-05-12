@@ -11,6 +11,8 @@ import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.repository.DeptRepository;
 import com.greedy.moaware.employee.repository.EmpRepository;
+import com.greedy.moaware.organization.dto.OrganizationDto;
+import com.greedy.moaware.organization.entity.Organization;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,20 +50,24 @@ public class EmpService {
 		return empDtoList;
 		
 	}
-	
-	public EmpDto selectEmpDetail(Integer empCode ) {
-		
-		log.info("[EmpService] selectEmpList start ============================== ");
+
+	public EmpDto selectEmpDetail(Integer empCode) {
+		log.info("[EmpService] selectOrgDetail start ============================== ");
 		log.info("[EmpService] empCode : {}" , empCode);
 		
-		Emp emp = empRepository.findById(empCode)
+		Emp empList = empRepository.findById(empCode)
 				.orElseThrow( ()-> new IllegalArgumentException("해당 사번을 가진 사원이 없습니다. 사번 = " + empCode));
+		log.info("[EmpService] empList : {}" , empList);
 		
-		EmpDto empDto = modelMapper.map(emp, EmpDto.class);
+		EmpDto empDto = modelMapper.map(empList, EmpDto.class);
+		log.info("[EmpService] empDto : {}" , empDto);
 		
-		log.info("[EmpService] selectEmpList end ================================ ");
+		log.info("[EmpService] selectOrgDetail end ================================ ");
 		return empDto;
+		
 	}
+	
+
 	
 
 }

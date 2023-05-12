@@ -1,11 +1,14 @@
 package com.greedy.moaware.organization.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.greedy.moaware.employee.dto.EmpDto;
+import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.organization.dto.OrganizationDto;
 import com.greedy.moaware.organization.entity.Organization;
 import com.greedy.moaware.organization.repository.OrganizationRepository;
@@ -35,6 +38,21 @@ public class OrganizationService {
 		
 		log.info("[OrganizationService] selectOranizationList start ============================== ");
 		
+		return orgDtoList;
+	}
+
+	public List<OrganizationDto> selectOrgSearch(String search) {
+		
+		log.info("[EmpService] selectOrgDetail start ============================== ");
+		log.info("[EmpService] search : {}" , search);
+		
+		List<Organization> orgList = organizationRepository.findBySearch(search);
+		log.info("[EmpService] org : {}" , orgList);	
+		
+		List<OrganizationDto> orgDtoList = orgList.stream().map( org -> modelMapper.map(org, OrganizationDto.class)).collect(Collectors.toList());
+		
+		
+		log.info("[EmpService] selectOrgDetail end ================================ ");
 		return orgDtoList;
 	}
 
