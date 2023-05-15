@@ -10,7 +10,7 @@ import com.greedy.moaware.exception.dto.ApiExceptionDto;
 @RestControllerAdvice
 public class ApiExceptionAdvice {
 	
-	@ExceptionHandler({UserNotFoundException.class, DuplicatedUserEmailException.class, LoginFailedException.class, IllegalArgumentException.class})
+	@ExceptionHandler({UserNotFoundException.class, DuplicatedUserEmailException.class, LoginFailedException.class, IllegalArgumentException.class, FindMyAccoutException.class})
 	public ResponseEntity<ApiExceptionDto> exceptionHandler(Exception e){
 		
 		return ResponseEntity
