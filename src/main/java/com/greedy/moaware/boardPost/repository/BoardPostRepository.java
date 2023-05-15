@@ -16,8 +16,11 @@ import com.greedy.moaware.boardPost.entity.BoardPost;
 public interface BoardPostRepository extends JpaRepository<BoardPost, Long> {
 
 	/* 1. 게시글 목록 조회 - 페이징, 조회 불가 게시물 제외(사용자) */
-	/* (성능 이슈) fetch 조인을 사용하게 되면 한 번에 조인해서 결과를 가져오게 된다.
-	 * @EntityGraph는 Data JPA에서 fetch 조인은 어노테이션으로 사용할 수 있도록 만들어준 기능이다. */
+	/* 연관 관계가 지연 로딩으로 되어 있을 경우 엔티티를 하나 조회하고 다시 다른 엔티티에 대해서 여러번 조회를 별도로 하게 되는 
+	 * N + 1 문제가 발생하게 된다. (성능 이슈) fetch 조인을 사용하게 되면 한 번에 조인해서 결과를 가져오게 된다.
+	 * @EntityGraph는 Data JPA에서 fetch 조인은 어노테이션으로 사용할 수 있도록 만들어준 기능이다.*/
+	
+	
 	@EntityGraph(attributePaths= {"board"})
 	Page<BoardPost> findByStatus(Pageable pageable, String status);
 	
@@ -27,18 +30,18 @@ public interface BoardPostRepository extends JpaRepository<BoardPost, Long> {
 	Page<BoardPost> findAll(Pageable pageable);
 	
 	/* 3. 게시글 목록 조회 - 게시`판` 기준, 페이징, 조회 불가 게시물 제외(사용자) */
-	Page<BoardPost> findByBoardCodeAndStatus(Pageable pageable, Board boardCode, String status);
-	//aaa
-	/* 4. 게시글 목록 조회 - 게시물 검색 기준, 페이징, 조회 불가 게시물 제외(사용자) */
+	Page<BoardPost> findByBoardAndStatus(Pageable pageable, Board board, String status);
+	
+	/* 4. 게시글 목록 조회 - 게시물제목 검색 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 	@EntityGraph(attributePaths= {"board"})
-	Page<BoardPost> findByPostCodeContainsAndStatus(Pageable pageable, String postCode, String status);
+	Page<BoardPost> findByPostTitleContainsAndStatus(Pageable pageable, String postTitle, String status);
 	
 	/* 5. 게시물 상세 조회 - postCode로 게시물 1개 조회, 조회 불가 게시물 제외(사용자) 
 	 * 쿼리 메소드로 구현 가능 findByPostCodeAndStatus(Long postCode, String status) 
 	 * JPQL을 사용해서 구현해보기 */
 	@Query("SELECT b " +
 		   "  FROM BoardPost b " +
-		   //"  JOIN fetch b.boardCode " +
+		   //"  JOIN fetch b.board " +
 		   " WHERE b.postCode = :postCode " +
 		   "   AND b.status = 'Y'")
 	Optional<BoardPost> findByPostCode(@Param("postCode") Long postCode);

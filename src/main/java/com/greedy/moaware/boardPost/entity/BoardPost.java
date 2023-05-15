@@ -12,14 +12,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 
 
 @Setter
 @Getter
+@ToString
 @Entity
 @Table(name="BOARD_POST")
 @SequenceGenerator(name="BOARD_POST_SEQ_GENERATOR",
@@ -34,10 +35,10 @@ public class BoardPost {
 	private Long postCode;
 	
 	/* cascade = CascadeType.PERSIST : 
-	 * 영속성 전이 설정을 넣으면 Category에 새로운 값이 있을 경우 insert 될 수 있음 */
+	 * 영속성 전이 설정을 넣으면 BoardCode에 새로운 값이 있을 경우 insert 될 수 있음 */
 	@ManyToOne
 	@JoinColumn(name = "BOARD_CODE")
-	private Board boardCode;
+	private Board board;
 	
 	@Column(name="POST_CATEGORY")
 	private String postCategory;
@@ -65,12 +66,12 @@ public class BoardPost {
 	
 	
 	/* BoardPost entity 수정 용도의 메소드를 별도로 정의 */
-	public void update(Long postCode, Board boardCode, String postCategory, 
+	public void update(Long postCode, Board board, String postCategory, 
 			String postTitle, String postContent, Date modifyDate, String status, 
 			Long views, Long empCode ) {
 		
 		this.postCode = postCode;
-		this.boardCode = boardCode;
+		this.board = board;
 		this.postCategory = postCategory;
 		this.postTitle = postTitle;
 		this.postContent = postContent;

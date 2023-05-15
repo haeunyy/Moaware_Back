@@ -24,7 +24,7 @@ public class ApiExceptionAdvice {
 		
 		return ResponseEntity
 				.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body(new ApiExceptionDto(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+				.body(new ApiExceptionDto(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage())); //클라이언트에게 보여줄 바디에 들어갈 메시지
 		
 	}
 
