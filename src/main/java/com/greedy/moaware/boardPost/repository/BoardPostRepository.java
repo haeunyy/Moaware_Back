@@ -28,7 +28,7 @@ public interface BoardPostRepository extends JpaRepository<BoardPost, Long> {
 	
 	/* 3. 게시글 목록 조회 - 게시`판` 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 	Page<BoardPost> findByBoardCodeAndStatus(Pageable pageable, Board boardCode, String status);
-	
+	//aaa
 	/* 4. 게시글 목록 조회 - 게시물 검색 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 	@EntityGraph(attributePaths= {"board"})
 	Page<BoardPost> findByPostCodeContainsAndStatus(Pageable pageable, String postCode, String status);
