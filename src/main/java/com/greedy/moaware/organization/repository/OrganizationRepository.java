@@ -11,10 +11,13 @@ import org.springframework.data.repository.query.Param;
 import com.greedy.moaware.organization.entity.Organization;
 
 public interface OrganizationRepository extends JpaRepository<Organization, Integer> {
-							
+				
+	/* 조직도 전체 검색 */
 	@EntityGraph(attributePaths= {"orgEmp", "orgEmp.job"})
 	List<Organization> findAll();
 
+	
+	/* 조직도 이름,직급,직책으로 검색 */
 	@Query(value="SELECT DISTINCT o FROM Organization o JOIN fetch o.orgEmp e JOIN fetch e.job j "
 			+ "WHERE o.deptName like %:search% or e.empName like %:search% or j.jobName like %:search%"
 			)

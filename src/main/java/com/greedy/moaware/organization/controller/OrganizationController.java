@@ -27,6 +27,7 @@ public class OrganizationController {
 		this.organizationService = organizationService;
 	}
 	
+	/* 조직도 전체 검색 */
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> selectOrganizationList(){
 		
@@ -45,7 +46,7 @@ public class OrganizationController {
 	
 
 	
-	/* 조직도 검색*/
+	/* 조직도 이름,직급,직책으로 검색 */
 	@GetMapping("/search")
 	public ResponseEntity<ResponseDto> selectOrgSearch(@RequestParam(name="search") String search){
 		

@@ -28,6 +28,7 @@ public class OrganizationService {
 		this.modelMapper = modelMapper;
 	}
 	
+	/* 조직도 전체 검색 */
 	public List<OrganizationDto> selectOranizationList() {
 		
 		log.info("[OrganizationService] selectOranizationList start ============================== ");
@@ -41,6 +42,7 @@ public class OrganizationService {
 		return orgDtoList;
 	}
 
+	/* 조직도 이름,직급,직책으로 검색 */
 	public List<OrganizationDto> selectOrgSearch(String search) {
 		
 		log.info("[EmpService] selectOrgDetail start ============================== ");
