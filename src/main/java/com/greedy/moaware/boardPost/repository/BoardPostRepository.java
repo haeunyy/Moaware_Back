@@ -45,11 +45,22 @@ public interface BoardPostRepository extends JpaRepository<BoardPost, Long> {
 		   " WHERE b.postCode = :postCode " +
 		   "   AND b.status = 'Y'")
 	Optional<BoardPost> findByPostCode(@Param("postCode") Long postCode);
+
+	
+			
+		
 	
 	/* 6. 게시글 상세 조회 - postCode로 게시글 1개 조회, 조회 불가 게시글 포함(관리자) => findById 메소드 사용 */
 	
 	/* 7. 게시글 등록(관리자) => save 메소드가 이미 정의 되어 있으므로 별도 정의 필요 없음 */
-	
+	/*
+	 * @Query("SELECT b FROM BoardPost b " +
+	 * "JOIN fetch b.boardPost JOIN fetch b.writer " +
+	 * "WHERE b.boardPost.postCode = :postCode AND b.writer.empCode = :empCode")
+	 * Optional<BoardPost> findByBoardPostAndWriter(@Param("postCode") Long
+	 * postCode, @Param("empCode") Integer empCode);
+	 */
+
 	/* 8. 게시글 수정(관리자) => findById 메소드로 조회 후 필드 값 수정하면 변화를 감지하여 update 구문이 생성 되므로 별도의 정의 필요 없음 */
 }
 
