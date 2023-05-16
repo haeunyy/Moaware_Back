@@ -40,6 +40,15 @@ public class AuthController {
 	}
 	
 	
+	/* 비밀번호 찾기 */
+	@PostMapping("/pwdfind")
+	public ResponseEntity<ResponseDto> accountPwdFind(@RequestBody AuthEmpDto emp){
+		
+		authService.accountPwdFind(emp);
+		 
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK,"비밀번호 찾기 완료"));
+	}
+	
 	
 	
 }
