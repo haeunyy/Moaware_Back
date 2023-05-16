@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +23,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="EMPLOYEE")
+@DynamicInsert
 @SequenceGenerator(name="EMP_SEQ_GENERATOR", sequenceName="SEQ_EMP_CODE", initialValue=1, allocationSize=1)
 public class AuthEmp {
 	
@@ -32,9 +35,6 @@ public class AuthEmp {
 	@Column(name="EMP_NAME")
 	private String empName;
 	
-	@Column(name="PHONE")
-	private String phone;
-	
 	@Column(name="EMP_ID")
 	private String empId;
 	
@@ -43,18 +43,19 @@ public class AuthEmp {
 	
 	@Column(name="EMAIL")
 	private String email;
-	
-	@Column(name="RETIRE_YN")
-	private String retireYn;
-	
-	@Column(name="HIRE_DATE")
-	private Date hireDate;
-	
-	@Column(name="EXTENSION_NUM")
-	private String extensionNum;
-	
-	@Column(name="EMP_SSI")
-	private String empSsi;
+
+	/*
+	 * @Column(name="PHONE") private String phone;
+	 * 
+	 * @Column(name="RETIRE_YN") private String retireYn;
+	 * 
+	 * @Column(name="HIRE_DATE") private Date hireDate;
+	 * 
+	 * @Column(name="EXTENSION_NUM") private String extensionNum;
+	 * 
+	 * @Column(name="EMP_SSI") private String empSsi;
+	 */
+	 
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="EMP_CODE")
