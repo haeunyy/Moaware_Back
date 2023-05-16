@@ -1,5 +1,7 @@
 package com.greedy.moaware.work.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.data.domain.Page;
@@ -37,14 +39,26 @@ public class WorkController {
 	/* 자기 근태 현항 조회 */
 	@GetMapping("/works/{workDate}")
 	public ResponseEntity<ResponseDto> myWorkList(@AuthenticationPrincipal AuthEmpDto emp,
-			@PathVariable @DateTimeFormat(pattern = "yyyy-MM") Date workDate,
+			@PathVariable String workDate,
 			@RequestParam(name = "page", defaultValue = "1") int page) {
 		
 		log.info("[WorkController] : myWorkList Start =========================================================");
 		
 		log.info("[WorkController] : page : {}", page);
 		
-		Page<WorkDto> workDtoList = workService.selectMyWorkList(emp.getEmpCode(), workDate, page);
+		   // workDate를 Date 타입으로 파싱
+	    Date parsedDate = null;
+	    try {
+	        parsedDate = new SimpleDateFormat("yyyy-MM").parse(workDate);
+	    } catch (ParseException e) {
+	        // 파싱 실패 시 예외 처리
+	        e.printStackTrace();
+	        // 적절한 예외 처리 로직 작성
+	    }
+		
+		
+		
+		Page<WorkDto> workDtoList = workService.selectMyWorkList(emp.getEmpCode(), parsedDate, page);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(workDtoList);
 		
 		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();

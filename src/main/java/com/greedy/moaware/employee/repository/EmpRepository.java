@@ -22,6 +22,9 @@ public interface EmpRepository extends JpaRepository<Emp, Integer>{
 	@EntityGraph(attributePaths = {"job", "dept","fileCategory"})
 	List<Emp> findAll();
 	
+//	@EntityGraph(attributePaths = {"job", "dept","fileCategory"})
+//	List<Emp> findByRefDeptCode( Long refDetpCode);
+	
 	@Query("SELECT e FROM Emp e WHERE e.empName LIKE :empName% "
 			+ " AND e.retireYn = 'N'")
 	Page<Emp> findByEmpName(@Param("empName") String empName, Pageable pageable);

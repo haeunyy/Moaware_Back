@@ -5,6 +5,7 @@ package com.greedy.moaware.boardPost.dto;
 import java.util.Date;
 
 import com.greedy.moaware.boardPost.entity.Board;
+import com.greedy.moaware.employee.dto.EmpDto;
 
 import lombok.Data;
 
@@ -22,7 +23,7 @@ public class BoardPostDto {
 	private Date modifyDate;
 	private String status;
 	private Long views;
-	private Long empCode;
+	private EmpDto writer;
 	
 	
 	
