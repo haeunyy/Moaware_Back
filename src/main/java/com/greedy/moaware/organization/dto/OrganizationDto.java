@@ -12,6 +12,7 @@ public class OrganizationDto {
 	private String deptName;
 	private Integer refDeptCode;
 	private List<HighOrganizationDto> subDept;
+	private List<OrganizationEmpDto> orgEmp;
 	
 
 }

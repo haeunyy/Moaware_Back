@@ -8,5 +8,6 @@ import lombok.Data;
 public class SearchOrgDto {
 	private Integer deptCode;
 	private String deptName;
+	private List<OrganizationEmpDto> orgEmp;
 	
 }
