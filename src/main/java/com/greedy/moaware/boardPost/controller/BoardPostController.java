@@ -1,21 +1,31 @@
 package com.greedy.moaware.boardPost.controller;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.boardPost.dto.BoardPostDto;
+import com.greedy.moaware.boardPost.repository.BoardPostRepository;
 import com.greedy.moaware.boardPost.service.BoardPostService;
 import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.common.paging.Pagenation;
 import com.greedy.moaware.common.paging.PagingButtonInfo;
 import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
+import com.greedy.moaware.employee.dto.EmpDto;
 
+import io.jsonwebtoken.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -125,7 +135,7 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 			return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 			}
 
-		/* 5. 상품 상세 조회 - productCode로 상품 1개 조회, 주문 불가 상품 제외(고객) */
+		/* 5. 게시물 상세 조회 - postCode로 상품 1개 조회, 조회 불가 게시물 제외(사용자) */
 		@GetMapping("boardPosts/{postCode}") //특정 고유값을 pk 통해 조회 할 경우 path v.
 			public ResponseEntity<ResponseDto> selectBoardPostDetail(@PathVariable Long postCode) {
 	
@@ -134,8 +144,66 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 			.body(new ResponseDto(HttpStatus.OK, "조회 성공", boardPostService.selectBoardPost(postCode)));
 		} // 가공하는 처리 없이 넣는 PROCESS
 
+		/* 6. 게시물 상세 조회 - postCode로 상품 1개 조회, 조회 불가 게시물 포함(관리자) => findById 메소드 사용 */
+		@GetMapping("boardPosts-management/{postCode}") //url 매핑 주소 가 다르면 문제-> 중복 없게 수정
+		public ResponseEntity<ResponseDto> selectBoardPostDetailForAdmin(@PathVariable Long postCode) {
+			
+			return ResponseEntity
+					.ok()
+					.body(new ResponseDto(HttpStatus.OK, "조회 성공", boardPostService.selectBoardPostForAdmin(postCode)));
+		}
+		
+		/* 7. 상품 등록 */
+		@PostMapping("/boardPosts")
+		public ResponseEntity<ResponseDto> insertBoardPost(@ModelAttribute BoardPostDto boardPostDto) {
+			//키&밸류 값의 형태를 띄어 url 인코디드 방식으로 전달->포스트맨에서는 바디-> 폼데이터 검색
+			boardPostService.insertBoardPost(boardPostDto);
+			
+			return ResponseEntity
+					.ok()
+					.body(new ResponseDto(HttpStatus.OK, "게시물 등록 성공"));
 
-}
+	
+		}
+		
+		/* 8. 게시물 수정 */
+		@PutMapping("/boardPosts")
+		public ResponseEntity<ResponseDto> updateBoardPost(@ModelAttribute BoardPostDto boardPostDto) {
+			//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
+			boardPostService.updateBoardPost(boardPostDto);
+			
+			return ResponseEntity
+					.ok()
+					.body(new ResponseDto(HttpStatus.OK, "게시물 수정 성공"));
+			
+		}
+		
+		
+		
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
 
 
 
