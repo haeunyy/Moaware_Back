@@ -5,10 +5,11 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class HighOrganizationDto {
+public class SearchOrganizationDto {
 	
-	private Integer deptCode;
-	private String deptName;
+	
+	private List<SearchOrgDto> highDept;
+	private List<SearchOrgDto> subDept;
 	private List<OrganizationEmpDto> orgEmp;
 
 }

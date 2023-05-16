@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.organization.dto.OrganizationDto;
+import com.greedy.moaware.organization.dto.SearchOrganizationDto;
 import com.greedy.moaware.organization.service.OrganizationService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,23 +28,42 @@ public class OrganizationController {
 		this.organizationService = organizationService;
 	}
 	
-	/* 조직도 전체 검색 */
+	/* 조직도 상위부서 검색 */
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> selectOrganizationList(){
 		
-		log.info("[EmpController] selectOrganizationList start ============================== ");
+		log.info("[OrganizationController] selectOrganizationList start ============================== ");
 		
 		List<OrganizationDto> orgDtoList = organizationService.selectOranizationList();
 		
 		
-		log.info("[EmpController] selectOrganizationList orgDtoList : {}", orgDtoList );
-		log.info("[EmpController] selectOrganizationList end ================================ ");
+		log.info("[OrganizationController] selectOrganizationList orgDtoList : {}", orgDtoList );
+		log.info("[OrganizationController] selectOrganizationList end ================================ ");
 		
 		
-		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 사원 조회가 성공하였습니다.", orgDtoList ));
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 상위 부서 조회가 성공하였습니다.", orgDtoList ));
 		
 	}
 	
+	/* 조직도 하위 부서 및 직원 검색 */
+	@GetMapping("/subList/{deptCode}")
+	public ResponseEntity<ResponseDto> selectOrganizationList(@PathVariable(name="deptCode") Integer refdeptCode){
+		
+		log.info("[OrganizationController] selectOrganizationList start ============================== ");
+		log.info("[OrganizationController] selectOrganizationList org : {}", refdeptCode );
+		
+
+		
+		List<OrganizationDto> orgDtoList = organizationService.selectOranizationSubList(refdeptCode);
+		
+		
+		log.info("[OrganizationController] selectOrganizationList orgDtoList : {}", orgDtoList );
+		log.info("[OrganizationController] selectOrganizationList end ================================ ");
+		
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 조직도 하위 부서 및 직원 검색 조회가 성공하였습니다.", orgDtoList ));
+		
+	}
 
 	
 	/* 조직도 이름,직급,직책으로 검색 */
@@ -53,7 +73,7 @@ public class OrganizationController {
 		log.info("[EmpController] selectOrgSearch start ============================== ");
 		log.info("search : {}" , search);
 		
-		List<OrganizationDto> orgDtoList = organizationService.selectOrgSearch(search);
+		List<SearchOrganizationDto> orgDtoList = organizationService.selectOrgSearch(search);
 		
 		
 		log.info("[EmpController] selectOrgSearch orgDtoList : {}", orgDtoList );

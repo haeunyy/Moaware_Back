@@ -12,9 +12,13 @@ import com.greedy.moaware.organization.entity.Organization;
 
 public interface OrganizationRepository extends JpaRepository<Organization, Integer> {
 				
-	/* 조직도 전체 검색 */
+	/* 조직도 상위 부서 검색 */
 	@EntityGraph(attributePaths= {"orgEmp", "orgEmp.job"})
 	List<Organization> findAll();
+	
+	/* 조직도 하위 부서 및 직원 검색 */
+	@EntityGraph(attributePaths= {"orgEmp", "orgEmp.job"})
+	List<Organization> findByRefDeptCode(Integer refDeptCode);
 
 	
 	/* 조직도 이름,직급,직책으로 검색 */
@@ -22,5 +26,7 @@ public interface OrganizationRepository extends JpaRepository<Organization, Inte
 			+ "WHERE o.deptName like %:search% or e.empName like %:search% or j.jobName like %:search%"
 			)
 	List<Organization> findBySearch(@Param("search") String search);
+
+
 
 }		

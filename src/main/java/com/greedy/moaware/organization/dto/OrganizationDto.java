@@ -10,8 +10,8 @@ public class OrganizationDto {
 
 	private Integer deptCode;
 	private String deptName;
-	private String refDeptCode;
-	private HighOrganizationDto highDept;
-	private List<OrganizationEmpDto> orgEmp;
+	private Integer refDeptCode;
+	private List<HighOrganizationDto> subDept;
+	
 
 }
