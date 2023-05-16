@@ -16,7 +16,7 @@ public class WorkDto {
 	
 	private Date workTime;
 
-	private Date quitTimel;
+	private Date quitTime;
 	
 	private String workStatus;
 	
