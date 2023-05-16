@@ -63,7 +63,7 @@ public class AuthService {
 		AuthEmp employee = authEmpRepository.findById(emp.getEmpCode())
 				.orElseThrow(()-> new FindMyAccoutException("입력하신 정보를 다시 확인해주세요."));
 		
-		if(emp.getEmpName() == employee.getEmpName() && emp.getEmail() == employee.getEmail()) {
+		if(!emp.getEmpName().equals(employee.getEmpName()) || !emp.getEmail().equals(employee.getEmail())) {
 			throw new FindMyAccoutException("입력하신 정보를 다시 확인해주세요.");
 		}
 		
