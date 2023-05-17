@@ -60,7 +60,7 @@ public class Emp {
 	@JoinColumn(name="DEPT_CODE")
 	private Dept dept;
 	
-	@OneToOne(mappedBy="emp")
+	@OneToOne(mappedBy="emp" )
 	private FileCategory fileCategory;
 	
 	
