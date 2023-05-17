@@ -33,12 +33,21 @@ public class AuthController {
 	
 	
 	/* 아이디 찾기 */
-	@GetMapping("/idfind")
+	@PostMapping("/idfind")
 	public ResponseEntity<ResponseDto> accountIdFind(@RequestBody AuthEmpDto emp){
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK,"아이디 찾기 완료", authService.accountIdFind(emp)));
 	}
 	
+	
+	/* 비밀번호 찾기 */
+	@PostMapping("/pwdfind")
+	public ResponseEntity<ResponseDto> accountPwdFind(@RequestBody AuthEmpDto emp){
+		
+		authService.accountPwdFind(emp);
+		 
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK,"비밀번호 찾기 완료"));
+	}
 	
 	
 	

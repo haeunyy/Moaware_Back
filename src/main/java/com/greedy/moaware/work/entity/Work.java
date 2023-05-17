@@ -26,7 +26,7 @@ public class Work {
 	private Date workTime;
 	
 	@Column(name="QUIT_TIME")
-	private Date quitTimel;
+	private Date quitTime;
 	
 	@Column(name="WORK_STATUS")
 	private String workStatus;
