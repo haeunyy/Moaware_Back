@@ -2,14 +2,12 @@ package com.greedy.moaware.employee.service;
 
 import java.util.Date;
 import java.util.Random;
-
 import javax.transaction.Transactional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.greedy.moaware.common.configuration.MailSenderConfig;
+//import com.greedy.moaware.common.configuration.MailSenderConfig;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.employee.dto.TokenDto;
 import com.greedy.moaware.employee.entity.AuthEmp;
@@ -28,18 +26,18 @@ public class AuthService {
 	private final ModelMapper medelMapper;
 	private final TokenProvider tokenProvider;
 	private final PasswordEncoder passwordEncoder;
-	private final MailSenderConfig mailSender;
+	//private final MailSenderConfig mailSender;
 	
 	public AuthService(AuthEmpRepository authEmpRepository
 			, ModelMapper medelMapper
 			, TokenProvider tokenProvider
 			, PasswordEncoder passwordEncoder
-			, MailSenderConfig mailSender) {
+			) {
 		this.authEmpRepository = authEmpRepository;
 		this.medelMapper = medelMapper;
 		this.passwordEncoder = passwordEncoder;
 		this.tokenProvider = tokenProvider;
-		this.mailSender = mailSender;
+		//this.mailSender = mailSender;
 	}
 	
 	public TokenDto login(AuthEmpDto empDto) {
@@ -94,6 +92,9 @@ public class AuthService {
 			throw new FindMyAccoutException("입력하신 정보를 다시 확인해주세요.");
 		}
 		
+
+		//mailSender.sendMail(employee.getEmail());
+
 		String newPwd = randomPassword();
 		
 		employee.setEmpPwd(passwordEncoder.encode(newPwd));
