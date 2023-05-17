@@ -18,7 +18,7 @@ import lombok.Setter;
 @Entity
 @Table(name="ATTACHED_FILE")
 @SequenceGenerator(name="FILE_SEQ_GENERATOR", sequenceName="SEQ_ATTACHMENT_FILE_CODE", initialValue=1, allocationSize=1)
-public class File {
+public class AttachedFile {
 	
 	@Id
 	@Column(name="FILE_CODE")
@@ -34,10 +34,6 @@ public class File {
 	@Column(name="SAVED_FILE_NAME")
 	private String savedFileName;
 	
-	@ManyToOne
-	@JoinColumn(name="F_CATEGORY_CODE")
-	private FileCategory fileCategory;
-
 	
 
 }

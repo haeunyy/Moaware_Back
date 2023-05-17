@@ -1,13 +1,13 @@
 package com.greedy.moaware.employee.dto;
 
-import com.greedy.moaware.employee.entity.FileCategory;
+import lombok.Data;
 
-public class FileDto {
+@Data
+public class AttachedFileDto {
 	
 	private Integer fileCode;
 	private String originalFileName;
 	private String filePath;
 	private String savedFileName;
-	private FileCategoryDto fileCategory;
 
 }
