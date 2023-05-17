@@ -22,6 +22,9 @@ public interface EmpRepository extends JpaRepository<Emp, Integer>{
 	@EntityGraph(attributePaths = {"job", "dept","fileCategory"})
 	List<Emp> findAll();
 	
+	@EntityGraph(attributePaths = {"job", "dept","fileCategory", "fileCategory.file" })
+	Optional<Emp> findById(Integer empCode);
+	
 //	@EntityGraph(attributePaths = {"job", "dept","fileCategory"})
 //	List<Emp> findByRefDeptCode( Long refDetpCode);
 	

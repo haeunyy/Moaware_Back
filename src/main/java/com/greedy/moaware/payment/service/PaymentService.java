@@ -15,8 +15,21 @@ public class PaymentService {
 		this.modelMapper = modelMapper;
 		this.paymentRepository = paymentRepository;
 		
-		
 	}
+	
+	
+	/* 결재 대기 조회 */
+	
+	/* 결재 진행 조회 */
+	
+	/* 결재 완료 조회*/
+
+	/* 반려 조회 */
+	
+	/* 임시 저장 조회 */
+	
+	/* 서명 조회 */
+
 	
 
 
