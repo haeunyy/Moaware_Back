@@ -25,9 +25,11 @@ import com.greedy.moaware.exception.NotLogin;
 import com.greedy.moaware.exception.UserNotFoundException;
 import com.greedy.moaware.work.dto.WorkDto;
 import com.greedy.moaware.work.dto.WorkTimeDto;
+import com.greedy.moaware.work.entity.EmpWork;
 import com.greedy.moaware.work.entity.Work;
 import com.greedy.moaware.work.entity.WorkPk;
 import com.greedy.moaware.work.entity.WorkTime;
+import com.greedy.moaware.work.repository.EmpWorkRepository;
 import com.greedy.moaware.work.repository.WorkRepository;
 import com.greedy.moaware.work.repository.WorkTimeRepository;
 
@@ -93,8 +95,8 @@ public class WorkService {
 	/* 사원 번호 + 월별 근태 현황 조회 */
 	public Page<WorkDto> selectWorkList(Integer empCode, Date workDate, int page) {
 	    
-		Optional<Emp> empOptional = empRepository.findById(empCode);
-		Emp emp = empOptional.orElseThrow(() -> new UserNotFoundException("해당 사원이 없습니다."));
+		Optional<AuthEmp> empOptional = authEmpRepository.findById(empCode);
+		AuthEmp emp = empOptional.orElseThrow(() -> new UserNotFoundException("해당 사원이 없습니다."));
 		
 		
 		// 해당 월의 첫 번째 날짜를 구합니다.
@@ -132,9 +134,10 @@ public class WorkService {
 		//findById 는 반환 타입이 optional<T>로 지정 되어있다.
 
 		Optional<AuthEmp> authEmpOptional = authEmpRepository.findById(workTimeDto.getWorkPk().getEmpCode());
-		
+			
+			//값이 있는지 확인하고 있으면 
 		if (authEmpOptional.isPresent()) {
-		    AuthEmp authEmp = authEmpOptional.get();
+			AuthEmp authEmp = authEmpOptional.get();
 		    
 //		    Date workTime = workTimeDto.getWorkTime();
 		    
@@ -175,6 +178,25 @@ public class WorkService {
 		}
 		
 		
+	}
+	
+	/* 퇴근 시간 입력*/
+	@Transactional
+	public void quitTime(WorkTimeDto workTimeDto) {
+		
+		Optional<AuthEmp> authEmpOptional = authEmpRepository.findById(workTimeDto.getWorkPk().getEmpCode());
+		
+		log.info("[WorkService] quitTimeauthEmpOptional : {}", authEmpRepository.findById(workTimeDto.getWorkPk().getEmpCode()));
+
+			if (authEmpOptional.isPresent()) {
+				WorkTime lastWork = workTimeRepository.findAllByWorkPkEmpCode(workTimeDto.getWorkPk().getEmpCode());
+				
+				if(lastWork != null) {
+					lastWork.setQuitTime(workTimeDto.getQuitTime());					
+				}
+				
+			}
+	
 	}
 
 	
