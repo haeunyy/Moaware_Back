@@ -1,4 +1,4 @@
-package com.greedy.moaware.employee.entity;
+package com.greedy.moaware.payment.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +19,7 @@ import lombok.Setter;
 @Entity
 @Table(name="FILE_CATEGORY")
 @SequenceGenerator(name="FILE_CATEGORY_SEQ_GENERATOR", sequenceName="SEQ_F_CATEGORY_CODE", initialValue=1, allocationSize=1)
-public class FileCategory {
+public class PayFileCategory {
 	
 	@Id
 	@Column(name="F_CATEGORY_CODE")
@@ -33,12 +33,12 @@ public class FileCategory {
 	private String fCategoryType;
 	
     @OneToOne(fetch = FetchType.LAZY )
-    @JoinColumn(name = "EMP_CODE")
-    private Emp emp;
+    @JoinColumn(name = "PAY_CODE")
+    private PayEmp emp;
     
     @OneToOne
     @JoinColumn(name="F_CATEGORY_CODE")
-    private AttachedFile file;
+    private PayAttachedFile file;
     
     
 	
