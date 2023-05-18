@@ -18,5 +18,10 @@ public class WorkTimeDto {
 	
 	private String workStatus;
 	private WorkPkDto workPk;
+	public void update() {
+		
+		
+		
+	}
 
 }

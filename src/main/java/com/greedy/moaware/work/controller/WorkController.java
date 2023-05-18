@@ -135,36 +135,38 @@ public class WorkController {
 				.body(new ResponseDto(HttpStatus.OK, "출근등록 완료"));
 	}
 	
-//	@PutMapping("modify")
-//	public ResponseEntity<ResponseDto> timeModify(@AuthenticationPrincipal AuthEmpDto emp,
-//			@RequestBody String workDate) {
-//		
-//		
-//	    Date parsedDate = null;
-//	    try {
-//	        parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(workDate);
-//	    } catch (ParseException e) {
-//	        // 파싱 실패 시 예외 처리
-//	        e.printStackTrace();
-//	        // 적절한 예외 처리 로직 작성
-//	    }
-//		
-//		WorkTimeDto workTimeDto = new WorkTimeDto();
-//				
-//		WorkPkDto workPkDto = new WorkPkDto();
-//		workPkDto.setEmpCode(emp.getEmpCode());
-//		workPkDto.setWorkDate(parsedDate);
-//		
-//		workTimeDto.setWorkPk(workPkDto);
-//		
-//		log.info("[WorkController] workTimeDto.workpK.workDate : {}", workTimeDto.getWorkPk().getWorkDate());
-//		
-//		workService.insertStart(workTimeDto);
-//		
-//		return ResponseEntity
-//				.ok()
-//				.body(new ResponseDto(HttpStatus.OK, "퇴근등록 완료"));
-//	} 
+	@PutMapping("quit")
+	public ResponseEntity<ResponseDto> timeQuit(@AuthenticationPrincipal AuthEmpDto emp,
+			@RequestBody String quitTime) {
+		
+		
+	    Date parsedDate = null;
+	    try {
+	        parsedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(quitTime);
+	    } catch (ParseException e) {
+	        
+	        e.printStackTrace();
+	        
+	    }
+		
+		WorkTimeDto workTimeDto = new WorkTimeDto();
+				
+		WorkPkDto workPkDto = new WorkPkDto();
+		workPkDto.setEmpCode(emp.getEmpCode());
+		workTimeDto.setQuitTime(parsedDate);
+		workTimeDto.setWorkPk(workPkDto);
+		
+		log.info("[WorkController] workTimeDto.workpK.workDate : {}", workTimeDto.getWorkPk().getEmpCode());
+
+		
+		log.info("[WorkController] parsedDate : {}", parsedDate);
+		
+		workService.quitTime(workTimeDto);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "퇴근등록 완료"));
+	} 
 			
 	
 	/* 이름 + 날짜로 근무 조회 */
