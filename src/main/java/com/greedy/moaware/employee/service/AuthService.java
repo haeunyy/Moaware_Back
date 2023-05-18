@@ -34,7 +34,8 @@ public class AuthService {
 			, ModelMapper medelMapper
 			, TokenProvider tokenProvider
 			, PasswordEncoder passwordEncoder
-			, MailSenderConfig mailSender) {
+			, MailSenderConfig mailSender
+			) {
 		this.authEmpRepository = authEmpRepository;
 		this.medelMapper = medelMapper;
 		this.passwordEncoder = passwordEncoder;
@@ -94,6 +95,9 @@ public class AuthService {
 			throw new FindMyAccoutException("입력하신 정보를 다시 확인해주세요.");
 		}
 		
+
+		//mailSender.sendMail(employee.getEmail());
+
 		String newPwd = randomPassword();
 		
 		employee.setEmpPwd(passwordEncoder.encode(newPwd));

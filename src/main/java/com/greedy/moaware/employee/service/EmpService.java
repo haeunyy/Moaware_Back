@@ -4,19 +4,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.greedy.moaware.employee.dto.AttachedFileDto;
 import com.greedy.moaware.employee.dto.EmpDto;
+import com.greedy.moaware.employee.dto.FileCategoryDto;
 import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.repository.DeptRepository;
 import com.greedy.moaware.employee.repository.EmpRepository;
-import com.greedy.moaware.organization.dto.OrganizationDto;
-import com.greedy.moaware.organization.entity.Organization;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,6 +31,9 @@ public class EmpService {
 	@Value("${image.image-url}")
 	private String IMAGE_URL;
 	
+	@Value("${image.image-dir}")
+	private String IMAGE_DIR;
+	
 	public EmpService( EmpRepository empRepository, ModelMapper modelMapper
 			, DeptRepository deptRepository) {
 		this.empRepository = empRepository;
@@ -38,6 +41,7 @@ public class EmpService {
 		this.modelMapper = modelMapper;
 	}
 	
+	/* 사원 전체 조회*/
 	public List<EmpDto> selectEmpList() {
 		
 		log.info("[EmpService] selectEmpList start ============================== ");
@@ -55,6 +59,7 @@ public class EmpService {
 		
 	}
 
+	/*사원 상세조회*/
 	public EmpDto selectEmpDetail(Integer empCode) {
 		log.info("[EmpService] selectOrgDetail start ============================== ");
 		log.info("[EmpService] empCode : {}" , empCode);
@@ -64,6 +69,9 @@ public class EmpService {
 		log.info("[EmpService] empList : {}" , empList);
 		
 		EmpDto empDto = modelMapper.map(empList, EmpDto.class);
+		
+		empDto.getFileCategory().getFile().setFilePath(IMAGE_URL+empDto.getFileCategory().getFile().getFilePath());
+		
 		log.info("[EmpService] empDto : {}" , empDto);
 		
 		log.info("[EmpService] selectOrgDetail end ================================ ");

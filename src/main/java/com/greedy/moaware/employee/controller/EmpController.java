@@ -59,6 +59,8 @@ public class EmpController {
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", empService.selectEmpDetail(empCode) ));
 	}	
+	
+	
     /* 이름으로 조회 */
     @GetMapping("/{name}")
     public ResponseEntity<ResponseDto> getEmployeeByName(@PathVariable String name,
