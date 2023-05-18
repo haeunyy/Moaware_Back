@@ -48,7 +48,6 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
 		 return http
-		         // CSRF 설정 Disable
 		         .csrf()
 		         	.disable()
 		         	.exceptionHandling()
@@ -63,6 +62,7 @@ public class SecurityConfig {
 		             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		             .antMatchers("/auth/**").permitAll()
 		             .antMatchers(HttpMethod.GET, "/emp/**").permitAll()
+//		             .antMatchers("/proj/**").hasRole("PROJECT")
 		         .and()
 		         	.cors()
 		         .and()
