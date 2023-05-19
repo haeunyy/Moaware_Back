@@ -10,10 +10,9 @@ public class PaymentDto {
 
 	private Integer payCode;
 	private Date draftDate;
-	private String emp;
 	private String draftTitle;
 	private String draftContent;
-	private Integer formCode;
+	private FormDto form;
 	private String payStatus;
 
 }
