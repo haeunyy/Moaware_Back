@@ -36,7 +36,7 @@ public class Work {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="EMP_CODE", referencedColumnName="EMP_CODE", insertable=false, updatable=false)
-	private Emp emp;
+	private WorkEmp emp;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="EMP_CODE", referencedColumnName="EMP_CODE", insertable=false, updatable=false)
