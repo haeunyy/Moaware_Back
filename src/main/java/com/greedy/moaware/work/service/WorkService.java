@@ -18,18 +18,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.greedy.moaware.employee.entity.AuthEmp;
-import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.repository.AuthEmpRepository;
 import com.greedy.moaware.employee.repository.EmpRepository;
 import com.greedy.moaware.exception.NotLogin;
 import com.greedy.moaware.exception.UserNotFoundException;
 import com.greedy.moaware.work.dto.WorkDto;
 import com.greedy.moaware.work.dto.WorkTimeDto;
-import com.greedy.moaware.work.entity.EmpWork;
 import com.greedy.moaware.work.entity.Work;
 import com.greedy.moaware.work.entity.WorkPk;
 import com.greedy.moaware.work.entity.WorkTime;
-import com.greedy.moaware.work.repository.EmpWorkRepository;
 import com.greedy.moaware.work.repository.WorkRepository;
 import com.greedy.moaware.work.repository.WorkTimeRepository;
 
