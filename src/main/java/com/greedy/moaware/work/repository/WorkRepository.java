@@ -19,7 +19,7 @@ import com.greedy.moaware.work.entity.WorkPk;
 
 public interface WorkRepository extends JpaRepository<Work, WorkPk> {
 
-	@EntityGraph(attributePaths = { "workPk", "auth.roleList" })
+//	@EntityGraph(attributePaths = { "workPk", "auth.roleList" })
 	Page<Work> findAllByWorkPkEmpCodeAndWorkPkWorkDateBetween(Integer emp, Date startDate, Date endDate,
 	
 			Pageable pageable);

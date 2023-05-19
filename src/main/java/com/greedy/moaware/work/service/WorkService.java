@@ -38,7 +38,6 @@ public class WorkService {
 	
 	private final WorkRepository workRepository;
 	private final WorkTimeRepository workTimeRepository;
-	private final EmpRepository empRepository;
 	private ModelMapper modelMapper;
 	private final AuthEmpRepository authEmpRepository;
 	
@@ -46,7 +45,6 @@ public class WorkService {
 			WorkTimeRepository workTimeRepository) {
 		this.modelMapper = modelMapper;
 		this.workRepository = workRepository;
-		this.empRepository = empRepository;
 		this.authEmpRepository = authEmpRepository;
 		this.workTimeRepository = workTimeRepository;
 	}
@@ -195,6 +193,11 @@ public class WorkService {
 			}
 	
 	}
+
+//	public Page<WorkDto> selectDateAllList(Date parsedDate, int page) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	
 	/* 이름 + 날짜로 근무 조회 */
