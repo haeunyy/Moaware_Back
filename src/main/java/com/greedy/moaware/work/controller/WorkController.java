@@ -47,8 +47,9 @@ public class WorkController {
 			@PathVariable String workDate,
 			@RequestParam(name = "page", defaultValue = "1") int page) {
 		
-		log.info("[WorkController] : myWorkList Start =========================================================");
+		log.info("[WorkController] : @AuthenticationPrincipal emp : {} =========================================================",emp);
 		
+		log.info("[WorkController] : page : {}", page);
 		log.info("[WorkController] : page : {}", page);
 		
 		   // workDate를 Date 타입으로 파싱
