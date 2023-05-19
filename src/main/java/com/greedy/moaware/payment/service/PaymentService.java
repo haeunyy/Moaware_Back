@@ -1,10 +1,18 @@
 package com.greedy.moaware.payment.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.greedy.moaware.payment.dto.PaymentDto;
+import com.greedy.moaware.payment.entity.Payment;
 import com.greedy.moaware.payment.repository.PaymentRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class PaymentService {
 	
@@ -17,6 +25,23 @@ public class PaymentService {
 		
 	}
 	
+	/* 테스트용 */
+	public List<PaymentDto> test() {
+		
+		log.info("[PaymentService] test start ============================== ");
+		
+		List<Payment> payList = paymentRepository.findAll();
+		
+		log.info("[PaymentService] payList : {}" , payList);
+		
+		List<PaymentDto> paysDto = payList.stream().map( pay -> modelMapper.map(pay, PaymentDto.class)).collect(Collectors.toList());
+		
+		log.info("[PaymentService] paysDto : {}" , paysDto);
+		
+		log.info("[PaymentService] test end ============================== ");
+		
+		return paysDto;
+	}
 	
 	/* 결재 대기 조회 */
 	

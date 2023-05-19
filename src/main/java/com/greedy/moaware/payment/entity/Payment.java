@@ -20,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="DEPARTMENT")
+@Table(name="PAYMENT")
 @SequenceGenerator(name="PAY_SEQ_GENERATOR", sequenceName="SEQ_PAY_CODE", initialValue=1, allocationSize=1)
 public class Payment {
 	
@@ -32,9 +32,9 @@ public class Payment {
 	@Column(name="DRAFT_DATE")
 	private Date draftDate;
 	
-	@ManyToOne
-	@JoinColumn(name="EMP_CODE")
-	private PayEmp emp;
+//	@ManyToOne
+//	@JoinColumn(name="EMP_CODE")
+//	private PayEmp emp;
 	
 	@Column(name="DRAFT_TITLE")
 	private String draftTitle;
@@ -42,11 +42,12 @@ public class Payment {
 	@Column(name="DRAFT_CONTENT")
 	private String draftContent;
 	
-	@Column(name="FORM_CODE")
-	private Integer formCode;
-	
 	@Column(name="PAY_STATUS")
 	private String payStatus;
+	
+	@ManyToOne
+	@JoinColumn(name="FORM_CODE")
+	private Form form;
 	
 	@OneToMany
 	@JoinColumn(name="PAY_CODE")
