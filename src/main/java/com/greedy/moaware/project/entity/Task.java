@@ -7,12 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
-
-import com.greedy.moaware.project.dto.ProjectDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -50,8 +47,9 @@ public class Task {
 	@JoinColumn(name="PROJ_CODE")
 	private Project project;
 	
-	@Column(name="TASK_AUTHOR")
-	private String author;
+	@ManyToOne
+	@JoinColumn(name="TASK_AUTHOR")
+	private ProjEmp author;
 	
 	@Column(name="TASK_STATUS")
 	private String status;		// Y, N

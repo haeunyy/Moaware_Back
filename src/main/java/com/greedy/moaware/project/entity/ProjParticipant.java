@@ -23,6 +23,6 @@ public class ProjParticipant {
 
 	@JoinColumn(name="PROJ_MEMBER", referencedColumnName="EMP_CODE", insertable=false, updatable=false)
 	@ManyToOne(fetch=FetchType.LAZY)
-	private AuthEmp emp;
+	private ProjEmp emp;
 
 }

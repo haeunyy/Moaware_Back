@@ -30,7 +30,7 @@ public class TaskDto {
 	private String type;
 	private String stage;
 	private ProjectDto project;
-	private String author;
+	private ProjEmpDto author;
 	private String status;
 	private Date modifyTime;
 	private Integer progress;

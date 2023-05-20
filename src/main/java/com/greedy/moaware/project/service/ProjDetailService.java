@@ -54,9 +54,7 @@ public class ProjDetailService {
 		Project proj = projResitory.findById(projCode)
 				.orElseThrow(()-> new IllegalArgumentException("해당 프로젝트가 존재하지 않습니다."));		
 		
-//		List<TaskDto> taskList = taskRepository.findByProjectAndStatus(proj.getProjCode(), "삭제", Sort.by("startDate").descending())
-//				.stream().map(task -> modelMapper.map(task, TaskDto.class)).collect(Collectors.toList());
-		List<TaskDto> taskList = taskRepository.findByProject(proj.getProjCode())
+		List<TaskDto> taskList = taskRepository.findByAll(proj.getProjCode()) 
 				.stream().map(task -> modelMapper.map(task, TaskDto.class)).collect(Collectors.toList());
 		
 		log.info("[ProjDetailService] taskList : {}",taskList);
