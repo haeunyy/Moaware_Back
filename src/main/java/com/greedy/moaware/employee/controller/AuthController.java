@@ -2,6 +2,7 @@ package com.greedy.moaware.employee.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +48,13 @@ public class AuthController {
 		authService.accountPwdFind(emp);
 		 
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK,"비밀번호 찾기 완료"));
+	}
+	
+	/* 메인 헤더 이름 */
+	@GetMapping("/name")
+	public ResponseEntity<ResponseDto> accountNameFind(@AuthenticationPrincipal AuthEmpDto emp){
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "이름을 찾았다", emp.getEmpName()));
 	}
 	
 	
