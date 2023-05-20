@@ -96,8 +96,6 @@ public class AuthService {
 		}
 		
 
-		//mailSender.sendMail(employee.getEmail());
-
 		String newPwd = randomPassword();
 		
 		employee.setEmpPwd(passwordEncoder.encode(newPwd));
