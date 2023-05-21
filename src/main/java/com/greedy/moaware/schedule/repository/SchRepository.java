@@ -1,5 +1,9 @@
 package com.greedy.moaware.schedule.repository;
 
-public interface SchRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.greedy.moaware.schedule.entity.Schedule;
+
+public interface SchRepository extends JpaRepository<Schedule, Integer> {
 
 }
