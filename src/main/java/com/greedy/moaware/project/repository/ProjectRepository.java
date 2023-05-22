@@ -33,7 +33,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 
 
 
-	Page<Project> findByEmployeeEmpCodeAndProjStatus(Pageable pageable, Integer emp, String projStatus);
+	
 
 
 
