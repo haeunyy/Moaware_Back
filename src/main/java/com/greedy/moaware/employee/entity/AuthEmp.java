@@ -43,11 +43,14 @@ public class AuthEmp {
 	
 	@Column(name="EMAIL")
 	private String email;
+	
+	@Column(name="RETIRE_YN") 
+	private String retireYn;
 
 	/*
 	 * @Column(name="PHONE") private String phone;
 	 * 
-	 * @Column(name="RETIRE_YN") private String retireYn;
+	 * 
 	 * 
 	 * @Column(name="HIRE_DATE") private Date hireDate;
 	 * 
