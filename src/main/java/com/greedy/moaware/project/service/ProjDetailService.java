@@ -65,7 +65,7 @@ public class ProjDetailService {
 	}
 
 
-	public List<TaskDto> selectTodoList(int projCode, String stage) {
+	public List<TaskDto> selectTaskStageList(int projCode, String stage) {
 
 		log.info("[ProjDetailService] selectTodoList start =============================================");
 

@@ -39,7 +39,7 @@ public class ProjectDetailController {
 	}
 	
 	/* 프로젝트의 업무 리스트 조회 */
-	@GetMapping("/task/{projCode}")
+	@GetMapping("/tasks/{projCode}")
 	public ResponseEntity<ResponseDto> selectTaskList(@PathVariable int projCode, @AuthenticationPrincipal AuthEmpDto emp){
 		log.info("principal : {} ", emp.getEmpCode());
 		return ResponseEntity
@@ -49,11 +49,13 @@ public class ProjectDetailController {
 	
 	/* 업무 리스트 조회 */
 	@GetMapping("/task/stage/{projCode}/{stage}")
-	public ResponseEntity<ResponseDto> selectTodoList(@PathVariable int projCode, @PathVariable("stage") String stage){
+	public ResponseEntity<ResponseDto> selectTodoList(@PathVariable int projCode, @PathVariable String stage){
+		
+		log.info("[ProjectDetailController] selectTodoList stage : {}", stage);
 
 		return ResponseEntity
 				.ok()
-				.body(new ResponseDto(HttpStatus.OK, "todo 리스트 조회 성공", projService.selectTodoList(projCode, stage)));
+				.body(new ResponseDto(HttpStatus.OK, "task stage 리스트 조회 성공", projService.selectTaskStageList(projCode, stage)));
 	}
 	
 	
