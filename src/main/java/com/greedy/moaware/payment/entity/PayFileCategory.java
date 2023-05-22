@@ -1,5 +1,6 @@
 package com.greedy.moaware.payment.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +37,7 @@ public class PayFileCategory {
     @JoinColumn(name = "PAY_CODE")
     private PayEmp emp;
     
-    @OneToOne
+    @OneToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="F_CATEGORY_CODE")
     private PayAttachedFile file;
     

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.greedy.moaware.payment.entity.PayEmp;
 import com.greedy.moaware.payment.entity.Payment;
 
 public interface PaymentRepository extends JpaRepository<Payment, Integer> {
@@ -13,5 +14,8 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 	
 	@EntityGraph(attributePaths= {"form"})
 	List<Payment> findAll();
+
+	List<Payment> findByEmp(PayEmp emp);
+
 
 }
