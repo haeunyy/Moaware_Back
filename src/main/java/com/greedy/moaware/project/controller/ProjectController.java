@@ -1,7 +1,5 @@
 package com.greedy.moaware.project.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.data.domain.Page;
@@ -20,8 +18,7 @@ import com.greedy.moaware.common.paging.Pagenation;
 import com.greedy.moaware.common.paging.PagingButtonInfo;
 import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
-import com.greedy.moaware.project.dto.CreateProjectEmpDto;
-import com.greedy.moaware.project.dto.ProjectDto;
+import com.greedy.moaware.project.dto.CreateProjectDto;
 import com.greedy.moaware.project.service.ProjectService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +40,7 @@ public class ProjectController {
 
 		log.info("[ProjectController] : selectMyProgressProj start =========================================================");
 
-		Page<ProjectDto> projDtoList = projectService.selectMyProgressProj(emp.getEmpCode(), page);
+		Page<CreateProjectDto> projDtoList = projectService.selectMyProgressProj(emp.getEmpCode(), page);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(projDtoList);
 
 		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
@@ -61,7 +58,7 @@ public class ProjectController {
 
 		log.info("[ProjectController] : selectMyDoneProj start =========================================================");
 
-		Page<ProjectDto> projDtoList = projectService.selectMyDoneProj(emp.getEmpCode(), page);
+		Page<CreateProjectDto> projDtoList = projectService.selectMyDoneProj(emp.getEmpCode(), page);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(projDtoList);
 
 		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
@@ -74,7 +71,7 @@ public class ProjectController {
 	}
 	//프로젝트 생성
 	@PostMapping("CreateProj")
-	public ResponseEntity<ResponseDto> createProj(@RequestBody CreateProjectEmpDto projectDto,
+	public ResponseEntity<ResponseDto> createProj(@RequestBody CreateProjectDto projectDto,
 			@AuthenticationPrincipal AuthEmpDto emp) {
 		
 		log.info("[projectDto.getStartDate()] projectDto.getStartDate(){}", projectDto.getStartDate());
