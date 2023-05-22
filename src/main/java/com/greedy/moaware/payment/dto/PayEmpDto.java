@@ -2,6 +2,8 @@ package com.greedy.moaware.payment.dto;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 
@@ -14,6 +16,7 @@ public class PayEmpDto {
 	private String empID;
 	private String email;
 	private String retireYn;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date hireDate;
 	private String extensionNum;
 	private String empSsi;

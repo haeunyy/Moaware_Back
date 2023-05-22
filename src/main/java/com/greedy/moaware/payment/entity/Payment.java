@@ -3,6 +3,7 @@ package com.greedy.moaware.payment.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,9 +35,9 @@ public class Payment {
 	@Column(name="DRAFT_DATE")
 	private Date draftDate;
 	
-//	@ManyToOne
-//	@JoinColumn(name="EMP_CODE")
-//	private PayEmp emp;
+	@ManyToOne
+	@JoinColumn(name="EMP_CODE")
+	private PayEmp emp;
 	
 	@Column(name="DRAFT_TITLE")
 	private String draftTitle;
@@ -49,8 +52,8 @@ public class Payment {
 	@JoinColumn(name="FORM_CODE")
 	private Form form;
 	
-	@OneToMany
-	@JoinColumn(name="PAY_CODE")
+	@OneToMany(cascade=CascadeType.PERSIST)
+	@JoinColumn(name="F_CATEGORY_CODE")
 	private List<PayFileCategory> payFileCategory;
 	
 

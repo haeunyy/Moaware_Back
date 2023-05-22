@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="PROJ_PARTICIPANT")
+@Table(name="PROJ_PRATICIPANT")
 public class ProjParticipant {
 	
 	@EmbeddedId
@@ -24,5 +24,9 @@ public class ProjParticipant {
 	@JoinColumn(name="PROJ_MEMBER", referencedColumnName="EMP_CODE", insertable=false, updatable=false)
 	@ManyToOne(fetch=FetchType.LAZY)
 	private ProjEmp emp;
-
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PROJ_CODE", referencedColumnName = "PROJ_CODE", insertable = false, updatable = false)
+	private CreateProject createProject;
+	
 }

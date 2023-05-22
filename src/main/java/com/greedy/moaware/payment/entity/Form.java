@@ -26,13 +26,7 @@ public class Form {
 	@Column(name="FORM_TITLE")
 	private String formTitle;
 	
-	@Column(name="FORM_PATH")
-	private String formPath;
-	
-	@Column(name="FORM_ORIGINAL_FILE_NAME")
-	private String formOriginalFileName;
-	
-	@Column(name="FORM_SAVED_FILE_NAME")
-	private String formSavedFileName;
+	@Column(name="FORM_STRING")
+	private String formString;
 
 }

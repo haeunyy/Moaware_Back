@@ -11,9 +11,12 @@ import org.springframework.stereotype.Service;
 
 import com.greedy.moaware.common.configuration.MailSenderConfig;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
+import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.dto.TokenDto;
 import com.greedy.moaware.employee.entity.AuthEmp;
+import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.repository.AuthEmpRepository;
+import com.greedy.moaware.employee.repository.EmpRepository;
 import com.greedy.moaware.exception.FindMyAccoutException;
 import com.greedy.moaware.exception.LoginFailedException;
 import com.greedy.moaware.jwt.TokenProvider;
@@ -25,24 +28,28 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthService {
 
 	private final AuthEmpRepository authEmpRepository;
-	private final ModelMapper medelMapper;
+	private final ModelMapper modelMapper;
 	private final TokenProvider tokenProvider;
 	private final PasswordEncoder passwordEncoder;
 	private final MailSenderConfig mailSender;
+	private final EmpRepository empRepository;
 	
 	public AuthService(AuthEmpRepository authEmpRepository
-			, ModelMapper medelMapper
+			, ModelMapper modelMapper
 			, TokenProvider tokenProvider
 			, PasswordEncoder passwordEncoder
 			, MailSenderConfig mailSender
+			, EmpRepository empRepository
 			) {
 		this.authEmpRepository = authEmpRepository;
-		this.medelMapper = medelMapper;
+		this.modelMapper = modelMapper;
 		this.passwordEncoder = passwordEncoder;
 		this.tokenProvider = tokenProvider;
 		this.mailSender = mailSender;
+		this.empRepository = empRepository;
 	}
 	
+	/* 로그인 */
 	public TokenDto login(AuthEmpDto empDto) {
 		
 		log.info("[AuthService] login start ======================================");
@@ -57,7 +64,7 @@ public class AuthService {
 			throw new LoginFailedException("아이디와 비밀번호를 다시 확인해주세요.");
 		}
 		/* 토큰 발급 */
-		TokenDto tokenDto = tokenProvider.generateTokenDto(medelMapper.map(emp, AuthEmpDto.class));
+		TokenDto tokenDto = tokenProvider.generateTokenDto(modelMapper.map(emp, AuthEmpDto.class));
 		
 		log.info("[AuthService] login end ======================================");
 		return tokenDto;
@@ -133,9 +140,28 @@ public class AuthService {
 		
 		return builder.toString();
 	}
+
 	
-	
-	
+	/* 회원 정보 수정 재로그인 */
+	public AuthEmpDto memberCheck(AuthEmpDto empDto, AuthEmpDto empPwd) {
+		
+		log.info("[AuthService] memberInfo start ======================================");
+		log.info("[AuthService] empPwd : {}",empDto);
+		log.info("[AuthService] empPwd : {}",empPwd);
+		
+		AuthEmp emp = authEmpRepository.findByEmpId(empDto.getEmpId())
+				.orElseThrow(()-> new LoginFailedException("비밀번호를 다시 확인해주세요."));
+
+		if(!passwordEncoder.matches(empPwd.getEmpPwd(), emp.getEmpPwd())) {
+			throw new LoginFailedException("비밀번호를 다시 확인해주세요.");
+		}
+		
+		log.info("[AuthService] memberInfo end ======================================");
+
+		return modelMapper.map(emp, AuthEmpDto.class);
+	}
+
+
 	
 	
 	

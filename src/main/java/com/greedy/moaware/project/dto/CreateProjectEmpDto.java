@@ -1,24 +1,17 @@
 package com.greedy.moaware.project.dto;
 
-import java.util.Date;
-
-import com.greedy.moaware.employee.dto.AuthEmpDto;
-import com.greedy.moaware.employee.entity.AuthEmp;
+import com.greedy.moaware.employee.dto.DeptDto;
+import com.greedy.moaware.employee.dto.JobDto;
 
 import lombok.Data;
 
 @Data
 public class CreateProjectEmpDto {
-	
-	private Integer projCode;
-	private String projName;
-	private String projContent;
-	private Date startDate;
-	private Date endDate;
-	private String projStatus;
-	private AuthEmpDto employee;
 
-		
-	
-	
+	private Integer empCode;
+	private String empName;
+	private String empID;
+	private String email;
+	private JobDto job;
+	private DeptDto dept;
 }

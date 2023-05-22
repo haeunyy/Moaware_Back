@@ -1,7 +1,5 @@
 package com.greedy.moaware.project.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.greedy.moaware.employee.entity.AuthEmp;
+import com.greedy.moaware.employee.entity.Dept;
+import com.greedy.moaware.employee.entity.Job;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,31 +19,29 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="PROJECT")
-@SequenceGenerator(name="PROJ_SEQ_GENERATOR", sequenceName="SEQ_PROJ_CODE", initialValue=1, allocationSize=1)
+@Table(name="EMPLOYEE")
+@SequenceGenerator(name="EMP_SEQ_GENERATOR", sequenceName="SEQ_EMP_CODE", initialValue=1, allocationSize=1)
 public class CreateProjectEmp {
-
+	
 	@Id
-	@Column(name="PROJ_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJ_SEQ_GENERATOR")
-	private Integer projCode;
+	@Column(name="EMP_CODE")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EMP_SEQ_GENERATOR")
+	private Integer empCode;
+
+	@Column(name="EMP_NAME")
+	private String empName;
+
+	@Column(name="EMP_ID")
+	private String empID;
 	
-	@Column(name="PROJ_NAME")
-	private String projName;
-	
-	@Column(name="PROJ_CONTENT")
-	private String projContent;
-	
-	@Column(name="PROJ_START_DATE")
-	private Date startDate;
-	
-	@Column(name="PROJ_END_DATE")
-	private Date endDate;
-	
-	@Column(name="PROJ_STATUS")
-	private String projStatus;		// 진행중 , 완료 , 삭제
+	@Column(name="EMAIL")
+	private String email;
 	
 	@ManyToOne
-	@JoinColumn(name="PROJ_AUTHOR")
-	private AuthEmp employee;
+	@JoinColumn(name="JOB_CODE")
+	private Job job;
+	
+	@ManyToOne
+	@JoinColumn(name="DEPT_CODE")
+	private Dept dept;
 }
