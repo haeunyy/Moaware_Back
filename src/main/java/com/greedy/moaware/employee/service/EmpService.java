@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.greedy.moaware.employee.dto.AttachedFileDto;
+import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.dto.FileCategoryDto;
 import com.greedy.moaware.employee.entity.Emp;
@@ -90,5 +91,23 @@ public class EmpService {
 		
 		return empDtoList;
 	}
+	
+	
+	/* 회원정보 수정 */
+	public AuthEmpDto infoModify(AuthEmpDto emp) {
+
+		log.info("[AuthService] infoModify start ======================================");
+		log.info("emp : {}", emp);
+		
+		
+		
+		
+		
+		log.info("[AuthService] infoModify end ======================================");
+		
+		return null;
+	}
+
+	
 
 }

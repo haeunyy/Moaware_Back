@@ -63,7 +63,24 @@ public class ProjDetailService {
 		
 		return taskList;
 	}
-	
+
+
+	public List<TaskDto> selectTaskStageList(int projCode, String stage) {
+
+		log.info("[ProjDetailService] selectTodoList start =============================================");
+
+		Project proj = projResitory.findById(projCode)
+				.orElseThrow(()-> new IllegalArgumentException("해당 프로젝트가 존재하지 않습니다."));		
+		
+		List<TaskDto> taskList = taskRepository.findByProjCodeLike(proj.getProjCode(), stage) 
+				.stream().map(task -> modelMapper.map(task, TaskDto.class)).collect(Collectors.toList());
+		
+		log.info("[ProjDetailService] taskList : {}",taskList);
+		
+		log.info("[ProjDetailService] selectTodoList end =============================================");
+		
+		return taskList;
+	}
 	
 
 
