@@ -91,12 +91,6 @@ public class EmpController {
 	}
 	
 	
-	/* 회원 정보 수정 */
-	@PutMapping("/modify")
-	public ResponseEntity<ResponseDto> infoModify(@RequestBody AuthEmpDto empDto){
-		
-		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "회원정보 수정 완료", empService.infoModify(empDto)));
-	}
-	
+
 
 }
