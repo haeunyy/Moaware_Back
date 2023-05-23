@@ -34,6 +34,7 @@ public class SchController {
 		log.info("[SchController] : mySchList start ===================================== ");
 		
 //		List<Schedule> schedules = schService.getScheduleListByUser(emp.getEmpCode());
+		
 		List<Schedule> schedules = schService.getScheduleListByUser(emp.getEmpCode());
 		
 		log.info("[SchController] : mySchList  end  ===================================== ");

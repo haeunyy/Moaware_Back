@@ -23,7 +23,7 @@ public class SchCategory {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SCH_CATEGORY_SEQ_GENERATOR")
 	private Integer schCategoryCode;
 	
-	@Column(name="SCH_CATEGORY_NAME")
-	private String schCategoryName;
+	@Column(name="SCH_NAME")
+	private String schName;
 	
 }

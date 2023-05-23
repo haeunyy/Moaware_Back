@@ -29,18 +29,16 @@ public class SchService {
 	}
 
 	public List<Schedule> getScheduleListByUser(Integer emp) {
+		
 		AuthEmp employee = authEmpRepository.findById(emp)
 				.orElseThrow(() -> new UserNotFoundException("User not found with ID: " + emp));
+		log.info(" getScheduleListByUser : emp {} " , emp);
+		//List<Schedule> schedules = schRepository.findAll();
+		Integer a = 6;
 		
-		List<Schedule> schedulesa = schRepository.findAll();
+		List<Schedule> schedules = schRepository.findBySchAuthor(a);
 		
-		SchPrarticipant sc = new SchPrarticipant();
-
-		sc.getSchPrarPk().setSchMember(employee.getEmpCode());
-		
-		List<Schedule> schedules = schRepository.findBySchAuthor(sc);
-		
-		log.info(" getScheduleListByUser : {} " , schedulesa);
+		log.info(" getScheduleListByUser : {} " , schedules);
 		
 		return null;
 	}

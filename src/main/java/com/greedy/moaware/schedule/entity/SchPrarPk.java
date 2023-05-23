@@ -16,5 +16,13 @@ public class SchPrarPk implements Serializable {
 	
 	@Column(name="EMP_CODE")
 	private Integer schMember;
+
+	public SchPrarPk(Integer schCode, Integer schMember) {
+		super();
+		this.schCode = schCode;
+		this.schMember = schMember;
+	}
+	
+	
 	
 }
