@@ -31,9 +31,6 @@ public class Schedule {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SCH_SEQ_GENERATOR")
 	private Integer schCode;
 	
-	@Column(name="SCH_TYPE")
-	private Integer schType;
-	
 	@Column(name="SCH_NAME")
 	private String schName;
 	
@@ -53,8 +50,8 @@ public class Schedule {
 	@JoinColumn(name="SCH_CODE")
 	private List<SchPrarticipant> schPrarticipant;
 	
-//	@ManyToOne
-//	@JoinColumn(name="SCH_CODE", insertable = false, updatable = false)
-//	private SchCategory schCategory;
+	@ManyToOne
+	@JoinColumn(name="SCH_TYPE")
+	private SchCategory schCategory;
 	
 }
