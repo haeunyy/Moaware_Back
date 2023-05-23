@@ -17,7 +17,7 @@ import com.greedy.moaware.schedule.entity.SchPrarticipant;
 import lombok.Data;
 
 @Data
-public class SchDto {
+public class ScheduleDto {
 
 	private Integer schCode;
 
