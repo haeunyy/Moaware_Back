@@ -4,9 +4,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class PayAttachedFileDto {
 	
 	private Integer fileCode;
@@ -16,5 +18,15 @@ public class PayAttachedFileDto {
 	
 	@JsonIgnore
 	private MultipartFile fileInfo;
+	
+	@JsonIgnore
+	private PayFileCategoryDto payFileCategory;
 
+	@Override
+	public String toString() {
+		return "PayAttachedFileDto [fileCode=" + fileCode + ", originalFileName=" + originalFileName + ", filePath="
+				+ filePath + ", savedFileName=" + savedFileName + ", fileInfo=" + fileInfo + "]";
+	}
+
+	
 }
