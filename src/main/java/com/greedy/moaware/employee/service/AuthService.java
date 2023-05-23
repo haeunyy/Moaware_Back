@@ -6,16 +6,17 @@ import java.util.Random;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.greedy.moaware.common.configuration.MailSenderConfig;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
-import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.dto.TokenDto;
 import com.greedy.moaware.employee.entity.AuthEmp;
-import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.repository.AuthEmpRepository;
+import com.greedy.moaware.employee.repository.AuthRepository;
 import com.greedy.moaware.employee.repository.EmpRepository;
 import com.greedy.moaware.exception.FindMyAccoutException;
 import com.greedy.moaware.exception.LoginFailedException;
@@ -162,7 +163,26 @@ public class AuthService {
 	}
 
 
-	
+	/* 회원정보 수정 */
+	@Transactional
+	public void infoModify(@AuthenticationPrincipal AuthEmpDto emp, @RequestBody AuthEmpDto putEmp) {
+
+		log.info("[AuthService] infoModify start ======================================");
+		log.info("emp : {}", emp);
+		log.info("newEmp : {}", putEmp);
+		
+		AuthEmpDto newEmp = modelMapper.map(authEmpRepository.findById(emp.getEmpCode()), AuthEmpDto.class);
+		
+		// 수정 정보 입력
+		newEmp.setEmpPwd(putEmp.getEmpPwd());
+		newEmp.setEmail(putEmp.getEmail());
+		newEmp.setPhone(putEmp.getPhone());
+		newEmp.setExtensionNum(putEmp.getExtensionNum());
+		
+		authEmpRepository.save(modelMapper.map(newEmp, AuthEmp.class));
+		
+		log.info("[AuthService] infoModify end ======================================");
+	}
 	
 	
 	

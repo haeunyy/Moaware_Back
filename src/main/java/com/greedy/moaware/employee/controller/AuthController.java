@@ -53,6 +53,7 @@ public class AuthController {
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK,"비밀번호 찾기 완료"));
 	}
 	
+	
 	/* 메인 헤더 이름 */
 	@GetMapping("/name")
 	public ResponseEntity<ResponseDto> accountNameFind(@AuthenticationPrincipal AuthEmpDto emp){
@@ -67,6 +68,17 @@ public class AuthController {
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "회원정보 비밀번호 확인 완료", authService.memberCheck(emp, empPwd)));
 	}
+	
+	
+	/* 회원 정보 수정 */
+	@PutMapping("/modify")
+	public ResponseEntity<ResponseDto> infoModify(@AuthenticationPrincipal AuthEmpDto emp, @RequestBody AuthEmpDto newEmp){
+		
+		authService.infoModify(emp, newEmp);
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "회원정보 수정 완료"));
+	}
+	
 	
 
 	

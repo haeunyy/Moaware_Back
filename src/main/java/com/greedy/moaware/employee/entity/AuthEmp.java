@@ -1,6 +1,5 @@
 package com.greedy.moaware.employee.entity;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -47,8 +46,17 @@ public class AuthEmp {
 	@Column(name="RETIRE_YN") 
 	private String retireYn;
 
+	@Column(name="PHONE") 
+	private String phone;
+	
+	@Column(name="EXTENSION_NUM") 
+	private String extensionNum;
+	
+	
+	
+	
 	/*
-	 * @Column(name="PHONE") private String phone;
+	 * 
 	 * 
 	 * 
 	 * 
