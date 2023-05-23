@@ -2,6 +2,8 @@ package com.greedy.moaware.schedule.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -18,6 +20,7 @@ public class SchCategory {
 
 	@Id
 	@Column(name="SCH_CATEGORY_CODE")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SCH_CATEGORY_SEQ_GENERATOR")
 	private Integer schCategoryCode;
 	
 	@Column(name="SCH_CATEGORY_NAME")

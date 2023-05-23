@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.greedy.moaware.schedule.dto.SchDto;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -53,6 +55,6 @@ public class Schedule {
 	
 	@ManyToOne
 	@JoinColumn(name="SCH_CATEGORY_CODE")
-	private SchCategory schCategory; 
+	private SchCategory schCategory;
 	
 }
