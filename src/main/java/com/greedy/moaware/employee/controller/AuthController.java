@@ -2,25 +2,29 @@ package com.greedy.moaware.employee.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
-import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.service.AuthService;
+import com.greedy.moaware.employee.service.EmpService;
 
 @RestController	
 @RequestMapping("/auth")
 public class AuthController {
 
 	private final AuthService authService;
+	private final EmpService empService;
 	
-	public AuthController(AuthService authService) {
+	public AuthController(AuthService authService, EmpService empService) {
 		this.authService = authService;
+		this.empService = empService;
 	}
 	
 	
@@ -49,6 +53,22 @@ public class AuthController {
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK,"비밀번호 찾기 완료"));
 	}
 	
+	/* 메인 헤더 이름 */
+	@GetMapping("/name")
+	public ResponseEntity<ResponseDto> accountNameFind(@AuthenticationPrincipal AuthEmpDto emp){
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "이름을 찾았다", emp.getEmpName()));
+	}
+	
+	
+	/* 회원 정보 수정 재로그인 */
+	@PostMapping("/infoCheck")
+	public ResponseEntity<ResponseDto> memberInfo(@AuthenticationPrincipal AuthEmpDto emp, @RequestBody AuthEmpDto empPwd){
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "회원정보 비밀번호 확인 완료", authService.memberCheck(emp, empPwd)));
+	}
+	
+
 	
 	
 }

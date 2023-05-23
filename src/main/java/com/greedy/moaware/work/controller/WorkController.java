@@ -5,12 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.data.domain.Page;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,8 @@ import com.greedy.moaware.common.paging.PagingButtonInfo;
 import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.work.dto.WorkDto;
+import com.greedy.moaware.work.dto.WorkPkDto;
+import com.greedy.moaware.work.dto.WorkTimeDto;
 import com.greedy.moaware.work.service.WorkService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,18 +46,20 @@ public class WorkController {
 			@PathVariable String workDate,
 			@RequestParam(name = "page", defaultValue = "1") int page) {
 		
-		log.info("[WorkController] : myWorkList Start =========================================================");
+		log.info("[WorkController] : @AuthenticationPrincipal emp : {} =========================================================",emp);
 		
 		log.info("[WorkController] : page : {}", page);
+		log.info("[WorkController] : page : {}", page);
 		
-		   // workDate를 Date 타입으로 파싱
+		   // workDate를 Date 타입으로 파싱 
+		//객체에 담아서 보낸게 아닌 문자열 그대로 보냈기 때문에 이렇게 파싱한다.
 	    Date parsedDate = null;
 	    try {
 	        parsedDate = new SimpleDateFormat("yyyy-MM").parse(workDate);
 	    } catch (ParseException e) {
-	        // 파싱 실패 시 예외 처리
+
 	        e.printStackTrace();
-	        // 적절한 예외 처리 로직 작성
+
 	    }
 		
 		
@@ -72,18 +78,27 @@ public class WorkController {
 				.body(new ResponseDto(HttpStatus.OK, "내 근태 현황 조회 완료", responseDtoWithPaging));
 	}
 	
-	
-	/* 사원 번호 + 월별 근태 현황 조회 */
+	/* 사원 번호 + 날짜로 조회 */
 	@GetMapping("/works/{empCode}/{workDate}")
 	public ResponseEntity<ResponseDto> selectWorkList(
 	        @PathVariable Integer empCode, 
-	        @PathVariable @DateTimeFormat(pattern = "yyyy-MM") Date workDate, 
+	        @PathVariable String workDate, 
 	        @RequestParam(name = "page", defaultValue = "1") int page) {
 		
 		log.info("[WorkController] : selectWorkList Start =========================================================");
 		log.info("[WorkController] : page : {}", page);
 		
-		Page<WorkDto> workDtoList = workService.selectWorkList(empCode, workDate, page);
+		//객체에 담아서 보낸게 아닌 문자열 그대로 보냈기 때문에 이렇게 파싱한다.
+	    Date parsedDate = null;
+	    try {
+	        parsedDate = new SimpleDateFormat("yyyy-MM").parse(workDate);
+	    } catch (ParseException e) {
+
+	        e.printStackTrace();
+
+	    }
+		
+		Page<WorkDto> workDtoList = workService.selectWorkList(empCode, parsedDate, page);
 		
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(workDtoList);
 		
@@ -97,6 +112,103 @@ public class WorkController {
 				.ok()
 				.body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));	
 		}
+	
+//	// 월 근무 전체 조회 
+//	@GetMapping("date/{workDate}")
+//	public ResponseEntity<ResponseDto> selectDateAllList(@PathVariable String workDate, @RequestParam(name = "page", defaultValue = "1") int page) {
+//		
+//		log.info("[WorkController] : selectDateAllList Start =========================================================");
+//		log.info("[WorkController] : page : {}", page);
+//		log.info("[WorkController] : workDate : {}", workDate);
+//		
+//		//객체에 담아서 보낸게 아닌 문자열 그대로 보냈기 때문에 이렇게 파싱한다.
+//	    Date parsedDate = null;
+//	    try {
+//	        parsedDate = new SimpleDateFormat("yyyy-MM").parse(workDate);
+//	    } catch (ParseException e) {
+//
+//	        e.printStackTrace();
+//
+//	    }
+//		
+//	    Page<WorkDto> workDtoList = workService.selectDateAllList(parsedDate, page);
+//	    
+//	    PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(workDtoList);
+//	    
+//	    ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+//	    responseDtoWithPaging.setPageInfo(pageInfo);
+//	    responseDtoWithPaging.setData(parsedDate);
+//	    
+//		return ResponseEntity
+//				.ok()
+//				.body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
+//	}
+	
+	
+	
+	/* 출근 버튼 클릭시 인서트 */
+	@PostMapping("start")
+	public ResponseEntity<ResponseDto> insertStart(@AuthenticationPrincipal AuthEmpDto emp,
+			@RequestBody String workDate) {
+		
+		//객체에 담아서 보낸게 아닌 문자열 그대로 보냈기 때문에 이렇게 파싱한다.
+	    Date parsedDate = null;
+	    try {
+	        parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(workDate);
+	    } catch (ParseException e) {
+	        e.printStackTrace();
+	    }
+		
+		WorkTimeDto workTimeDto = new WorkTimeDto();
+				
+		WorkPkDto workPkDto = new WorkPkDto();
+		workPkDto.setEmpCode(emp.getEmpCode());
+		workPkDto.setWorkDate(parsedDate);
+		
+		workTimeDto.setWorkPk(workPkDto);
+		
+		log.info("[WorkController] workTimeDto.workpK.workDate : {}", workTimeDto.getWorkPk().getWorkDate());
+		
+		workService.insertStart(workTimeDto);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "출근등록 완료"));
+	}
+	
+	@PutMapping("quit")
+	public ResponseEntity<ResponseDto> timeQuit(@AuthenticationPrincipal AuthEmpDto emp,
+			@RequestBody String quitTime) {
+		
+		
+	    Date parsedDate = null;
+	    try {
+	        parsedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(quitTime);
+	    } catch (ParseException e) {
+	        
+	        e.printStackTrace();
+	        
+	    }
+		
+		WorkTimeDto workTimeDto = new WorkTimeDto();
+				
+		WorkPkDto workPkDto = new WorkPkDto();
+		workPkDto.setEmpCode(emp.getEmpCode());
+		workTimeDto.setQuitTime(parsedDate);
+		workTimeDto.setWorkPk(workPkDto);
+		
+		log.info("[WorkController] workTimeDto.workpK.workDate : {}", workTimeDto.getWorkPk().getEmpCode());
+
+		
+		log.info("[WorkController] parsedDate : {}", parsedDate);
+		
+		workService.quitTime(workTimeDto);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "퇴근등록 완료"));
+	} 
+			
 	
 	/* 이름 + 날짜로 근무 조회 */
 //	@GetMapping("name/{empName}/{workDate}")

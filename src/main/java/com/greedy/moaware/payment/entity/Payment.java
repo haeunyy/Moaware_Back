@@ -1,14 +1,21 @@
 package com.greedy.moaware.payment.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +23,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="DEPARTMENT")
+@Table(name="PAYMENT")
 @SequenceGenerator(name="PAY_SEQ_GENERATOR", sequenceName="SEQ_PAY_CODE", initialValue=1, allocationSize=1)
 public class Payment {
 	
@@ -28,8 +35,9 @@ public class Payment {
 	@Column(name="DRAFT_DATE")
 	private Date draftDate;
 	
-	@Column(name="EMP_CODE")
-	private String emp;
+	@ManyToOne
+	@JoinColumn(name="EMP_CODE")
+	private PayEmp emp;
 	
 	@Column(name="DRAFT_TITLE")
 	private String draftTitle;
@@ -37,11 +45,16 @@ public class Payment {
 	@Column(name="DRAFT_CONTENT")
 	private String draftContent;
 	
-	@Column(name="FORM_CODE")
-	private Integer formCode;
-	
 	@Column(name="PAY_STATUS")
 	private String payStatus;
+	
+	@ManyToOne
+	@JoinColumn(name="FORM_CODE")
+	private Form form;
+	
+	@OneToMany(cascade=CascadeType.PERSIST)
+	@JoinColumn(name="F_CATEGORY_CODE")
+	private List<PayFileCategory> payFileCategory;
 	
 
 }

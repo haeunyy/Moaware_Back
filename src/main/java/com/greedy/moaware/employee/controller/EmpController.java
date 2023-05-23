@@ -5,13 +5,18 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.greedy.moaware.common.ResponseDto;
+import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.employee.dto.EmpDto;
+import com.greedy.moaware.employee.service.AuthService;
 import com.greedy.moaware.employee.service.EmpService;
 
 import com.greedy.moaware.common.paging.Pagenation;
@@ -27,7 +32,7 @@ public class EmpController {
 	
 	private EmpService empService;
 	
-	public EmpController(EmpService empService) {
+	public EmpController(EmpService empService, AuthService authService) {
 		this.empService = empService;
 	}
 	
@@ -59,6 +64,8 @@ public class EmpController {
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", empService.selectEmpDetail(empCode) ));
 	}	
+	
+	
     /* 이름으로 조회 */
     @GetMapping("/{name}")
     public ResponseEntity<ResponseDto> getEmployeeByName(@PathVariable String name,
@@ -74,5 +81,22 @@ public class EmpController {
     	
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회성공", responseDtoWithPaging));   
     }
+    
+	
+	/* 회원 정보 조회 */
+	@GetMapping("/member/info")
+	public ResponseEntity<ResponseDto> selectMemberInfo(@AuthenticationPrincipal AuthEmpDto empDto){
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "회원정보 조회 완료", empService.selectEmpDetail(empDto.getEmpCode())));
+	}
+	
+	
+	/* 회원 정보 수정 */
+	@PutMapping("/modify")
+	public ResponseEntity<ResponseDto> infoModify(@RequestBody AuthEmpDto empDto){
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "회원정보 수정 완료", empService.infoModify(empDto)));
+	}
+	
 
 }

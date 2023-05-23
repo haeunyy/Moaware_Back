@@ -1,5 +1,9 @@
 package com.greedy.moaware.work.service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
@@ -11,16 +15,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.greedy.moaware.employee.entity.AuthEmp;
-import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.repository.AuthEmpRepository;
 import com.greedy.moaware.employee.repository.EmpRepository;
+import com.greedy.moaware.exception.NotLogin;
 import com.greedy.moaware.exception.UserNotFoundException;
 import com.greedy.moaware.work.dto.WorkDto;
+import com.greedy.moaware.work.dto.WorkTimeDto;
 import com.greedy.moaware.work.entity.Work;
 import com.greedy.moaware.work.entity.WorkPk;
+import com.greedy.moaware.work.entity.WorkTime;
 import com.greedy.moaware.work.repository.WorkRepository;
+import com.greedy.moaware.work.repository.WorkTimeRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,15 +37,16 @@ import lombok.extern.slf4j.Slf4j;
 public class WorkService {
 	
 	private final WorkRepository workRepository;
-	private final EmpRepository empRepository;
+	private final WorkTimeRepository workTimeRepository;
 	private ModelMapper modelMapper;
 	private final AuthEmpRepository authEmpRepository;
 	
-	public WorkService(WorkRepository workRepository, ModelMapper modelMapper, EmpRepository empRepository, AuthEmpRepository authEmpRepository) {
+	public WorkService(WorkRepository workRepository, ModelMapper modelMapper, EmpRepository empRepository, AuthEmpRepository authEmpRepository,
+			WorkTimeRepository workTimeRepository) {
 		this.modelMapper = modelMapper;
 		this.workRepository = workRepository;
-		this.empRepository = empRepository;
 		this.authEmpRepository = authEmpRepository;
+		this.workTimeRepository = workTimeRepository;
 	}
 	
 	/* 자기 근태 현황 조회 */
@@ -81,8 +90,8 @@ public class WorkService {
 	/* 사원 번호 + 월별 근태 현황 조회 */
 	public Page<WorkDto> selectWorkList(Integer empCode, Date workDate, int page) {
 	    
-		Optional<Emp> empOptional = empRepository.findById(empCode);
-		Emp emp = empOptional.orElseThrow(() -> new UserNotFoundException("해당 사원이 없습니다."));
+		Optional<AuthEmp> empOptional = authEmpRepository.findById(empCode);
+		AuthEmp emp = empOptional.orElseThrow(() -> new UserNotFoundException("해당 사원이 없습니다."));
 		
 		
 		// 해당 월의 첫 번째 날짜를 구합니다.
@@ -107,6 +116,89 @@ public class WorkService {
 
 	    return workDtoList;
 	}
+	
+	/* 시간 insert */
+	@Transactional
+	public void insertStart(WorkTimeDto workTimeDto) {
+		
+		log.info("[WorkService] insertStart start ======================= ");	
+		log.info("[WorkService] workTimeDto : {}", workTimeDto);
+		log.info("[WorkService] empCode : {}", workTimeDto.getWorkPk().getEmpCode());
+		log.info("[WorkService] authEmpRepository : {}", authEmpRepository.findById(workTimeDto.getWorkPk().getEmpCode()));
+		log.info("[WorkService] workTimeDto.workpK.workDate : {}", workTimeDto.getWorkPk().getWorkDate());
+		//findById 는 반환 타입이 optional<T>로 지정 되어있다.
+
+		Optional<AuthEmp> authEmpOptional = authEmpRepository.findById(workTimeDto.getWorkPk().getEmpCode());
+			
+			//값이 있는지 확인하고 있으면 
+		if (authEmpOptional.isPresent()) {
+			AuthEmp authEmp = authEmpOptional.get();
+		    
+//		    Date workTime = workTimeDto.getWorkTime();
+		    
+		    LocalDateTime nowTime = LocalDateTime.now();
+		    
+		    // LocalDateTime을 ZonedDateTime으로 변환 (시간대 정보 추가)
+	        ZonedDateTime zonedDateTime = nowTime.atZone(ZoneId.systemDefault());
+
+	        // ZonedDateTime을 Instant로 변환
+	        Instant instant = zonedDateTime.toInstant();
+
+	        // Instant를 Date로 변환
+	        Date date = Date.from(instant);
+	        
+		    //현재 년도와 월과 일은 고정으로 하고 출근 시간만 고정
+		    LocalDateTime fixedStartTime = nowTime.withHour(9).withMinute(0).withSecond(0).withNano(0);
+		    LocalDateTime fixedAfterTime = nowTime.withHour(13).withMinute(0).withSecond(0).withNano(0);
+		    
+		    
+		    
+		    //이전 시간
+		    if(nowTime.isBefore(fixedStartTime)) {
+		    	workTimeDto.setWorkStatus("정상출근");
+		    
+		    	//이후 시간
+		    } else if (nowTime.isAfter(fixedAfterTime)) {
+		    	workTimeDto.setWorkStatus("지각");
+		    } else {
+		    	//사이 시간
+		    	workTimeDto.setWorkStatus("지각");
+		    }
+		    
+		    workTimeDto.setWorkTime(date);
+		    workTimeDto.setQuitTime(null);
+		    workTimeRepository.save(modelMapper.map(workTimeDto, WorkTime.class));
+		} else {
+			throw new NotLogin("로그인이 되어 있지 않습니다.");
+		}
+		
+		
+	}
+	
+	/* 퇴근 시간 입력*/
+	@Transactional
+	public void quitTime(WorkTimeDto workTimeDto) {
+		
+		Optional<AuthEmp> authEmpOptional = authEmpRepository.findById(workTimeDto.getWorkPk().getEmpCode());
+		
+		log.info("[WorkService] quitTimeauthEmpOptional : {}", authEmpRepository.findById(workTimeDto.getWorkPk().getEmpCode()));
+
+			if (authEmpOptional.isPresent()) {
+				WorkTime lastWork = workTimeRepository.findAllByWorkPkEmpCode(workTimeDto.getWorkPk().getEmpCode());
+				
+				if(lastWork != null) {
+					lastWork.setQuitTime(workTimeDto.getQuitTime());					
+				}
+				
+			}
+	
+	}
+
+//	public Page<WorkDto> selectDateAllList(Date parsedDate, int page) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
 	
 	/* 이름 + 날짜로 근무 조회 */
 
