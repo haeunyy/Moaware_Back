@@ -3,9 +3,9 @@ package com.greedy.moaware.schedule.dto;
 import lombok.Data;
 
 @Data
-public class SchPrarDto {
+public class SchPrarPkDto {
 
-	private Integer empCode;
+	private Integer schCode;
 	
 	private Integer schMember;
 	

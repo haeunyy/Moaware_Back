@@ -3,26 +3,13 @@ package com.greedy.moaware.schedule.dto;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import com.greedy.moaware.schedule.entity.SchCategory;
-import com.greedy.moaware.schedule.entity.SchPrarticipant;
-
 import lombok.Data;
 
 @Data
-public class SchDto {
+public class ScheduleDto {
 
 	private Integer schCode;
-
-	private Integer schType;
-
+	
 	private String schName;
 
 	private String schContent;
@@ -33,8 +20,8 @@ public class SchDto {
 
 	private Integer schAuthor;
 
-	private List<SchPrarticipant> schPrarticipant;
+	private List<SchPrarticipantDto> schPrarticipant;
 
-	private SchCategory schCategory;
+	private SchCategoryDto schType;
 	
 }
