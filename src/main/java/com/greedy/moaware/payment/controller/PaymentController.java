@@ -1,6 +1,5 @@
 package com.greedy.moaware.payment.controller;
 
-import java.util.Date;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
-import com.greedy.moaware.payment.dto.PaymentDto;
+import com.greedy.moaware.payment.dto.PayAttachedFileDto;
 import com.greedy.moaware.payment.service.PaymentService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,13 +34,12 @@ public class PaymentController {
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> PaymentList(@AuthenticationPrincipal AuthEmpDto payEmp){
 		
-		log.info("[PaymentController] test start ============================== ");
+		log.info("[PaymentController] PaymentList start ============================== ");
+
 		
-		log.info("[PaymentController] test start ============================== ");
+		log.info("[PaymentController] PaymentList end ============================== ");
 		
-		log.info("[PaymentController] test end ============================== ");
-		
-		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 전자결재 조회.", paymentService.payMentList(payEmp.getEmpCode()) ));
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 전자결재 조회.", paymentService.paymentList(payEmp.getEmpCode()) ));
 	}
 	
 	@GetMapping("/draft")
@@ -64,17 +62,14 @@ public class PaymentController {
 	
 	/* 기안문 저장*/
 	@PostMapping("/draft")
-	public ResponseEntity<ResponseDto> insertPayment(@AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PaymentDto payment){
+	public ResponseEntity<ResponseDto> insertPayment(@AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PayAttachedFileDto payAttachedFile){
 		
 		log.info("[PaymentController] insertPayment start ============================== ");
 		
-		Date draftDate = payment.getDraftDate();
-		payment.setDraftDate(draftDate);
-		
 		log.info("[PaymentController] insertPayment payEmp :  {}", payEmp);
-		log.info("[PaymentController] insertPayment payment :  {}", payment);
+		log.info("[PaymentController] insertPayment payAttachedFile :  {}", payAttachedFile);
 				
-		paymentService.insertPayment(payEmp.getEmpCode(), payment);
+		paymentService.insertPayment(payEmp.getEmpCode(), payAttachedFile);
 		
 		log.info("[PaymentController] insertPayment end ============================== ");
 		

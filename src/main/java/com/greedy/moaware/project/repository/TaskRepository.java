@@ -18,14 +18,25 @@ public interface TaskRepository extends JpaRepository<Task, Integer>{
 	@Query("SELECT t "
 			+ "FROM Task t "
 			+ "JOIN fetch t.project "
-			+ "WHERE t.project.projCode = :projCode")
+			+ "WHERE t.project.projCode = :projCode "
+			+ "ORDER BY t.startDate DESC")
 	List<Task> findByAll(@Param("projCode") Integer projCode);
 
-	@Query("SELECT t "
-			+ "FROM Task t "
-			+ "JOIN fetch t.project "
-			+ "WHERE t.project.projCode = :projCode "
-			+ "AND t.stage LIKE :string")
-	List<Task> findByProjCodeLike(Integer projCode, String string);
 
 }
+
+
+
+
+
+
+
+
+
+
+//	@Query("SELECT t "
+//			+ "FROM Task t "
+//			+ "JOIN fetch t.project "
+//			+ "WHERE t.project.projCode = :projCode "
+//			+ "AND t.stage LIKE :string")
+//	List<Task> findByProjCodeLike(Integer projCode, String string);

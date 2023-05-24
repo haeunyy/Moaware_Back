@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.greedy.moaware.employee.entity.AuthEmp;
 import com.greedy.moaware.employee.entity.Emp;
 
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class LeavePayment {
 	
 	@ManyToOne
 	@JoinColumn(name="EMP_CODE")
-	private Emp emplyoee;
+	private AuthEmp employee;
 	
 	@Column(name="L_PAY_STATUS")
 	private String lPayStatus;

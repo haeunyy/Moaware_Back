@@ -32,7 +32,10 @@ public class SchController {
 	public ResponseEntity<ResponseDto> mySchList(@AuthenticationPrincipal AuthEmpDto emp) {
 	
 		log.info("[SchController] : mySchList start ===================================== ");
-	
+		
+//		List<Schedule> schedules = schService.getScheduleListByUser(emp.getEmpCode());
+		
+		List<Schedule> schedules = schService.getScheduleListByUser(emp.getEmpCode());
 		
 		log.info("[SchController] : mySchList  end  ===================================== ");
 		

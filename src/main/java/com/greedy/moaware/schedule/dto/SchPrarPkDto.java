@@ -6,7 +6,6 @@ import lombok.Data;
 public class SchPrarPkDto {
 
 	private Integer schCode;
-	
 	private Integer schMember;
-	
+
 }

@@ -1,7 +1,7 @@
 package com.greedy.moaware.project.dto;
 
-import com.greedy.moaware.employee.dto.DeptDto;
 import com.greedy.moaware.employee.dto.JobDto;
+import com.greedy.moaware.employee.dto.PdeptDto;
 
 import lombok.Data;
 
@@ -13,5 +13,5 @@ public class CreateProjectEmpDto {
 	private String empID;
 	private String email;
 	private JobDto job;
-	private DeptDto dept;
+	private PdeptDto dept;
 }

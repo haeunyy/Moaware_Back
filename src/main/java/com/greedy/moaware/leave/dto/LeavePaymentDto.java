@@ -2,8 +2,11 @@ package com.greedy.moaware.leave.dto;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.greedy.moaware.employee.dto.EmpDto;
-import com.greedy.moaware.employee.entity.Emp;
+import com.greedy.moaware.employee.entity.Auth;
+import com.greedy.moaware.leave.entity.Leave;
 
 import lombok.Data;
 
@@ -16,9 +19,10 @@ public class LeavePaymentDto {
 	
 	private String leaveType;
 	
+//	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date leaveReqDate;
 	
-	private Emp emplyoee;
+	private Auth employee;
 	
 	private String lPayStatus;
 	
@@ -31,4 +35,6 @@ public class LeavePaymentDto {
 	private EmpDto payFinalEmp;
 	
 	private Date leaveEndDate;
+	
+	private Leave leave;
 }
