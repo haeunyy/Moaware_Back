@@ -52,6 +52,10 @@ public class Payment {
 	@JoinColumn(name="FORM_CODE")
 	private Form form;
 	
+	@OneToOne(cascade=CascadeType.PERSIST)
+	@JoinColumn(name="F_CATEGORY_CODE")
+	private PayFileCategory payFileCategory;
+	
 	@OneToOne(mappedBy = "pay")
 	private PayFileCategory payFileCategory;
 	
@@ -62,5 +66,4 @@ public class Payment {
 	@OneToMany(cascade=CascadeType.PERSIST)
     @JoinColumn(name="PAY_CODE", referencedColumnName="PAY_CODE")  
 	private List<RefenceMember> refenceMember;
-	
 }

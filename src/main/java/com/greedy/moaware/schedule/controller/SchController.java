@@ -38,11 +38,11 @@ public class SchController {
 		List<Schedule> schedules = schService.getScheduleListByUser(emp.getEmpCode());
 		
 		log.info("[SchController] : mySchList  end  ===================================== ");
-
+		
 		return ResponseEntity
 				.ok()
-				.body(new ResponseDto(HttpStatus.OK, "전체 캘린더 조회 완료"));
-	
+				.body(new ResponseDto(HttpStatus.OK, "전체 캘린더 조회 완료", schService.getScheduleListByUser(emp.getEmpCode())));
+
 	}
 	
 	@GetMapping("/hello")

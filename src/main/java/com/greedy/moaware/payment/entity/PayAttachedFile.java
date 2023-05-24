@@ -35,11 +35,9 @@ public class PayAttachedFile {
 	
 	@Column(name="SAVED_FILE_NAME")
 	private String savedFileName;
-	
+  
 	@OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="F_CATEGORY_CODE")
 	private PayFileCategory payFileCategory;
-	
-	
-
+  
 }

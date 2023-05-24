@@ -14,7 +14,7 @@ public class SchPrarPk implements Serializable {
 	@Column(name="SCH_CODE")
 	private Integer schCode;
 	
-	@Column(name="EMP_CODE")
+	@Column(name="SCH_MEMBER")
 	private Integer schMember;
 
 	public SchPrarPk(Integer schCode, Integer schMember) {

@@ -52,6 +52,6 @@ public class Schedule {
 	
 	@ManyToOne
 	@JoinColumn(name="SCH_TYPE")
-	private SchCategory schCategory;
+	private SchCategory schType;
 	
 }

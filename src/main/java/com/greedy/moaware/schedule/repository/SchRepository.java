@@ -9,7 +9,7 @@ import com.greedy.moaware.schedule.entity.Schedule;
 
 public interface SchRepository extends JpaRepository<Schedule, Integer> {
 
-
+	@EntityGraph(attributePaths= {"schType"})
 	List<Schedule> findBySchAuthor(Integer emp);
 
 }

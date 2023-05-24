@@ -40,10 +40,10 @@ public class CreateProject {
 	private String projContent;
 	
 	@Column(name="PROJ_START_DATE")
-	private Date startDate;
+	private Date projStartDate;
 	
 	@Column(name="PROJ_END_DATE")
-	private Date endDate;
+	private Date projEndDate;
 	
 	@Column(name="PROJ_STATUS")
 	private String projStatus;		// 진행중 , 완료 , 삭제
