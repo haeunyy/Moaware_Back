@@ -157,7 +157,15 @@ public class PaymentService {
 		
 		pay.setEmp(emp);
 		
+		PaymentDto pd = modelMapper.map(pay, PaymentDto.class);
+		
+		log.info("[PaymentService] insertPayment pay!! : {} ", pay);
+		log.info("[PaymentService] insertPayment payDto!! : {} ", pd);
+			
+		
 		paymentRepository.save(pay);
+		
+		
 		}
 		
 		
