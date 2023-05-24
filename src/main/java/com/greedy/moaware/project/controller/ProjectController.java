@@ -1,12 +1,14 @@
 package com.greedy.moaware.project.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,11 @@ import com.greedy.moaware.common.paging.Pagenation;
 import com.greedy.moaware.common.paging.PagingButtonInfo;
 import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
+import com.greedy.moaware.employee.dto.PdeptDto;
+import com.greedy.moaware.employee.service.PdeptService;
 import com.greedy.moaware.project.dto.CreateProjectDto;
+import com.greedy.moaware.project.dto.CreateProjectEmpDto;
+import com.greedy.moaware.project.dto.ProjParticipantDto;
 import com.greedy.moaware.project.service.ProjectService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +35,13 @@ import lombok.extern.slf4j.Slf4j;
 public class ProjectController {
 
 	private final ProjectService projectService;
+	private final PdeptService pdeptService;
 
-	public ProjectController(ProjectService projectService) {
+	public ProjectController(ProjectService projectService, PdeptService pdeptService) {
 		this.projectService = projectService;
+		this.pdeptService = pdeptService;
 	}
+	
 	//진행중 프로젝트 조회 
 	@GetMapping("progressProj")
 	public ResponseEntity<ResponseDto> selectMyProgressProj(@AuthenticationPrincipal AuthEmpDto emp,
@@ -70,24 +79,53 @@ public class ProjectController {
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "완료 프로젝트 조회 완료", responseDtoWithPaging));
 	}
 	//프로젝트 생성
-	@PostMapping("CreateProj")
+	@PostMapping("createProj")
 	public ResponseEntity<ResponseDto> createProj(@RequestBody CreateProjectDto projectDto,
 			@AuthenticationPrincipal AuthEmpDto emp) {
 		
-		log.info("[projectDto.getStartDate()] projectDto.getStartDate(){}", projectDto.getStartDate());
-		log.info("[projectDto.getStartDate()] projectDto.getStartDate().toString() {}", projectDto.getStartDate().toString());
+		 List<ProjParticipantDto> projMemberList = projectDto.getProjMember();
+		 log.info("[projectDto.getProjMember()] projectDto.getProjMember(){}", projectDto.getProjMember());
+		
+		log.info("프로젝트 생성 시작------------------------------------------------------------------");
+		log.info("[projectDto.getStartDate()] projectDto.getStartDate(){}", projectDto);
+		log.info("[projectDto.getStartDate()] projectDto.getStartDate(){}", projectDto.getProjStartDate());
+		log.info("[projectDto.getStartDate()] projectDto.getStartDate().toString() {}", projectDto.getProjStartDate().toString());
 		
 		projectDto.setEmployee(emp);
-		// 객체에 담아서 전송하는 것은 바로 파싱이 된다.
-	    Date parseStartDate = projectDto.getStartDate();
-	    Date parseEndDate = projectDto.getEndDate();
+//		// 객체에 담아서 전송하는 것은 바로 파싱이 된다.
+	    Date startDate = projectDto.getProjStartDate();
+	    Date endDate = projectDto.getProjEndDate();
 	    
-		
-	    projectDto.setStartDate(parseStartDate);
-	    projectDto.setEndDate(parseEndDate);
+	    projectDto.setProjStatus("진행중");
+	    projectDto.setProjStartDate(startDate);
+	    projectDto.setProjEndDate(endDate);
 	    projectDto.setEmployee(emp);
 		projectService.createPorj(projectDto);
 		
+		log.info("프로젝트 생성 끝------------------------------------------------------------------");
+		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "프로젝트 생성 성공"));
+	}
+	
+	@GetMapping("/dept")
+	public ResponseEntity<ResponseDto> findDeptList() {
+		
+		log.info("아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
+		log.info("deptService.findAllDept() {}", pdeptService.findAllDept());		
+		
+		List<PdeptDto> deptDtoList = pdeptService.findAllDept();
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "부서 조회 성공" ,deptDtoList ));
+	}
+	
+	@GetMapping("/emp/{deptCode}")
+	public ResponseEntity<ResponseDto> findDeptEmpList(@PathVariable(name="deptCode") Integer deptCode) {
+		
+		log.info("아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
+		log.info("deptService.findAllDeptMember() {}", pdeptService.findAllDeptMember(deptCode));		
+		
+		List<CreateProjectEmpDto> deptEmpDtoList = pdeptService.findAllDeptMember(deptCode);
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "부서에 속한 emp 조회 성공" , deptEmpDtoList));
 	}
 }

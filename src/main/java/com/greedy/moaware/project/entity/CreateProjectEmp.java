@@ -10,8 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.greedy.moaware.employee.entity.Dept;
 import com.greedy.moaware.employee.entity.Job;
+import com.greedy.moaware.employee.entity.Pdept;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -43,5 +43,5 @@ public class CreateProjectEmp {
 	
 	@ManyToOne
 	@JoinColumn(name="DEPT_CODE")
-	private Dept dept;
+	private Pdept dept;
 }
