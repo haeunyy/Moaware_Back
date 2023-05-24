@@ -10,3 +10,4 @@ public class SchPrarticipantDto {
 	private SchPrarPkDto schPrarPk;
 	
 }
+

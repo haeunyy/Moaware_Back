@@ -33,8 +33,9 @@ public class ScheduleDto {
 
 	private Integer schAuthor;
 
-	private List<SchPrarticipant> schPrarticipant;
+	private List<SchPrarticipantDto> schPrarticipant;
 
-	private SchCategory schCategory;
+	private SchCategoryDto schType;
+
 	
 }
