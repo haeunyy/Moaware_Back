@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
-import com.greedy.moaware.schedule.entity.Schedule;
+import com.greedy.moaware.schedule.dto.ScheduleDto;
 import com.greedy.moaware.schedule.service.SchService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class SchController {
 		
 //		List<Schedule> schedules = schService.getScheduleListByUser(emp.getEmpCode());
 		
-		List<Schedule> schedules = schService.getScheduleListByUser(emp.getEmpCode());
+		List<ScheduleDto> schedules = schService.getScheduleListByUser(emp.getEmpCode());
 		
 		log.info("[SchController] : mySchList  end  ===================================== ");
 		
