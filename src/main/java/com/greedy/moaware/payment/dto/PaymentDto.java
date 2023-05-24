@@ -1,10 +1,10 @@
 package com.greedy.moaware.payment.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,5 +23,19 @@ public class PaymentDto {
 	private String payStatus;
 	private PayEmpDto emp;
 	private PayFileCategoryDto payFileCategory;
+	private List<PaymentMemberDto> paymentMember;
+	private List<RefenceMemberDto> refenceMember;
+	
+	@Override
+	public String toString() {
+		return "PaymentDto [payCode=" + payCode + ", draftDate=" + draftDate + ", draftTitle=" + draftTitle
+				+ ", payStatus=" + payStatus + ", emp=" + emp + ", paymentMember="
+				+ paymentMember + "]";
+	}
+	
+	
+
+	
+	
 
 }
