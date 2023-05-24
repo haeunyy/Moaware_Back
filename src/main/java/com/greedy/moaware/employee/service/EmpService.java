@@ -9,7 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.greedy.moaware.employee.dto.AttachedFileDto;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
@@ -93,20 +95,7 @@ public class EmpService {
 	}
 	
 	
-	/* 회원정보 수정 */
-	public AuthEmpDto infoModify(AuthEmpDto emp) {
 
-		log.info("[AuthService] infoModify start ======================================");
-		log.info("emp : {}", emp);
-		
-		
-		
-		
-		
-		log.info("[AuthService] infoModify end ======================================");
-		
-		return null;
-	}
 
 	
 

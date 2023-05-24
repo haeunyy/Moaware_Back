@@ -33,15 +33,12 @@ public class PayFileCategory {
 	@Column(name="F_CATEGORY_TYPE")
 	private String fCategoryType;
 	
-    @OneToOne(fetch = FetchType.LAZY )
+    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
     @JoinColumn(name = "PAY_CODE")
-    private PayEmp emp;
+    private Payment pay;
     
-    @OneToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name="F_CATEGORY_CODE")
+    @OneToOne(mappedBy="payFileCategory")
     private PayAttachedFile file;
     
-    
-	
 	
 }

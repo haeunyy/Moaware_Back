@@ -53,5 +53,7 @@ public class Payment {
 	@JoinColumn(name="F_CATEGORY_CODE")
 	private PayFileCategory payFileCategory;
 	
-
+	@OneToOne(mappedBy = "pay")
+	private PayFileCategory payFileCategory;
+	
 }

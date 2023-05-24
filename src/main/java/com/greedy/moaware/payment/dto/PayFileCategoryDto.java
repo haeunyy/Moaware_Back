@@ -1,14 +1,31 @@
 package com.greedy.moaware.payment.dto;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Data
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class PayFileCategoryDto {
 	
 	private Integer fCategoryCode;
 	private String fCategoryName;
 	private String fCategoryType;
-    private PayEmpDto emp;
+	
+	@JsonIgnore
+	private PaymentDto pay;
     private PayAttachedFileDto file;
+    
+    
+    
+	@Override
+	public String toString() {
+		return "PayFileCategoryDto [fCategoryCode=" + fCategoryCode + ", fCategoryName=" + fCategoryName
+				+ ", fCategoryType=" + fCategoryType + ", file=" + file + "]";
+	}
 
+    
+    
+    
 }

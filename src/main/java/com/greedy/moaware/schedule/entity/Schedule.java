@@ -1,14 +1,20 @@
 package com.greedy.moaware.schedule.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.greedy.moaware.schedule.dto.ScheduleDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,9 +31,6 @@ public class Schedule {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SCH_SEQ_GENERATOR")
 	private Integer schCode;
 	
-	@Column(name="SCH_TYPE")
-	private Integer schType;
-	
 	@Column(name="SCH_NAME")
 	private String schName;
 	
@@ -42,5 +45,13 @@ public class Schedule {
 	
 	@Column(name="SCH_AUTHOR")
 	private Integer schAuthor;
+	
+	@OneToMany
+	@JoinColumn(name="SCH_CODE")
+	private List<SchPrarticipant> schPrarticipant;
+	
+	@ManyToOne
+	@JoinColumn(name="SCH_TYPE")
+	private SchCategory schCategory;
 	
 }

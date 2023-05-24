@@ -29,14 +29,6 @@ public class ProjectDetailController {
 	}
 	
 	
-	/* 프로젝트 상세 조회 */
-	@GetMapping("/detail/{projCode}")
-	public ResponseEntity<ResponseDto> selectProjDetail(@PathVariable int projCode){
-		
-		return ResponseEntity
-				.ok()
-				.body(new ResponseDto(HttpStatus.OK, "프로젝트 상세 조회 성공", projService.selectProjDetail(projCode)));
-	}
 	
 	/* 프로젝트의 업무 리스트 조회 */
 	@GetMapping("/tasks/{projCode}")
@@ -47,17 +39,53 @@ public class ProjectDetailController {
 				.body(new ResponseDto(HttpStatus.OK, "업무 리스트 조회 성공", projService.selectTaskList(projCode)));
 	}
 	
-	/* 업무 리스트 조회 */
-	@GetMapping("/task/stage/{projCode}/{stage}")
-	public ResponseEntity<ResponseDto> selectTodoList(@PathVariable int projCode, @PathVariable String stage){
-		
-		log.info("[ProjectDetailController] selectTodoList stage : {}", stage);
-
-		return ResponseEntity
-				.ok()
-				.body(new ResponseDto(HttpStatus.OK, "task stage 리스트 조회 성공", projService.selectTaskStageList(projCode, stage)));
-	}
-	
 	
 }
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//	/* 업무 리스트 조회 */
+//	@GetMapping("/task/stage/{projCode}/{stage}")
+//	public ResponseEntity<ResponseDto> selectTodoList(@PathVariable int projCode, @PathVariable String stage){
+//		
+//		log.info("[ProjectDetailController] selectTodoList stage : {}", stage);
+//
+//		return ResponseEntity
+//				.ok()
+//				.body(new ResponseDto(HttpStatus.OK, "task stage 리스트 조회 성공", projService.selectTaskStageList(projCode, stage)));
+//	}
+//	
+
+
+//	/* 프로젝트 상세 조회 */
+//	@GetMapping("/detail/{projCode}")
+//	public ResponseEntity<ResponseDto> selectProjDetail(@PathVariable int projCode){
+//		
+//		return ResponseEntity
+//				.ok()
+//				.body(new ResponseDto(HttpStatus.OK, "프로젝트 상세 조회 성공", projService.selectProjDetail(projCode)));
+//	}
+//	
