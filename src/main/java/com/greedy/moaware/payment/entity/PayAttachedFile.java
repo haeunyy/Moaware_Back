@@ -31,7 +31,5 @@ public class PayAttachedFile {
 	
 	@Column(name="SAVED_FILE_NAME")
 	private String savedFileName;
-	
-	
 
 }
