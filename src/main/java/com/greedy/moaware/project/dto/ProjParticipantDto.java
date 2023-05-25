@@ -7,4 +7,9 @@ public class ProjParticipantDto {
 	
 	private ProjParticipantPkDto projMember;
 	private ProjEmpDto emp;
+	
+    public Integer getProjMember() {
+        return projMember.getProjMember();
+    }
+
 }
