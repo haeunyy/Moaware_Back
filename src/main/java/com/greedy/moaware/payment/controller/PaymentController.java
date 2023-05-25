@@ -30,7 +30,7 @@ public class PaymentController {
 	}	
 	
 	
-	/* 결재 문서 전체 조회 */
+	/* 기안자 기안문 전체 조회 */
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> PaymentList(@AuthenticationPrincipal AuthEmpDto payEmp){
 		
@@ -42,6 +42,20 @@ public class PaymentController {
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 전자결재 조회.", paymentService.paymentList(payEmp.getEmpCode()) ));
 	}
 	
+	/* 기안자 기안문 전체 조회 */
+	@GetMapping("/memberList")
+	public ResponseEntity<ResponseDto> PaymentMemberList(@AuthenticationPrincipal AuthEmpDto payEmp){
+		
+		log.info("[PaymentController] PaymentList start ============================== ");
+
+		
+		log.info("[PaymentController] PaymentList end ============================== ");
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 전자결재 조회.", paymentService.paymentMemberList(payEmp.getEmpCode()) ));
+	}
+	
+	
+	/* 기안서 양식 조회*/
 	@GetMapping("/draft")
 	public ResponseEntity<ResponseDto> FormSelect(@AuthenticationPrincipal AuthEmpDto payEmp){
 		
@@ -60,7 +74,7 @@ public class PaymentController {
 	}
 	
 	
-	/* 기안문 저장*/
+	/* 기안서 저장*/
 	@PostMapping("/draft")
 	public ResponseEntity<ResponseDto> insertPayment(@AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PayAttachedFileDto payAttachedFile){
 		

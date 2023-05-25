@@ -21,8 +21,6 @@ public class ScheduleDto {
 
 	private Integer schCode;
 
-	private Integer schType;
-
 	private String schName;
 
 	private String schContent;
