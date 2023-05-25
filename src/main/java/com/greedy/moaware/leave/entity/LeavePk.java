@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Embeddable
 @Data
-public class LeavePK implements Serializable{
+public class LeavePk implements Serializable {
 	
 	@Column(name="EMP_CODE")
 	private Integer empCode;
