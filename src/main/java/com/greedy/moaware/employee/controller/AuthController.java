@@ -4,14 +4,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.greedy.moaware.common.ResponseDto;
+import com.greedy.moaware.employee.dto.AttachedFileDto;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
+import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.service.AuthService;
 import com.greedy.moaware.employee.service.EmpService;
 
@@ -71,10 +76,15 @@ public class AuthController {
 	
 	
 	/* 회원 정보 수정 */
-	@PutMapping("/modify")
-	public ResponseEntity<ResponseDto> infoModify(@AuthenticationPrincipal AuthEmpDto emp, @RequestBody AuthEmpDto newEmp){
+	@PostMapping("/modify"
+//			, consumes = "multipart/form-data"
+			)
+	public ResponseEntity<ResponseDto> memberModify(@AuthenticationPrincipal AuthEmpDto emp,
+//	        @RequestPart("file") MultipartFile file,
+//	        @RequestPart("fileDto") AttachedFileDto fileDto
+			@ModelAttribute AttachedFileDto fileDto) {
 		
-		authService.infoModify(emp, newEmp);
+		authService.memberModify(emp, fileDto);
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "회원정보 수정 완료"));
 	}

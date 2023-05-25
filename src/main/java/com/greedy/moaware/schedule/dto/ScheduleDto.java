@@ -9,7 +9,7 @@ import lombok.Data;
 public class ScheduleDto {
 
 	private Integer schCode;
-	
+
 	private String schName;
 
 	private String schContent;

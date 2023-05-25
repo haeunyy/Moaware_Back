@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -51,10 +50,6 @@ public class Payment {
 	@ManyToOne
 	@JoinColumn(name="FORM_CODE")
 	private Form form;
-	
-	@OneToOne(cascade=CascadeType.PERSIST)
-	@JoinColumn(name="F_CATEGORY_CODE")
-	private PayFileCategory payFileCategory;
 	
 	@OneToOne(mappedBy = "pay")
 	private PayFileCategory payFileCategory;

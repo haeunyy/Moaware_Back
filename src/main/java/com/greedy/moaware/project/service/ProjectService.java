@@ -1,7 +1,11 @@
 package com.greedy.moaware.project.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -20,7 +24,6 @@ import com.greedy.moaware.project.dto.ProjEmpDto;
 import com.greedy.moaware.project.dto.ProjParticipantDto;
 import com.greedy.moaware.project.dto.ProjParticipantPkDto;
 import com.greedy.moaware.project.entity.CreateProject;
-import com.greedy.moaware.project.entity.ProjEmp;
 import com.greedy.moaware.project.entity.ProjParticipant;
 import com.greedy.moaware.project.entity.ProjParticipantPk;
 import com.greedy.moaware.project.repository.CreateProjectRepository;
@@ -38,15 +41,18 @@ public class ProjectService {
 	private final AuthEmpRepository authEmpRepository;
 	private final CreateProjectRepository createProjectRepository;
 	private final ProjectparticipantRepository projectparticipantRepository;
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	public ProjectService(ProjectRepository projResitory, ModelMapper modelMapper, AuthEmpRepository authEmpRepository,
-			CreateProjectRepository createProjectRepository,
+			CreateProjectRepository createProjectRepository, EntityManager entityManager,
 			ProjectparticipantRepository projectparticipantRepository) {
 		this.modelMapper = modelMapper;
 		this.projResitory = projResitory;
 		this.authEmpRepository = authEmpRepository;
 		this.createProjectRepository = createProjectRepository;
 		this.projectparticipantRepository = projectparticipantRepository;
+		this.entityManager = entityManager;
 	}
 
 	public Page<CreateProjectDto> selectMyProgressProj(Integer empCode, int page) {
@@ -117,40 +123,41 @@ public class ProjectService {
 	}
 
 	@Transactional
-	public void createPorj(CreateProjectDto projectDto) {
-	
+	public void createPorj(CreateProjectDto projectDto, AuthEmpDto emp) {
+
 		log.info("프로젝트 생성 서비스 시작------------------------------------------------------------------");
-		
-//		createProjectRepository.save(modelMapper.map(projectDto, CreateProject.class));
-		CreateProject project = modelMapper.map(projectDto, CreateProject.class);
-		project = createProjectRepository.save(project);
-		log.info("[project.getProjCode()] 아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ" , project.getProjCode());	
-	   
-//		List<ProjParticipantDto> projMemberList = projectDto.getProjMember();
-//		
-//		for (ProjParticipantDto participantDto : projMemberList) {
-//		    ProjParticipant processedParticipant = new ProjParticipant();
-//
-//		    ProjParticipantPkDto projParticipantPkDto = participantDto.getProjMember();
-//		    ProjParticipantPk projParticipantPk = new ProjParticipantPk();
-//		    
-//		    // projMember 값 설정
-//		    projParticipantPk.setProjMember(projParticipantPkDto.getProjMember());
-//		    
-//		    // 프로젝트 번호 설정
-//		    projParticipantPk.setProjCode(project.getProjCode());
-//		    
-//		    processedParticipant.setProjCode(projParticipantPk);
-//
-//		    // 참여자 객체 저장
-//		    projectparticipantRepository.save(processedParticipant);
-//		
-//		}
-		
-	log.info("[ProjectService] createPorj end ===========================");	
-		
-		
-		
+
+		List<ProjParticipantDto> projMemberDtoList = projectDto.getProjMember();
+		List<ProjParticipant> projMemberList = new ArrayList<>();
+
+		for (ProjParticipantDto projParticipantDto : projMemberDtoList) {
+			ProjParticipant projParticipant = new ProjParticipant();
+			ProjParticipantPk projParticipantPk = new ProjParticipantPk();
+			projParticipantPk.setProjCode(0);
+			projParticipantPk.setProjMember(projParticipantDto.getProjMember());
+			projParticipant.setProjCode(projParticipantPk);
+
+			projMemberList.add(projParticipant);
+		}
+
+		// CreateProject 엔티티에 projMemberList 설정
+		CreateProject createProject = modelMapper.map(projectDto, CreateProject.class);
+		createProject.setProjMember(projMemberList);
+
+		// createProject 저장
+		CreateProject savedProject = createProjectRepository.save(createProject);
+
+		// 내 번호만 따로 저장
+		ProjParticipant myParticipant = new ProjParticipant();
+		ProjParticipantPk myParticipantPk = new ProjParticipantPk();
+		myParticipantPk.setProjCode(savedProject.getProjCode());
+		myParticipantPk.setProjMember(emp.getEmpCode());
+		myParticipant.setProjCode(myParticipantPk);
+
+		projectparticipantRepository.save(myParticipant);
+
+		log.info("[ProjectService] createPorj end ===========================");
+
 	}
 
 }
