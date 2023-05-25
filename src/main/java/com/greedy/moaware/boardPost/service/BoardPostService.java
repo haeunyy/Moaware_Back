@@ -76,7 +76,7 @@ public class BoardPostService {
 		return boardPostDtoList;
 	}
 
-	/* 3. 상품 목록 조회 - 게시`판`코드 기준, 페이징, 조회 불가 게시물 제외(사용자) */
+	/* 3. 게시글 목록 조회 - 게시`판`코드 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 	public Page<BoardPostDto> selectBoardPostListByBoard(int page, Long boardCode) {
 
 		log.info("[BoardPostService] selectBoardPostListByBoard start ============================== ");

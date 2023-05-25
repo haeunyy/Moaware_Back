@@ -2,7 +2,7 @@ package com.greedy.moaware.boardPost.dto;
 
 
 
-import java.util.Date;
+import java.sql.Date;
 
 import com.greedy.moaware.boardPost.entity.Board;
 import com.greedy.moaware.employee.dto.EmpDto;
