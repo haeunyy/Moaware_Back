@@ -1,39 +1,54 @@
 package com.greedy.moaware.employee.service;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
+import javax.mail.Multipart;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.greedy.moaware.common.configuration.MailSenderConfig;
+import com.greedy.moaware.employee.dto.AttachedFileDto;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
+import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.dto.TokenDto;
+import com.greedy.moaware.employee.entity.AttachedFile;
 import com.greedy.moaware.employee.entity.AuthEmp;
+import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.repository.AuthEmpRepository;
-import com.greedy.moaware.employee.repository.AuthRepository;
 import com.greedy.moaware.employee.repository.EmpRepository;
+import com.greedy.moaware.employee.repository.FileRepository;
 import com.greedy.moaware.exception.FindMyAccoutException;
 import com.greedy.moaware.exception.LoginFailedException;
 import com.greedy.moaware.jwt.TokenProvider;
+import com.greedy.moaware.util.FileUploadUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class AuthService {
+	
+	@Value("${image.image-url}")
+	private String IMAGE_URL;
+	@Value("${image.image-dir}")
+	private String IMAGE_DIR;
+
 
 	private final AuthEmpRepository authEmpRepository;
+	private final EmpRepository empRepository;
 	private final ModelMapper modelMapper;
 	private final TokenProvider tokenProvider;
 	private final PasswordEncoder passwordEncoder;
 	private final MailSenderConfig mailSender;
-	private final EmpRepository empRepository;
+	private final FileRepository fileRepository;
 	
 	public AuthService(AuthEmpRepository authEmpRepository
 			, ModelMapper modelMapper
@@ -41,6 +56,7 @@ public class AuthService {
 			, PasswordEncoder passwordEncoder
 			, MailSenderConfig mailSender
 			, EmpRepository empRepository
+			, FileRepository fileRepository
 			) {
 		this.authEmpRepository = authEmpRepository;
 		this.modelMapper = modelMapper;
@@ -48,6 +64,7 @@ public class AuthService {
 		this.tokenProvider = tokenProvider;
 		this.mailSender = mailSender;
 		this.empRepository = empRepository;
+		this.fileRepository = fileRepository;
 	}
 	
 	/* 로그인 */
@@ -165,23 +182,51 @@ public class AuthService {
 
 	/* 회원정보 수정 */
 	@Transactional
-	public void infoModify(@AuthenticationPrincipal AuthEmpDto emp, @RequestBody AuthEmpDto putEmp) {
+	public void memberModify(AuthEmpDto emp, AttachedFileDto fileDto) {
 
-		log.info("[AuthService] infoModify start ======================================");
+		log.info("[AuthService] memberModify start ======================================");
 		log.info("emp : {}", emp);
-		log.info("newEmp : {}", putEmp);
+		log.info("fileDto : {}", fileDto);
 		
-		AuthEmpDto newEmp = modelMapper.map(authEmpRepository.findById(emp.getEmpCode()), AuthEmpDto.class);
+		Emp originalEmp = empRepository.findById(emp.getEmpCode())
+				.orElseThrow(()-> new IllegalArgumentException("오류가 발생하였습니다. 다시 시도 해주세요."));
 		
-		// 수정 정보 입력
-		newEmp.setEmpPwd(putEmp.getEmpPwd());
-		newEmp.setEmail(putEmp.getEmail());
-		newEmp.setPhone(putEmp.getPhone());
-		newEmp.setExtensionNum(putEmp.getExtensionNum());
+		// 프로필 이미지 업로드 
+		try {
+			
+			if( fileDto.getFileInfo() != null ) {
+				
+				String imgRandomName = UUID.randomUUID().toString().replace("-","");
+				String uploadDir = IMAGE_DIR+"/profile/";
+				AttachedFile originalFile = originalEmp.getFileCategory().getFile();
+				
+				String replaceImgName = FileUploadUtils.saveFile( uploadDir, imgRandomName, fileDto.getFileInfo() );
+				
+				FileUploadUtils.deleteFile(uploadDir, originalFile.getSavedFileName());
+				
+				originalFile.setFilePath("/profile/"+replaceImgName);
+				originalFile.setSavedFileName(replaceImgName);
+				originalFile.setOriginalFileName(fileDto.getFileInfo().getOriginalFilename());
+				
+				
+				
+				fileRepository.save(originalFile);
+			}
+			
+			EmpDto fileEmp = fileDto.getFileCategory().getEmp();
+			
+			originalEmp.update(
+					  passwordEncoder.encode(fileEmp.getEmpPwd())
+					, fileEmp.getEmail()
+					, fileEmp.getPhone()
+					, fileEmp.getExtensionNum()
+				);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 		
-		authEmpRepository.save(modelMapper.map(newEmp, AuthEmp.class));
-		
-		log.info("[AuthService] infoModify end ======================================");
+		log.info("[AuthService] memberModify end ======================================");
 	}
 	
 	
