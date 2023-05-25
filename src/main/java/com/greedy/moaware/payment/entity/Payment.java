@@ -52,9 +52,7 @@ public class Payment {
 	@JoinColumn(name="FORM_CODE")
 	private Form form;
 	
-	@OneToOne(cascade=CascadeType.PERSIST)
-	@JoinColumn(name="F_CATEGORY_CODE")
-	private PayFileCategory payFileCategory;
+	
 	
 	@OneToOne(mappedBy = "pay")
 	private PayFileCategory payFileCategory;

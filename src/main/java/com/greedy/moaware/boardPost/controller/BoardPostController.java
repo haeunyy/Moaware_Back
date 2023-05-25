@@ -64,7 +64,7 @@ public ResponseEntity<ResponseDto> selectBoardPostList(@RequestParam(name="page"
 	}
 	/* 2. 게시글 목록 조회 - 페이징, 조회 불가 게시글 포함(관리자) */
 	@GetMapping("/boardPosts-management")
-public ResponseEntity<ResponseDto> selectBoardPostListForAdmin(@RequestParam(name="page", defaultValue="1") int page) {
+	public ResponseEntity<ResponseDto> selectBoardPostListForAdmin(@RequestParam(name="page", defaultValue="1") int page) {
 		
 		log.info("[BoardPostController] : selectBoardPostListForAdmin start ==================================== ");
 		log.info("[BoardPostController] : page : {}", page);
@@ -135,7 +135,7 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 			return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 			}
 
-		/* 5. 게시물 상세 조회 - postCode로 상품 1개 조회, 조회 불가 게시물 제외(사용자) */
+		/* 5. 게시물 상세 조회 - postCode로 게시물 1개 조회, 조회 불가 게시물 제외(사용자) */
 		@GetMapping("boardPosts/{postCode}") //특정 고유값을 pk 통해 조회 할 경우 path v.
 			public ResponseEntity<ResponseDto> selectBoardPostDetail(@PathVariable Long postCode) {
 	
@@ -144,7 +144,7 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 			.body(new ResponseDto(HttpStatus.OK, "조회 성공", boardPostService.selectBoardPost(postCode)));
 		} // 가공하는 처리 없이 넣는 PROCESS
 
-		/* 6. 게시물 상세 조회 - postCode로 상품 1개 조회, 조회 불가 게시물 포함(관리자) => findById 메소드 사용 */
+		/* 6. 게시물 상세 조회 - postCode로 게시물 1개 조회, 조회 불가 게시물 포함(관리자) => findById 메소드 사용 */
 		@GetMapping("boardPosts-management/{postCode}") //url 매핑 주소 가 다르면 문제-> 중복 없게 수정
 		public ResponseEntity<ResponseDto> selectBoardPostDetailForAdmin(@PathVariable Long postCode) {
 			
@@ -153,7 +153,7 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 					.body(new ResponseDto(HttpStatus.OK, "조회 성공", boardPostService.selectBoardPostForAdmin(postCode)));
 		}
 		
-		/* 7. 상품 등록 */
+		/* 7.게시물 등록 */
 		@PostMapping("/boardPosts")
 		public ResponseEntity<ResponseDto> insertBoardPost(@ModelAttribute BoardPostDto boardPostDto) {
 			//키&밸류 값의 형태를 띄어 url 인코디드 방식으로 전달->포스트맨에서는 바디-> 폼데이터 검색
