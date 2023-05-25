@@ -61,11 +61,11 @@ public class PaymentController {
 		
 		ResponseDtoWithPaging responseDtoPage = new ResponseDtoWithPaging();
 		responseDtoPage.setPageInfo(pageInfo);
-		responseDtoPage.setData(paymentDtoList.getContent());
+		responseDtoPage.setData(paymentDtoList);
 		
 		log.info("[PaymentController] PaymentList end ============================== ");
 		
-		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "진행중 전자결재 조회.", responseDtoPage ));
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 진행 문서 조회.", responseDtoPage ));
 	}
 	
 	
@@ -125,8 +125,79 @@ public class PaymentController {
 		
 		log.info("[PaymentController] PaymentList end ============================== ");
 		
-		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 전자결재 조회.", responseDtoPage ));
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 대기 문서 조회.", responseDtoPage ));
 	}
+	
+	/* 결재 완료 문서 전체 조회 */
+	@GetMapping("/complete")
+	public ResponseEntity<ResponseDto> PaymentCompleteList(@AuthenticationPrincipal AuthEmpDto payEmp, @RequestParam(name="page", defaultValue="1") int page){
+		
+		log.info("[PaymentController] PaymentCompleteList start ============================== ");
+		
+		Page<PaymentDto> paymentDtoList = paymentService.PaymentCompleteList(payEmp.getEmpCode(), page);
+		
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(paymentDtoList);
+		
+		ResponseDtoWithPaging responseDtoPage = new ResponseDtoWithPaging();
+		responseDtoPage.setPageInfo(pageInfo);
+		responseDtoPage.setData(paymentDtoList);
+		
+		long totalElements = paymentDtoList.getTotalElements();
+		log.info("[PaymentController] PaymentCompleteList 총 요소 수 : {} ", totalElements);
+	
+		
+		log.info("[PaymentController] PaymentCompleteList end ============================== ");
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 완료 문서 조회.", responseDtoPage ));
+	}
+	
+	/* 결재 반려 문서 전체 조회 */
+	@GetMapping("/refuse")
+	public ResponseEntity<ResponseDto> PaymentRefuseList(@AuthenticationPrincipal AuthEmpDto payEmp, @RequestParam(name="page", defaultValue="1") int page){
+		
+		log.info("[PaymentController] PaymentCompleteList start ============================== ");
+		
+		Page<PaymentDto> paymentDtoList = paymentService.PaymentRefuseList(payEmp.getEmpCode(), page);
+		
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(paymentDtoList);
+		
+		ResponseDtoWithPaging responseDtoPage = new ResponseDtoWithPaging();
+		responseDtoPage.setPageInfo(pageInfo);
+		responseDtoPage.setData(paymentDtoList);
+		
+		long totalElements = paymentDtoList.getTotalElements();
+		log.info("[PaymentController] PaymentCompleteList 총 요소 수 : {} ", totalElements);
+	
+		
+		log.info("[PaymentController] PaymentCompleteList end ============================== ");
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 반려 문서 조회.", responseDtoPage ));
+	}
+	
+	
+	/* 결재 임시 저장 문서 전체 조회 */
+	@GetMapping("/storage")
+	public ResponseEntity<ResponseDto> PaymentStorageList(@AuthenticationPrincipal AuthEmpDto payEmp, @RequestParam(name="page", defaultValue="1") int page){
+		
+		log.info("[PaymentController] PaymentStorageList start ============================== ");
+		
+		Page<PaymentDto> paymentDtoList = paymentService.PaymentStorageList(payEmp.getEmpCode(), page);
+		
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(paymentDtoList);
+		
+		ResponseDtoWithPaging responseDtoPage = new ResponseDtoWithPaging();
+		responseDtoPage.setPageInfo(pageInfo);
+		responseDtoPage.setData(paymentDtoList);
+		
+		long totalElements = paymentDtoList.getTotalElements();
+		log.info("[PaymentController] PaymentStorageList 총 요소 수 : {} ", totalElements);
+	
+		
+		log.info("[PaymentController] PaymentStorageList end ============================== ");
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 임시 저장 문서 조회.", responseDtoPage ));
+	}
+	
 	
 	
 	
