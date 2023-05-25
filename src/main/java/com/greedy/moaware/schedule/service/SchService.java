@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.greedy.moaware.employee.entity.AuthEmp;
 import com.greedy.moaware.employee.repository.AuthEmpRepository;
+import com.greedy.moaware.exception.ScheduleNotFoundException;
 import com.greedy.moaware.exception.UserNotFoundException;
 import com.greedy.moaware.schedule.dto.ScheduleDto;
 import com.greedy.moaware.schedule.entity.Schedule;
@@ -32,7 +33,7 @@ public class SchService {
     public List<ScheduleDto> getScheduleListByUser(Integer emp) {
     	
         AuthEmp employee = authEmpRepository.findById(emp)
-                .orElseThrow(() -> new UserNotFoundException(emp + "번의 해당하는 사원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException(emp + "번의 사원을 찾을 수 없습니다."));
         
         List<Schedule> schedules = schRepository.findBySchAuthor(emp);
         
@@ -44,6 +45,19 @@ public class SchService {
         
         return scheduleDto;
     }
+
+	public ScheduleDto getScheduleByCodeAndUser(Integer schCode, Integer emp) {
+		
+		AuthEmp employee = authEmpRepository.findById(emp)
+	            .orElseThrow(() -> new UserNotFoundException(emp + "번의 사원을 찾을 수 없습니다."));
+		
+		Schedule schedule = schRepository.findBySchCodeAndSchAuthor(schCode, emp)
+	            .orElseThrow(() -> new ScheduleNotFoundException(schCode + "번의 일정을 찾을 수 없습니다."));
+
+	    log.info("getScheduleByCodeAndUser: {}", schedule);
+
+	    return modelMapper.map(schedule, ScheduleDto.class);
+	}
 
 }
 
