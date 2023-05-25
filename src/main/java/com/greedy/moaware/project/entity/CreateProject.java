@@ -57,8 +57,11 @@ public class CreateProject {
 	@JoinColumn(name = "PROJ_AUTHOR", referencedColumnName = "EMP_CODE", insertable = false, updatable = false)
 	private CreateProjectEmp emp;
 	
-	@OneToMany(mappedBy="createProject", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.PERSIST)
+	@JoinColumn(name="PROJ_CODE", referencedColumnName="PROJ_CODE") 
 	private List<ProjParticipant> projMember;
+
+	
 	
 	
 	

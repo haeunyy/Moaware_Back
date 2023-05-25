@@ -52,26 +52,18 @@ public class AuthEmp {
 	@Column(name="EXTENSION_NUM") 
 	private String extensionNum;
 	
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name="EMP_CODE")
+	private List<Role> roleList;
 	
-	
-	
+
 	/*
-	 * 
-	 * 
-	 * 
-	 * 
 	 * @Column(name="HIRE_DATE") private Date hireDate;
 	 * 
 	 * @Column(name="EXTENSION_NUM") private String extensionNum;
 	 * 
 	 * @Column(name="EMP_SSI") private String empSsi;
 	 */
-	 
-	
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name="EMP_CODE")
-	private List<Role> roleList;
-	
 	
 	
 	

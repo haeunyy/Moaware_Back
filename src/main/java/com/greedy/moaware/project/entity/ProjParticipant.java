@@ -28,5 +28,6 @@ public class ProjParticipant {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PROJ_CODE", referencedColumnName = "PROJ_CODE", insertable = false, updatable = false)
 	private CreateProject createProject;
-	
+
+
 }
