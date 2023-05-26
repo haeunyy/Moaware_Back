@@ -1,10 +1,10 @@
 package com.greedy.moaware.leave.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +24,9 @@ import lombok.Setter;
 @Entity
 @Table(name="LEAVE_PAYMENT")
 @SequenceGenerator(name="LEAVE_SEQ_GENERATOR", sequenceName="SEQ_LEAVE_CODE", initialValue=1, allocationSize=1)
-public class LeavePayment {
+public class LeavePayment2 implements Serializable {
+	
+	//leave 에서 leavePayment 정보를 받기 위해 새로운 Serializable 객체 생성 해서 leave에 참조하도록 추가
 	
 	@Id
 	@Column(name="LEAVE_CODE")

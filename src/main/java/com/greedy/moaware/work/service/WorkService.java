@@ -100,7 +100,7 @@ public class WorkService {
 	    calendar.set(Calendar.DAY_OF_MONTH, 1);
 	    Date startDate = calendar.getTime();
 
-	    // 해당 월의 마지막 날짜를 구합니다.
+	    // 1일에 한달을 더해서 1일을 빼준다.
 	    calendar.add(Calendar.MONTH, 1);
 	    calendar.add(Calendar.DATE, -1);
 	    Date endDate = calendar.getTime();

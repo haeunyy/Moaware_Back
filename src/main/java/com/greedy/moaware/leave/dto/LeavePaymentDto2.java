@@ -8,7 +8,7 @@ import com.greedy.moaware.employee.dto.EmpDto;
 import lombok.Data;
 
 @Data
-public class LeavePaymentDto {
+public class LeavePaymentDto2 {
 	
 	private Integer leaveCode;
 	

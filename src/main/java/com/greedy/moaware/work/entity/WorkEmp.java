@@ -42,7 +42,4 @@ public class WorkEmp {
 	
 	@Column(name="HIRE_DATE")
 	private Date hireDate;
-	
-	@OneToOne(mappedBy="emp" )
-	private FileCategory fileCategory;
 }
