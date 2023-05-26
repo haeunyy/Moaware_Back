@@ -19,4 +19,6 @@ public class AttachedFileDto {
 	
 	@JsonIgnore
 	private MultipartFile fileInfo;
+
+	
 }

@@ -12,6 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.greedy.moaware.employee.entity.Emp;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,6 +41,5 @@ public class PayFileCategory {
     
     @OneToOne(mappedBy="payFileCategory")
     private PayAttachedFile file;
-    
 	
 }

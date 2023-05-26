@@ -1,6 +1,7 @@
 package com.greedy.moaware.payment.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -22,6 +23,7 @@ public class PayEmpDto {
 	private String empSsi;
 	private PayJobDto job;
 	private PayDeptDto dept;
+	private List<PayFileCategoryDto> payFileCategory;
 	
 
 }

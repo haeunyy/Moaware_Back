@@ -2,12 +2,11 @@ package com.greedy.moaware.employee.dto;
 
 import java.util.Date;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 public class EmpDto {
 
 	private Integer empCode;
@@ -23,5 +22,7 @@ public class EmpDto {
 	private JobDto job;
 	private DeptDto dept;
 	private FileCategoryDto fileCategory;
+	
+	
 	
 }

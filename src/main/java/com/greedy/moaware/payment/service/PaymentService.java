@@ -17,6 +17,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.greedy.moaware.employee.dto.EmpDto;
+import com.greedy.moaware.employee.entity.Emp;
+import com.greedy.moaware.employee.repository.EmpRepository;
 import com.greedy.moaware.payment.dto.FormDto;
 import com.greedy.moaware.payment.dto.PayAttachedFileDto;
 import com.greedy.moaware.payment.dto.PayEmpDto;
@@ -45,19 +48,22 @@ public class PaymentService {
 	private final PayEmpRepository payEmpRepository;
 	private final PayAttachedFileRepository payAttachedFileRepository;
 	private final PaymentMemberRepository paymentMemberRepository;
+	private final EmpRepository empRepository;
 	private final ModelMapper modelMapper;
 	
 	@Value("${image.image-dir}")
 	private String IMAGE_DIR;
 	
 	public PaymentService(ModelMapper modelMapper, PaymentRepository paymentRepository, FormRepository formRepository
-			, PayEmpRepository payEmpRepository, PayAttachedFileRepository payAttachedFileRepository, PaymentMemberRepository paymentMemberRepository) {
+			, PayEmpRepository payEmpRepository, PayAttachedFileRepository payAttachedFileRepository
+			, PaymentMemberRepository paymentMemberRepository, EmpRepository empRepository) {
 		this.modelMapper = modelMapper;
 		this.paymentRepository = paymentRepository;
 		this.formRepository = formRepository;
 		this.payEmpRepository = payEmpRepository;
 		this.payAttachedFileRepository = payAttachedFileRepository;
 		this.paymentMemberRepository = paymentMemberRepository;
+		this.empRepository = empRepository;
 		
 	}
 	
@@ -308,7 +314,93 @@ public class PaymentService {
 		return payDtoList;
 	}
 
+	/* 서명 조회*/
+	public EmpDto paymentSign(Integer empCode) {
+		
+		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( 
+							() -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
+		
+		Emp empSign = empRepository.findById(empCode).orElseThrow(
+							() -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
+		
+		EmpDto empSignDto = modelMapper.map(empSign, EmpDto.class);
+		
+		
+		return empSignDto;
+	}
+	/* 서명 저장 */
+	@Transactional
+	public void paymentSignSaved(Integer empCode, PayEmpDto emp) {
+		
+		log.info("[PaymentService] paymentSignSaved start ============================== ");
+		log.info("[PaymentService] paymentSignSaved emp : {}" , emp);
+		
+		PayEmp payEmp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
+		
+		
+		String fileName = UUID.randomUUID().toString().replace("-","");
 	
+		String savedName = fileName + "." + FilenameUtils.getExtension(	emp.getPayFileCategory().get(0).getFile().getOriginalFileName());
+		
+		PayEmpDto payEmpDto = modelMapper.map(payEmp, PayEmpDto.class);
+
+		emp.getPayFileCategory().get(0).getFile().setSavedFileName(savedName);
+		emp.getPayFileCategory().get(0).setFCategoryName( payEmp.getEmpName() + " 싸인");
+		
+		
+		try {
+			
+			String uploadDir = IMAGE_DIR+"/sign";
+			
+			log.info("업로드 dir  : {}", uploadDir);
+			
+			String replaceFileName = FileUploadUtils.saveFile(uploadDir, fileName, emp.getPayFileCategory().get(0).getFile().getFileInfo());
+			String path = "/payment/" + replaceFileName;
+			
+			log.info("업로드 path  : {}", path);
+			
+			emp.getPayFileCategory().get(0).getFile().setFilePath(path);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		} 
+		
+		payEmp.getPayFileCategory().add(modelMapper.map(emp, PayEmp.class).getPayFileCategory().get(0));
+		
+		payEmpDto.getPayFileCategory().add(emp.getPayFileCategory().get(0));
+		
+		log.info("업로드 payEmpDto  : {}", payEmpDto.getPayFileCategory());
+		log.info("업로드 emp  : {}", emp.getPayFileCategory());
+		
+		payEmpRepository.save(payEmp);
+		
+//		PayAttachedFile file = modelMapper.map(payAttachedFile, PayAttachedFile.class);
+//		
+//		file.getPayFileCategory().getPay().setEmp(emp);
+//		
+//		
+//		log.info("[PaymentService] paymentSignSaved file : {} ", file);
+//		
+//		empRepository.save();
+//		
+//		
+//		payEmp = modelMapper.map(payAttachedFile.getPayFileCategory().getPay(), Payment.class);
+//		
+//		pay.setEmp(emp);
+//		
+//		log.info("[PaymentService] insertPayment pay : {} ", pay);
+//		
+//		paymentRepository.save(pay);
+//				
+
+		
+		
+		log.info("[PaymentService] paymentSignSaved end ============================== ");
+		
+		
+		
+	}
 	
 	/* 서명 조회 */
 

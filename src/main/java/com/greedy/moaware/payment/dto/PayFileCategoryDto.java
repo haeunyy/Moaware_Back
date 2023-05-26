@@ -1,6 +1,7 @@
 package com.greedy.moaware.payment.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.greedy.moaware.payment.entity.PayEmp;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,10 @@ public class PayFileCategoryDto {
 	
 	@JsonIgnore
 	private PaymentDto pay;
-    private PayAttachedFileDto file;
+    
+	private PayAttachedFileDto file;
+    
+    private PayEmpDto emp;
     
     
     
