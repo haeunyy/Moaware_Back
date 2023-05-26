@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.project.dto.TaskDto;
 import com.greedy.moaware.project.entity.Project;
+import com.greedy.moaware.project.entity.Task;
 import com.greedy.moaware.project.repository.ProjectRepository;
 import com.greedy.moaware.project.repository.TaskRepository;
 
@@ -47,6 +49,37 @@ public class ProjDetailService {
 		log.info("[ProjDetailService] selectTaskList end =============================================");
 		
 		return taskList;
+	}
+
+
+
+	public TaskDto selectTask(int taskCode) {
+
+		log.info("[ProjDetailService] selectTask start =============================================");
+
+		TaskDto task = modelMapper.map(
+						taskRepository.findById(taskCode)
+								.orElseThrow(()-> new IllegalArgumentException("해당 프로젝트 업무가 존재하지 않습니다."))
+					    , TaskDto.class
+						);		
+		
+		log.info("[ProjDetailService] task : {}",task);
+		log.info("[ProjDetailService] selectTask end =============================================");
+		
+		return task;
+	}
+
+
+
+	public void taskRegist(AuthEmpDto emp, TaskDto task) {
+		
+		log.info("[ProjDetailService] taskRegist start =============================================");
+
+		
+		
+		log.info("[ProjDetailService] task : {}",task);
+		log.info("[ProjDetailService] taskRegist end =============================================");
+		
 	}
 
 	

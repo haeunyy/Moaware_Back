@@ -198,7 +198,10 @@ public class AuthService {
 				
 				String imgRandomName = UUID.randomUUID().toString().replace("-","");
 				String uploadDir = IMAGE_DIR+"/profile/";
-				AttachedFile originalFile = originalEmp.getFileCategory().getFile();
+				log.info("originalEmp : ======================\n{}", originalEmp);
+
+//				AttachedFile originalFile = originalEmp.getFileCategory().getFile();
+				AttachedFile originalFile = new AttachedFile();
 				
 				String replaceImgName = FileUploadUtils.saveFile( uploadDir, imgRandomName, fileDto.getFileInfo() );
 				
@@ -207,8 +210,6 @@ public class AuthService {
 				originalFile.setFilePath("/profile/"+replaceImgName);
 				originalFile.setSavedFileName(replaceImgName);
 				originalFile.setOriginalFileName(fileDto.getFileInfo().getOriginalFilename());
-				
-				
 				
 				fileRepository.save(originalFile);
 			}

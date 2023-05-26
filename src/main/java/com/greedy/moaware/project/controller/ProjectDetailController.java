@@ -1,18 +1,18 @@
 package com.greedy.moaware.project.controller;
 
-import java.net.URLEncoder;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
+import com.greedy.moaware.project.dto.TaskDto;
 import com.greedy.moaware.project.service.ProjDetailService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +37,30 @@ public class ProjectDetailController {
 		return ResponseEntity
 				.ok()
 				.body(new ResponseDto(HttpStatus.OK, "업무 리스트 조회 성공", projService.selectTaskList(projCode)));
+	}
+	
+	
+	/* 업무 상세 조회 */
+	@GetMapping("/task/{taskCode}")
+	public ResponseEntity<ResponseDto> selectTask(@PathVariable int taskCode){
+		log.info("taskCode : {} ",taskCode);
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "업무 상세 조회 성공", projService.selectTask(taskCode)));
+	}
+	
+	
+	/* 업무 등록 */
+	@PostMapping("/task/regist")
+	public ResponseEntity<ResponseDto> taskRegist(@AuthenticationPrincipal AuthEmpDto emp, @RequestBody TaskDto task){
+		log.info("task : {} ", task);
+		log.info("emp : {} ", emp);
+		
+		projService.taskRegist(emp, task);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "업무 등록 성공"));
 	}
 	
 	
