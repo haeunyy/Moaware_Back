@@ -64,7 +64,7 @@ public class AdminEmp {
 	@JoinColumn(name="DEPT_CODE")
 	private Dept dept;
 	
-	
+
 	
 	
 

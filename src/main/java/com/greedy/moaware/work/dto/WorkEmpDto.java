@@ -15,5 +15,4 @@ public class WorkEmpDto {
 	private Job job;
 	private Dept dept;
 	private Date hireDate;
-	private FileCategory fileCategory;
 }
