@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.greedy.moaware.employee.entity.Emp;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,8 +44,9 @@ public class Schedule {
 	@Column(name="SCH_END_DATE")
 	private Date schEndDate;
 	
-	@Column(name="SCH_AUTHOR")
-	private Integer schAuthor;
+	@ManyToOne
+	@JoinColumn(name="SCH_AUTHOR")
+	private Emp schAuthor;
 	
 	@OneToMany
 	@JoinColumn(name="SCH_CODE")
