@@ -24,6 +24,8 @@ public interface WorkRepository extends JpaRepository<Work, WorkPk> {
 	
 			Pageable pageable);
 	
+	Page<Work> findByWorkPkWorkDate(Date workDate, Pageable pageable);
+	
 //	@EntityGraph(attributePaths = {"workPk", "auth.roleList"})
 //	Page<Work> findAllByWorkPkEmpCodeAndWorkPkWorkDateBetween(Integer emp, Date startDate, Date endDate, Pageable pageable);
 
