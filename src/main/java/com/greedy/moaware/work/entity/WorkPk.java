@@ -19,6 +19,4 @@ public class WorkPk implements Serializable {
 	@Column(name="WORK_DATE")
 	private Date workDate;
 	
-
-	
 }

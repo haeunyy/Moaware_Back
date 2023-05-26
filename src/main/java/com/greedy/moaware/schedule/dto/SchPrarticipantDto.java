@@ -1,6 +1,8 @@
 package com.greedy.moaware.schedule.dto;
 
-import com.greedy.moaware.schedule.entity.SchPrarPk;
+import java.util.List;
+
+import com.greedy.moaware.employee.dto.EmpDto;
 
 import lombok.Data;
 
@@ -9,5 +11,6 @@ public class SchPrarticipantDto {
 
 	private SchPrarPkDto schPrarPk;
 	
-}
+	private EmpDto schMember;
 
+}

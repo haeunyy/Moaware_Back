@@ -51,7 +51,7 @@ public class Payment {
 	@JoinColumn(name="FORM_CODE")
 	private Form form;
 	
-	@OneToOne(mappedBy = "pay")
+	@OneToOne(mappedBy = "pay") 
 	private PayFileCategory payFileCategory;
 	
 	@OneToMany(cascade=CascadeType.PERSIST)

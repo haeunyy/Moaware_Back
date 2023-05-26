@@ -50,7 +50,7 @@ public class Emp {
 	private String email;
 	
 	@Column(name="RETIRE_YN")
-	private String retireYn;
+	private String retireYn; 
 	
 	@Column(name="HIRE_DATE")
 	private Date hireDate;
