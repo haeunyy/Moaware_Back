@@ -3,11 +3,9 @@ package com.greedy.moaware.employee.dto;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class EmpDto {
 
 	private Integer empCode;

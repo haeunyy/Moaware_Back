@@ -20,5 +20,13 @@ public class AttachedFileDto {
 	@JsonIgnore
 	private MultipartFile fileInfo;
 
+	@Override
+	public String toString() {
+		return "AttachedFileDto [fileCode=" + fileCode + ", originalFileName=" + originalFileName + ", filePath="
+				+ filePath + ", savedFileName=" + savedFileName + ", fileInfo=" + fileInfo + "]";
+	}
+
+	
+	
 	
 }

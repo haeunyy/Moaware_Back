@@ -366,38 +366,18 @@ public class PaymentService {
 			
 		} 
 		
-		payEmp.getFileCategory().add(modelMapper.map(emp, Emp.class).getFileCategory().get(0));
-		
-		empRepository.save(payEmp);
+	
 		
 		payEmpDto.getFileCategory().add(emp.getFileCategory().get(0));
 		
-		log.info("업로드 payEmpDto  : {}", payEmpDto.getFileCategory());
+		log.info("업로드 payEmpDto  : {}", payEmpDto);
 		log.info("업로드 emp  : {}", emp.getFileCategory());
 		
+		Emp empSave = modelMapper.map(payEmpDto, Emp.class);
 		
+		empRepository.save(empSave);
 		
-//		PayAttachedFile file = modelMapper.map(payAttachedFile, PayAttachedFile.class);
-//		
-//		file.getPayFileCategory().getPay().setEmp(emp);
-//		
-//		
-//		log.info("[PaymentService] paymentSignSaved file : {} ", file);
-//		
-//		empRepository.save();
-//		
-//		
-//		payEmp = modelMapper.map(payAttachedFile.getPayFileCategory().getPay(), Payment.class);
-//		
-//		pay.setEmp(emp);
-//		
-//		log.info("[PaymentService] insertPayment pay : {} ", pay);
-//		
-//		paymentRepository.save(pay);
-//				
 
-		
-		
 		log.info("[PaymentService] paymentSignSaved end ============================== ");
 		
 		
