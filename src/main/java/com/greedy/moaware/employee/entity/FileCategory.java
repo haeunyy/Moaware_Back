@@ -7,12 +7,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
+
 
 @Getter
 @Setter
@@ -32,9 +34,18 @@ public class FileCategory {
 	@Column(name="F_CATEGORY_TYPE")
 	private String fCategoryType;
 	
-    @OneToOne
-    @JoinColumn(name="F_CATEGORY_CODE")
+	@OneToOne(mappedBy="fileCategory")
     private AttachedFile file;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="EMP_CODE")
+    private Emp emp;
+
+	@Override
+	public String toString() {
+		return "FileCategory [fCategoryCode=" + fCategoryCode + ", fCategoryName=" + fCategoryName + ", fCategoryType="
+				+ fCategoryType + ", file=" + file + "]";
+	}
     
     
 	

@@ -217,12 +217,12 @@ public class PaymentController {
 	
 	/* 서명 저장 */
 	@PostMapping("/sign")
-	public ResponseEntity<ResponseDto> PaymentSignSaved( @AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute EmpDto emp){
+	public ResponseEntity<ResponseDto> PaymentSignSaved( @AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PayAttachedFileDto payAttachedFile){
 		
 		log.info("[PaymentController] PaymentSign start ============================== ");
-		log.info("[PaymentController] PaymentSign emp : {} " , emp);
+		log.info("[PaymentController] PaymentSign emp : {} " , payAttachedFile);
 		
-		paymentService.paymentSignSaved(payEmp.getEmpCode(), emp);
+		paymentService.paymentSignSaved(payEmp.getEmpCode(), payAttachedFile);
 		
 		log.info("[PaymentController] PaymentSign end ============================== ");
 		

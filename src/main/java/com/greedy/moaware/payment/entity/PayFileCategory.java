@@ -8,11 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import com.greedy.moaware.employee.entity.Emp;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +38,10 @@ public class PayFileCategory {
     @JoinColumn(name = "PAY_CODE")
     private Payment pay;
     
-    @OneToOne(mappedBy="payFileCategory")
+    @OneToOne(mappedBy="payFileCategory" )
     private PayAttachedFile file;
-	
+    
+    @ManyToOne
+    @JoinColumn(name="EMP_CODE")
+	private PayEmp payEmp;
 }

@@ -325,27 +325,28 @@ public class PaymentService {
 		
 		EmpDto empSignDto = modelMapper.map(empSign, EmpDto.class);
 		
-		
+		log.info("[PaymentService] paymentSign empSignDto : {}" , empSignDto);
 		return empSignDto;
 	}
+	
+	
 	/* 서명 저장 */
 	@Transactional
-	public void paymentSignSaved(Integer empCode, EmpDto emp) {
+	public void paymentSignSaved(Integer empCode, PayAttachedFileDto payAttachedFile) {
 		
 		log.info("[PaymentService] paymentSignSaved start ============================== ");
-		log.info("[PaymentService] paymentSignSaved emp : {}" , emp);
+		log.info("[PaymentService] paymentSignSaved emp : {}" , payAttachedFile);
 		
-		Emp payEmp = empRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
+		PayEmp payEmp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
 		
 		
 		String fileName = UUID.randomUUID().toString().replace("-","");
 	
-		String savedName = fileName + "." + FilenameUtils.getExtension(	emp.getFileCategory().get(0).getFile().getOriginalFileName());
+		String savedName = fileName + "." + FilenameUtils.getExtension(	payAttachedFile.getOriginalFileName());
 		
-		EmpDto payEmpDto = modelMapper.map(payEmp, EmpDto.class);
-
-		emp.getFileCategory().get(0).getFile().setSavedFileName(savedName);
-		emp.getFileCategory().get(0).setFCategoryName( payEmp.getEmpName() + " 싸인");
+		
+		payAttachedFile.setSavedFileName(savedName);
+		payAttachedFile.getPayFileCategory().setFCategoryName( payEmp.getEmpName() + " 싸인");
 		
 		
 		try {
@@ -354,40 +355,35 @@ public class PaymentService {
 			
 			log.info("업로드 dir  : {}", uploadDir);
 			
-			String replaceFileName = FileUploadUtils.saveFile(uploadDir, fileName, emp.getFileCategory().get(0).getFile().getFileInfo());
-			String path = "/payment/" + replaceFileName;
+			String replaceFileName = FileUploadUtils.saveFile(uploadDir, fileName, payAttachedFile.getFileInfo());
+			String path = "/sign/" + replaceFileName;
 			
 			log.info("업로드 path  : {}", path);
 			
-			emp.getFileCategory().get(0).getFile().setFilePath(path);
+			payAttachedFile.setFilePath(path);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 			
 		} 
 		
-	
+		PayAttachedFile file = modelMapper.map(payAttachedFile, PayAttachedFile.class);
 		
-		payEmpDto.getFileCategory().add(emp.getFileCategory().get(0));
+		file.getPayFileCategory().setPayEmp(payEmp);
 		
-		log.info("업로드 payEmpDto  : {}", payEmpDto);
-		log.info("업로드 emp  : {}", emp.getFileCategory());
 		
-		Emp empSave = modelMapper.map(payEmpDto, Emp.class);
+		log.info("[PaymentService] insertPayment file : {} ", file);
 		
-		empRepository.save(empSave);
+		payAttachedFileRepository.save(file);
 		
-
 		log.info("[PaymentService] paymentSignSaved end ============================== ");
+				
+		}
 		
-		
-		
-	}
 	
-	/* 서명 조회 */
-
-
 	
-
-
+		
 }
+
+
+
