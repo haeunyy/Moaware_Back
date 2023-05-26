@@ -19,7 +19,7 @@ public class PayFileCategoryDto {
     
 	private PayAttachedFileDto file;
     
-    private PayEmpDto emp;
+
     
     
     

@@ -32,10 +32,6 @@ public class FileCategory {
 	@Column(name="F_CATEGORY_TYPE")
 	private String fCategoryType;
 	
-    @OneToOne(fetch = FetchType.LAZY )
-    @JoinColumn(name = "EMP_CODE")
-    private Emp emp;
-    
     @OneToOne
     @JoinColumn(name="F_CATEGORY_CODE")
     private AttachedFile file;

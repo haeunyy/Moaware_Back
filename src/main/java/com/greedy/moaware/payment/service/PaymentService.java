@@ -330,22 +330,22 @@ public class PaymentService {
 	}
 	/* 서명 저장 */
 	@Transactional
-	public void paymentSignSaved(Integer empCode, PayEmpDto emp) {
+	public void paymentSignSaved(Integer empCode, EmpDto emp) {
 		
 		log.info("[PaymentService] paymentSignSaved start ============================== ");
 		log.info("[PaymentService] paymentSignSaved emp : {}" , emp);
 		
-		PayEmp payEmp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
+		Emp payEmp = empRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
 		
 		
 		String fileName = UUID.randomUUID().toString().replace("-","");
 	
-		String savedName = fileName + "." + FilenameUtils.getExtension(	emp.getPayFileCategory().get(0).getFile().getOriginalFileName());
+		String savedName = fileName + "." + FilenameUtils.getExtension(	emp.getFileCategory().get(0).getFile().getOriginalFileName());
 		
-		PayEmpDto payEmpDto = modelMapper.map(payEmp, PayEmpDto.class);
+		EmpDto payEmpDto = modelMapper.map(payEmp, EmpDto.class);
 
-		emp.getPayFileCategory().get(0).getFile().setSavedFileName(savedName);
-		emp.getPayFileCategory().get(0).setFCategoryName( payEmp.getEmpName() + " 싸인");
+		emp.getFileCategory().get(0).getFile().setSavedFileName(savedName);
+		emp.getFileCategory().get(0).setFCategoryName( payEmp.getEmpName() + " 싸인");
 		
 		
 		try {
@@ -354,26 +354,28 @@ public class PaymentService {
 			
 			log.info("업로드 dir  : {}", uploadDir);
 			
-			String replaceFileName = FileUploadUtils.saveFile(uploadDir, fileName, emp.getPayFileCategory().get(0).getFile().getFileInfo());
+			String replaceFileName = FileUploadUtils.saveFile(uploadDir, fileName, emp.getFileCategory().get(0).getFile().getFileInfo());
 			String path = "/payment/" + replaceFileName;
 			
 			log.info("업로드 path  : {}", path);
 			
-			emp.getPayFileCategory().get(0).getFile().setFilePath(path);
+			emp.getFileCategory().get(0).getFile().setFilePath(path);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 			
 		} 
 		
-		payEmp.getPayFileCategory().add(modelMapper.map(emp, PayEmp.class).getPayFileCategory().get(0));
+		payEmp.getFileCategory().add(modelMapper.map(emp, Emp.class).getFileCategory().get(0));
 		
-		payEmpDto.getPayFileCategory().add(emp.getPayFileCategory().get(0));
+		empRepository.save(payEmp);
 		
-		log.info("업로드 payEmpDto  : {}", payEmpDto.getPayFileCategory());
-		log.info("업로드 emp  : {}", emp.getPayFileCategory());
+		payEmpDto.getFileCategory().add(emp.getFileCategory().get(0));
 		
-		payEmpRepository.save(payEmp);
+		log.info("업로드 payEmpDto  : {}", payEmpDto.getFileCategory());
+		log.info("업로드 emp  : {}", emp.getFileCategory());
+		
+		
 		
 //		PayAttachedFile file = modelMapper.map(payAttachedFile, PayAttachedFile.class);
 //		
