@@ -19,8 +19,11 @@ public interface SchRepository extends JpaRepository<Schedule, Integer> {
 //	@EntityGraph(attributePaths = {"schType"})
 //    Optional<Schedule> findBySchCodeAndSchAuthor(Integer schCode, Integer empCode);
 
+//	List<Schedule> findBySchAuthor(Emp employee);
+//	List<Schedule> findBySchAuthorAndSchPrarticipant(Emp author, Emp participant);
+	
 	List<Schedule> findBySchAuthor(Emp employee);
-
+	
 	Optional<Schedule> findBySchCodeAndSchAuthor(Integer schCode, Emp employee);
 	
 }

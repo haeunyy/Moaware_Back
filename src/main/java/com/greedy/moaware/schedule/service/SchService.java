@@ -34,7 +34,7 @@ public class SchService {
     public List<ScheduleDto> getScheduleListByUser(Integer emp) {
     	
         Emp employee = empRepository.findById(emp)
-                .orElseThrow(() -> new UserNotFoundException(emp + "번의 사원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException(emp + "번의 사원을 찾을 둘수 없습니다."));
         
         List<Schedule> schedules = schRepository.findBySchAuthor(employee);
         
