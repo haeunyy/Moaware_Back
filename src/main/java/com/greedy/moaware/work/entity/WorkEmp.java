@@ -42,4 +42,5 @@ public class WorkEmp {
 	
 	@Column(name="HIRE_DATE")
 	private Date hireDate;
+
 }

@@ -14,5 +14,13 @@ public class FileCategoryDto {
 	
 	@JsonIgnore
 	private EmpDto emp;
+
+	@Override
+	public String toString() {
+		return "FileCategoryDto [fCategoryCode=" + fCategoryCode + ", fCategoryName=" + fCategoryName
+				+ ", fCategoryType=" + fCategoryType + ", file=" + file + "]";
+	}
+	
+	
     
 }

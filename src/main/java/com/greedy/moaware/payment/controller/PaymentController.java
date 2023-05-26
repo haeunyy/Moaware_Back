@@ -18,7 +18,9 @@ import com.greedy.moaware.common.paging.Pagenation;
 import com.greedy.moaware.common.paging.PagingButtonInfo;
 import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
+import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.payment.dto.PayAttachedFileDto;
+import com.greedy.moaware.payment.dto.PayEmpDto;
 import com.greedy.moaware.payment.dto.PaymentDto;
 import com.greedy.moaware.payment.service.PaymentService;
 
@@ -198,6 +200,36 @@ public class PaymentController {
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 임시 저장 문서 조회.", responseDtoPage ));
 	}
 	
+	/* 서명 조회 */
+	@GetMapping("/sign")
+	public ResponseEntity<ResponseDto> PaymentSign( @AuthenticationPrincipal AuthEmpDto payEmp){
+		
+		log.info("[PaymentController] PaymentSign start ============================== ");
+		
+		EmpDto empsign = paymentService.paymentSign(payEmp.getEmpCode());
+		
+		log.info("[PaymentController] PaymentSign end ============================== ");
+		
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "사인 조회.", empsign ));
+				
+	}
+	
+	/* 서명 저장 */
+	@PostMapping("/sign")
+	public ResponseEntity<ResponseDto> PaymentSignSaved( @AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PayAttachedFileDto payAttachedFile){
+		
+		log.info("[PaymentController] PaymentSign start ============================== ");
+		log.info("[PaymentController] PaymentSign emp : {} " , payAttachedFile);
+		
+		paymentService.paymentSignSaved(payEmp.getEmpCode(), payAttachedFile);
+		
+		log.info("[PaymentController] PaymentSign end ============================== ");
+		
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "사인 저장 완료." ));
+				
+	}
 	
 	
 	

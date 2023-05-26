@@ -1,13 +1,11 @@
 package com.greedy.moaware.employee.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-@Setter
-@Getter
+@Data
 public class EmpDto {
 
 	private Integer empCode;
@@ -22,6 +20,8 @@ public class EmpDto {
 	private String empSsi;
 	private JobDto job;
 	private DeptDto dept;
-	private FileCategoryDto fileCategory;
+	private List<FileCategoryDto> fileCategory;
+	
+	
 	
 }

@@ -1,7 +1,9 @@
 package com.greedy.moaware.employee.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,14 +11,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.DynamicUpdate;
-
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
+@ToString
 
 @Getter
 @Setter
@@ -66,8 +69,9 @@ public class Emp {
 	@JoinColumn(name="DEPT_CODE")
 	private Dept dept;
 	
-	@OneToOne(mappedBy="emp" )
-	private FileCategory fileCategory;
+	@OneToMany(cascade=CascadeType.PERSIST)
+	@JoinColumn(name="EMP_CODE")
+	private List<FileCategory> fileCategory;
 	
 	
 	public void update(String empPwd, String email, String phone, String extensionNum ) {
@@ -76,6 +80,7 @@ public class Emp {
 		this.phone = phone;
 		this.extensionNum = extensionNum;
 	}
+	
 	
 	
 
