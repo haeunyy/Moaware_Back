@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,6 @@ import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.payment.dto.PayAttachedFileDto;
-import com.greedy.moaware.payment.dto.PayEmpDto;
 import com.greedy.moaware.payment.dto.PaymentDto;
 import com.greedy.moaware.payment.service.PaymentService;
 
@@ -228,6 +228,22 @@ public class PaymentController {
 		
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "사인 저장 완료." ));
+				
+	}
+	
+	/* 서명 수정 */
+	@PutMapping("/sign")
+	public ResponseEntity<ResponseDto> PaymentSignUpdate( @AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PayAttachedFileDto payAttachedFile){
+		
+		log.info("[PaymentController] PaymentSign start ============================== ");
+		log.info("[PaymentController] PaymentSign emp : {} " , payAttachedFile);
+		
+		paymentService.paymentSignUpdate(payEmp.getEmpCode(), payAttachedFile);
+		
+		log.info("[PaymentController] PaymentSign end ============================== ");
+		
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "사인 수정 완료." ));
 				
 	}
 	

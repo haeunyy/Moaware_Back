@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.greedy.moaware.employee.dto.EmpDto;
+import com.greedy.moaware.employee.dto.FileCategoryDto;
 import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.repository.EmpRepository;
 import com.greedy.moaware.payment.dto.FormDto;
@@ -53,6 +54,9 @@ public class PaymentService {
 	
 	@Value("${image.image-dir}")
 	private String IMAGE_DIR;
+	
+	@Value("${image.image-url}")
+	private String IMAGE_URL;
 	
 	public PaymentService(ModelMapper modelMapper, PaymentRepository paymentRepository, FormRepository formRepository
 			, PayEmpRepository payEmpRepository, PayAttachedFileRepository payAttachedFileRepository
@@ -325,6 +329,22 @@ public class PaymentService {
 		
 		EmpDto empSignDto = modelMapper.map(empSign, EmpDto.class);
 		
+		
+		log.info("[PaymentService] empFileCategoryDto : {}" , empSignDto.getFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).count() != 0);
+		
+		
+		
+		if(empSignDto.getFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).count() != 0) {
+			List<FileCategoryDto> empFileCategoryDto = empSignDto.getFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).collect(Collectors.toList());
+			
+			empFileCategoryDto.get(0).getFile().setFilePath(IMAGE_URL + empFileCategoryDto.get(0).getFile().getFilePath());
+			
+			log.info("[PaymentService] empFileCategoryDto : {}" , empFileCategoryDto);
+			
+			empSignDto.setFileCategory(empFileCategoryDto);
+			}
+		
+		
 		log.info("[PaymentService] paymentSign empSignDto : {}" , empSignDto);
 		return empSignDto;
 	}
@@ -379,7 +399,54 @@ public class PaymentService {
 		log.info("[PaymentService] paymentSignSaved end ============================== ");
 				
 		}
+	
+	/* 서명 업데이트 */
+	@Transactional
+	public void paymentSignUpdate(Integer empCode, PayAttachedFileDto payAttachedFile) {
 		
+		log.info("[PaymentService] paymentSignUpdate start ============================== ");
+		log.info("[PaymentService] paymentSignUpdate emp : {}" , payAttachedFile);
+		
+		PayEmp payEmp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
+		
+		PayAttachedFile originFile = payAttachedFileRepository.findById(payAttachedFile.getFileCode())
+						.orElseThrow( () -> new IllegalArgumentException("해당 서명이 없습니다. FileCode=" + payAttachedFile.getFileCode()));
+		
+		String fileName = UUID.randomUUID().toString().replace("-","");
+		
+		String savedName = fileName + "." + FilenameUtils.getExtension(	payAttachedFile.getOriginalFileName());
+		
+		
+		try {
+			
+			String uploadDir = IMAGE_DIR+"/sign";
+			
+			log.info("업로드 dir  : {}", uploadDir);
+			
+			String replaceFileName = FileUploadUtils.saveFile(uploadDir, fileName, payAttachedFile.getFileInfo());
+			String path = "/sign/" + replaceFileName;
+			
+			log.info("업로드 path  : {}", path);
+			
+			FileUploadUtils.deleteFile(uploadDir, originFile.getSavedFileName());
+			
+			log.info("[PaymentService] paymentSignUpdate  payAttachedFile.getOriginalFileName() : {}", payAttachedFile.getOriginalFileName());
+			
+			originFile.update( payAttachedFile.getOriginalFileName(), path, savedName);
+			
+			log.info("[PaymentService] paymentSignUpdate  savedName : {}", savedName);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		} 
+		
+		
+		
+		
+		log.info("[PaymentService] paymentSignUpdate end ============================== ");
+		
+	}
 	
 	
 		
