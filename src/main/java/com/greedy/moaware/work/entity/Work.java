@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.greedy.moaware.employee.entity.AuthEmp;
-import com.greedy.moaware.employee.entity.Emp;
+import com.greedy.moaware.leave.entity.LeavePayment;
 
 import lombok.Getter;
 import lombok.Setter;

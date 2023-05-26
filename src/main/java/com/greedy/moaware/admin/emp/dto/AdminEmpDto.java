@@ -22,6 +22,5 @@ public class AdminEmpDto {
 	private String empSsi;
 	private JobDto job;
 	private DeptDto dept;
-	private FileCategoryDto fileCategory;
 	
 }
