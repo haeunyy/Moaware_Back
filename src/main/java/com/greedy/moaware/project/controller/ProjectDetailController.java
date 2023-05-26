@@ -64,6 +64,14 @@ public class ProjectDetailController {
 	}
 	
 	
+	/* 프로젝트 상세 조회 */
+	@GetMapping("/detail/{projCode}")
+	public ResponseEntity<ResponseDto> selectProjDetail(@PathVariable int projCode){
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "프로젝트 상세 조회 성공", projService.selectProjDetail(projCode)));
+	}
 }
  
 
@@ -104,12 +112,5 @@ public class ProjectDetailController {
 //	
 
 
-//	/* 프로젝트 상세 조회 */
-//	@GetMapping("/detail/{projCode}")
-//	public ResponseEntity<ResponseDto> selectProjDetail(@PathVariable int projCode){
-//		
-//		return ResponseEntity
-//				.ok()
-//				.body(new ResponseDto(HttpStatus.OK, "프로젝트 상세 조회 성공", projService.selectProjDetail(projCode)));
-//	}
+
 //	

@@ -1,12 +1,17 @@
 package com.greedy.moaware.project.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.greedy.moaware.employee.dto.AuthEmpDto;
+import com.greedy.moaware.project.dto.ProjEmpDto;
+import com.greedy.moaware.project.dto.ProjectDto;
 import com.greedy.moaware.project.dto.TaskDto;
 import com.greedy.moaware.project.entity.Project;
 import com.greedy.moaware.project.entity.Task;
@@ -52,7 +57,7 @@ public class ProjDetailService {
 	}
 
 
-
+	/* 업무 조회 */
 	public TaskDto selectTask(int taskCode) {
 
 		log.info("[ProjDetailService] selectTask start =============================================");
@@ -67,24 +72,39 @@ public class ProjDetailService {
 		log.info("[ProjDetailService] selectTask end =============================================");
 		
 		return task;
-	}
+	} 
 
 
-
+	/* 업무 등록 */
+	@Transactional
 	public void taskRegist(AuthEmpDto emp, TaskDto task) {
 		
 		log.info("[ProjDetailService] taskRegist start =============================================");
-
 		
+		task.setAuthor(modelMapper.map(emp, ProjEmpDto.class));
+		task.setModifyTime(new Date());
+		
+		taskRepository.save(modelMapper.map(task, Task.class));
 		
 		log.info("[ProjDetailService] task : {}",task);
 		log.info("[ProjDetailService] taskRegist end =============================================");
-		
 	}
 
 	
 
 
+	/* 프로젝트 상세 조회 */
+	public ProjectDto selectProjDetail(int projCode) {
+		
+		log.info("[ProjDetailService] selectProjDetail start =============================================");
+		
+		Project proj = projResitory.findById(projCode)
+				.orElseThrow(()-> new IllegalArgumentException("해당 프로젝트가 존재하지 않습니다."));
+		
+		log.info("[ProjDetailService] selectProjDetail end =============================================");
+		
+		return modelMapper.map(proj, ProjectDto.class);
+	}
 }
 
 
@@ -98,19 +118,6 @@ public class ProjDetailService {
 
 
 
-//	/* 프로젝트 상세 조회 */
-//	public ProjectDto selectProjDetail(int projCode) {
-//		
-//		log.info("[ProjDetailService] selectProjDetail start =============================================");
-//		
-////		Project proj = projResitory.findById(projCode)
-//		List<Task> proj = taskRepository.findByAll(projCode)
-//				.orElseThrow(()-> new IllegalArgumentException("해당 프로젝트가 존재하지 않습니다."));
-//		
-//		log.info("[ProjDetailService] selectProjDetail end =============================================");
-//		
-//		return modelMapper.map(proj, ProjectDto.class);
-//	}
 
 
 
