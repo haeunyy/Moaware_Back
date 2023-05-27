@@ -11,4 +11,6 @@ public interface ProjectparticipantRepository extends JpaRepository<ProjParticip
 
 	List<ProjParticipant> findByProjCodeProjCode(Integer projCode);
 
+	ProjParticipant findByProjCodeProjCodeAndProjCodeProjMember(int i, Integer projMember);
+
 }

@@ -7,7 +7,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.greedy.moaware.employee.entity.AuthEmp;
-import com.greedy.moaware.employee.repository.AuthEmpRepository;
+import com.greedy.moaware.employee.entity.Emp;
+import com.greedy.moaware.employee.repository.EmpRepository;
+import com.greedy.moaware.exception.ScheduleNotFoundException;
 import com.greedy.moaware.exception.UserNotFoundException;
 import com.greedy.moaware.schedule.dto.ScheduleDto;
 import com.greedy.moaware.schedule.entity.Schedule;
@@ -20,21 +22,21 @@ import lombok.extern.slf4j.Slf4j;
 public class SchService {
 
     private final SchRepository schRepository;
-    private final AuthEmpRepository authEmpRepository;
+    private final EmpRepository empRepository;
     private ModelMapper modelMapper;
     
-    public SchService(SchRepository schRepository, AuthEmpRepository authEmpRepository, ModelMapper modelMapper) {
+    public SchService(SchRepository schRepository, EmpRepository empRepository, ModelMapper modelMapper) {
         this.schRepository = schRepository;
-        this.authEmpRepository = authEmpRepository;
+        this.empRepository = empRepository;
         this.modelMapper = modelMapper;
     }
 
     public List<ScheduleDto> getScheduleListByUser(Integer emp) {
     	
-        AuthEmp employee = authEmpRepository.findById(emp)
-                .orElseThrow(() -> new UserNotFoundException(emp + "번의 해당하는 사원을 찾을 수 없습니다."));
+        Emp employee = empRepository.findById(emp)
+                .orElseThrow(() -> new UserNotFoundException(emp + "번의 사원을 찾을 둘수 없습니다."));
         
-        List<Schedule> schedules = schRepository.findBySchAuthor(emp);
+        List<Schedule> schedules = schRepository.findBySchAuthor(employee);
         
         log.info("getScheduleListByUser: {}", schedules);
         
@@ -44,6 +46,19 @@ public class SchService {
         
         return scheduleDto;
     }
+
+	public ScheduleDto getScheduleByCodeAndUser(Integer schCode, Integer emp) {
+		
+		Emp employee = empRepository.findById(emp)
+	            .orElseThrow(() -> new UserNotFoundException(emp + "번의 사원을 찾을 수 없습니다."));
+		
+		Schedule schedule = schRepository.findBySchCodeAndSchAuthor(schCode, employee)
+	            .orElseThrow(() -> new ScheduleNotFoundException(schCode + "번의 일정을 찾을 수 없습니다."));
+
+	    log.info("getScheduleByCodeAndUser: {}", schedule);
+
+	    return modelMapper.map(schedule, ScheduleDto.class);
+	}
 
 }
 

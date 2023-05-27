@@ -24,7 +24,6 @@ import com.greedy.moaware.employee.dto.PdeptDto;
 import com.greedy.moaware.employee.service.PdeptService;
 import com.greedy.moaware.project.dto.CreateProjectDto;
 import com.greedy.moaware.project.dto.CreateProjectEmpDto;
-import com.greedy.moaware.project.dto.ProjParticipantDto;
 import com.greedy.moaware.project.service.ProjectService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -83,24 +82,15 @@ public class ProjectController {
 	public ResponseEntity<ResponseDto> createProj(@RequestBody CreateProjectDto projectDto,
 			@AuthenticationPrincipal AuthEmpDto emp) {
 		
-		 List<ProjParticipantDto> projMemberList = projectDto.getProjMember();
-		 log.info("[projectDto.getProjMember()] projectDto.getProjMember(){}", projectDto.getProjMember());
-		
-		log.info("프로젝트 생성 시작------------------------------------------------------------------");
-		log.info("[projectDto.getStartDate()] projectDto.getStartDate(){}", projectDto);
-		log.info("[projectDto.getStartDate()] projectDto.getStartDate(){}", projectDto.getProjStartDate());
-		log.info("[projectDto.getStartDate()] projectDto.getStartDate().toString() {}", projectDto.getProjStartDate().toString());
-		
 		projectDto.setEmployee(emp);
 //		// 객체에 담아서 전송하는 것은 바로 파싱이 된다.
 	    Date startDate = projectDto.getProjStartDate();
 	    Date endDate = projectDto.getProjEndDate();
-	    
 	    projectDto.setProjStatus("진행중");
 	    projectDto.setProjStartDate(startDate);
 	    projectDto.setProjEndDate(endDate);
 	    projectDto.setEmployee(emp);
-		projectService.createPorj(projectDto);
+		projectService.createPorj(projectDto,emp);
 		
 		log.info("프로젝트 생성 끝------------------------------------------------------------------");
 		

@@ -1,6 +1,6 @@
 package com.greedy.moaware.boardPost.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -55,12 +55,12 @@ public class BoardPost {
 	@Column(name="POST_CONTENT")
 	private String postContent;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name="CREATE_DATE")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createDate;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name="MODIFY_DATE")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date modifyDate;
 	
 	

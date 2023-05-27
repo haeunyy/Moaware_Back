@@ -64,9 +64,7 @@ public class AdminEmp {
 	@JoinColumn(name="DEPT_CODE")
 	private Dept dept;
 	
-	@OneToOne(mappedBy="emp" )
-	private FileCategory fileCategory;
-	
+
 	
 	
 

@@ -13,24 +13,19 @@ import com.greedy.moaware.leave.entity.LeavePayment;
 
 public interface LeavePaymentRepository extends JpaRepository<LeavePayment, Integer> {
 	
-//	@Query("SELECT l " +
-//		       "FROM LeavePayment l " +
-//		       "WHERE l.emplyoee.empCode = :empCode " +
-//		       "AND l.lPayStatus IN (:lPayStatusList)")
-//	Page<LeavePayment> findByEmployeeEmpCodeAndlPayStatus(@Param("empCode") Integer empCode, @Param("lPayStatusList") List<String> lPayStatusList, Pageable pageable);
+	@Query("SELECT l " +
+		       "FROM LeavePayment l " +
+		       "WHERE l.employee.empCode = :empCode " +
+		       "AND l.lPayStatus IN (:lPayStatusList)")
+	Page<LeavePayment> findByEmployeeEmpCodeAndlPayStatus(@Param("empCode") Integer empCode, @Param("lPayStatusList") List<String> lPayStatusList, Pageable pageable);
 	
 	@Query("SELECT l " +
 		       "FROM LeavePayment l " +
 		       "WHERE l.employee.empCode = :empCode " +
-		       "AND l.lPayStatus IN (:lPayStatusList) " +
-		       "AND l.leaveReqDate BETWEEN :startDate AND :endDate")
-	Page<LeavePayment> findByEmployeeEmpCodeAndlPayStatusAndLeaveReqDateBetween(@Param("empCode") Integer empCode, @Param("lPayStatusList") List<String> asList, @Param("startDate") Date startDate,
-			@Param("endDate") Date endDate, Pageable pageable);
+		       "AND l.lPayStatus IN (:lPayStatusList)" + 
+		       "AND l.leaveReqDate >= :startDate " +
+		       "AND l.leaveReqDate <= :endDate")
+	Page<LeavePayment> findByEmployeeEmpCodeAndlPayStatusAndLeaveReqDate(@Param("empCode") Integer empCode, @Param("lPayStatusList") List<String> asList,
+			@Param("startDate") Date startDate, @Param("endDate") Date endDate, Pageable pageable);
 	
-//	@Query("SELECT l " +
-//		       "FROM LeavePayment l " +
-//		       "WHERE l.emplyoee.empCode = :empCode " +
-//		       "AND l.lPayStatus = :lPayStatus")
-//	Page<LeavePayment> findByEmployeeEmpCodeAndlPayStatus(@Param("empCode") Integer empCode, @Param("lPayStatus") String lPayStatus, Pageable pageable);
-
 }

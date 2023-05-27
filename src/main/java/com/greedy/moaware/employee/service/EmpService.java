@@ -62,22 +62,50 @@ public class EmpService {
 		
 	}
 
-	/*사원 상세조회*/
+//	/*사원 상세조회*/
+//	public EmpDto selectEmpDetail(Integer empCode) {
+//		log.info("[EmpService] selectOrgDetail start ============================== ");
+//		log.info("[EmpService] empCode : {}" , empCode);
+//		
+//		Emp empList = empRepository.findById(empCode)
+//				.orElseThrow( ()-> new IllegalArgumentException("해당 사번을 가진 사원이 없습니다. 사번 = " + empCode));
+//		log.info("[EmpService] empList : {}" , empList);
+//		
+//		EmpDto empDto = modelMapper.map(empList, EmpDto.class);
+//		
+//		empDto.getFileCategory().getFile().setFilePath(IMAGE_URL+empDto.getFileCategory().getFile().getFilePath());
+//		
+//		log.info("[EmpService] empDto : {}" , empDto);
+//		
+//		log.info("[EmpService] selectOrgDetail end ================================ ");
+//		return empDto;
+//		
+//	}
+	
+	
+	/* 회원정보 조회 */
 	public EmpDto selectEmpDetail(Integer empCode) {
-		log.info("[EmpService] selectOrgDetail start ============================== ");
+		log.info("[EmpService] selectEmpDetail start ============================== ");
 		log.info("[EmpService] empCode : {}" , empCode);
 		
-		Emp empList = empRepository.findById(empCode)
-				.orElseThrow( ()-> new IllegalArgumentException("해당 사번을 가진 사원이 없습니다. 사번 = " + empCode));
-		log.info("[EmpService] empList : {}" , empList);
+		Emp emp = empRepository.findById(empCode)
+				.orElseThrow( ()-> new IllegalArgumentException(empCode + " 사번을 가진 사원이 없습니다."));
+		log.info("[EmpService] emp : {}" , emp);
 		
-		EmpDto empDto = modelMapper.map(empList, EmpDto.class);
+		EmpDto empDto = modelMapper.map(emp, EmpDto.class);
 		
-		empDto.getFileCategory().getFile().setFilePath(IMAGE_URL+empDto.getFileCategory().getFile().getFilePath());
+		for (FileCategoryDto file : empDto.getFileCategory()) {
+			
+			String type = "emp";
+			
+		    if (file.getFCategoryType().equals(type)) {
+		        file.getFile().setFilePath(
+		        		IMAGE_URL + file.getFile().getFilePath());
+		    }
+		}
 		
 		log.info("[EmpService] empDto : {}" , empDto);
-		
-		log.info("[EmpService] selectOrgDetail end ================================ ");
+		log.info("[EmpService] selectEmpDetail end ================================ ");
 		return empDto;
 		
 	}
