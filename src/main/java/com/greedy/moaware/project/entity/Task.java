@@ -67,5 +67,15 @@ public class Task {
 	
 	@Column(name="TASK_PROGRESS")
 	private Integer progress;
+	
+	public void update(String taskName, String taskNotice, String type, String stage, Date startDate, Date endDate, Date modifyTime) {
+		this.taskName = taskName;
+		this.taskNotice = taskNotice;
+		this.type = type;
+		this.stage = stage;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.modifyTime = new Date();
+	}
 
 }

@@ -3,9 +3,11 @@ package com.greedy.moaware.project.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,6 +73,32 @@ public class ProjectDetailController {
 		return ResponseEntity
 				.ok()
 				.body(new ResponseDto(HttpStatus.OK, "프로젝트 상세 조회 성공", projService.selectProjDetail(projCode)));
+	}
+	
+	
+	/* 업무 수정 */
+	@PutMapping("/task/update")
+	public ResponseEntity<ResponseDto> taskUpdate(@RequestBody TaskDto task){
+		log.info("task : {} ", task);
+		
+		projService.taskUpdate(task);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "업무 수정 성공"));
+	}
+	
+	
+	/* 업무 삭제 */
+	@PutMapping("/task/delete/{taskCode}")
+	public ResponseEntity<ResponseDto> taskDelete(@PathVariable int taskCode){
+		log.info("taskCode : {} ", taskCode);
+		
+		projService.taskDelete(taskCode);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "'" + taskCode + "'번 프로젝트 업무가 삭제 되었습니다."));
 	}
 }
  
