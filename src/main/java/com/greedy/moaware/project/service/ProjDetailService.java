@@ -63,11 +63,8 @@ public class ProjDetailService {
 
 		log.info("[ProjDetailService] selectTask start =============================================");
 
-		TaskDto task = modelMapper.map(
-						taskRepository.findById(taskCode)
-								.orElseThrow(()-> new IllegalArgumentException("해당 프로젝트 업무가 존재하지 않습니다."))
-					    , TaskDto.class
-						);		
+		TaskDto task = modelMapper.map(taskRepository.findById(taskCode)
+				.orElseThrow(()-> new IllegalArgumentException("해당 프로젝트 업무가 존재하지 않습니다.")), TaskDto.class);		
 		
 		log.info("[ProjDetailService] task : {}",task);
 		log.info("[ProjDetailService] selectTask end =============================================");
