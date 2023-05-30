@@ -36,6 +36,8 @@ public interface AdminEmpRepository extends JpaRepository<AdminEmp, Integer> {
 	@Query("SELECT e FROM Emp e WHERE e.empName LIKE :empName% "
 			+ " AND e.retireYn = 'N'")
 Page<AdminEmp> findByEmpName(@Param("empName") String empName, Pageable pageable);
+
+	
 	
 
 }

@@ -13,6 +13,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import com.greedy.moaware.employee.entity.Dept;
 import com.greedy.moaware.employee.entity.FileCategory;
 import com.greedy.moaware.employee.entity.Job;
@@ -23,6 +25,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@DynamicInsert
 @Table(name="EMPLOYEE")
 @SequenceGenerator(name="EMP_SEQ_GENERATOR", sequenceName="SEQ_EMP_CODE", initialValue=1, allocationSize=1)
 public class AdminEmp {
@@ -41,6 +44,9 @@ public class AdminEmp {
 	@Column(name="EMP_ID")
 	private String empID;
 	
+	@Column(name="EMP_PWD")
+	private String empPwd;
+	 
 	@Column(name="EMAIL")
 	private String email;
 	

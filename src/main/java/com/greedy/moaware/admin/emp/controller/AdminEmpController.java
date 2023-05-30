@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.admin.emp.dto.AdminEmpDto;
 import com.greedy.moaware.admin.emp.service.AdminEmpService;
+import com.greedy.moaware.boardPost.dto.BoardPostDto;
 import com.greedy.moaware.common.ResponseDto;
 
 import com.greedy.moaware.common.paging.Pagenation;
@@ -35,7 +38,7 @@ public class AdminEmpController {
 		this.adminEmpService = adminEmpService;
 	}
 	
-	/* 사원 전체 조회 */
+	/* 계정(회원) 전체 조회 */
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> selectAdminEmpList(){
 		
@@ -51,7 +54,7 @@ public class AdminEmpController {
 		
 }
 	
-	/* 사원 상세 조회*/
+	/* 계정(회원) 상세 조회*/
 	@GetMapping("/list/{empCode}")
 	public ResponseEntity<ResponseDto> selectAdminEmpDetail(@PathVariable Integer empCode){
 		
@@ -63,6 +66,22 @@ public class AdminEmpController {
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", adminEmpService.selectAdminEmpDetail(empCode) ));
 	}	
+	
+	/* 계정(회원) 등록 */
+	@PostMapping("/regist")
+	public ResponseEntity<ResponseDto> insertAdminEmp(@ModelAttribute AdminEmpDto adminEmpDto) {
+		//키&밸류 값의 형태를 띄어 url 인코디드 방식으로 전달->포스트맨에서는 바디-> 폼데이터 검색
+		adminEmpService.insertAdminEmp(adminEmpDto);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "게시물 등록 성공"));
+
+
+	}
+	
+	
+	
 //	
 //	
 //    /* 이름으로 조회 */

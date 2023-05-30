@@ -1,18 +1,9 @@
-package com.greedy.moaware.boardPost.dto;
+package com.greedy.moaware.board.dto;
 
 import lombok.Data;
 
 @Data
-public class BoardDTO {
-
-	
-	
-
-
-	
-	
-			
-
+public class BoardDto {
 			private Long boardCode;
 			private String boardName;
 			

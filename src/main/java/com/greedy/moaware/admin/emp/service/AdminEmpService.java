@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.greedy.moaware.admin.emp.dto.AdminEmpDto;
 import com.greedy.moaware.admin.emp.entity.AdminEmp;
 import com.greedy.moaware.admin.emp.repository.AdminEmpRepository;
+import com.greedy.moaware.boardPost.entity.BoardPost;
 import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.entity.Emp;
 
@@ -38,7 +39,7 @@ public class AdminEmpService {
 		this.modelMapper = modelMapper;
 	}
 	
-	/* 사원 전체 조회*/
+	/* 계정(회원) 전체 조회*/
 	public List<AdminEmpDto> selectAdminEmpList() {
 		
 		
@@ -53,7 +54,7 @@ public class AdminEmpService {
 		
 	}
 	
-	/*사원 상세조회*/
+	/*계정(회원) 상세 조회*/
 	public AdminEmpDto selectAdminEmpDetail(Integer empCode) {
 		log.info("[AdminEmpService] selectAdminEmpDetail start ============================== ");
 		log.info("[AdminEmpService] empCode : {}" , empCode);
@@ -70,6 +71,23 @@ public class AdminEmpService {
 		
 		log.info("[AdminEmpService] selectAdminEmpDetail end ================================ ");
 		return adminEmpDto;
+		
+	}
+
+	
+	
+	/*계정(회원)등록*/
+
+	public void insertAdminEmp(AdminEmpDto adminEmpDto) {
+		
+		log.info("[AdminEmpService] insertAdminEmp Start ===================================");
+		log.info("[AdminEmpService] adminEmpDto : {}", adminEmpDto);
+		
+		adminEmpRepository.save(modelMapper.map(adminEmpDto, AdminEmp.class));
+
+		log.info("[AdminEmpService] insertAdminEmp End ==============================");
+
+		
 		
 	}
 	

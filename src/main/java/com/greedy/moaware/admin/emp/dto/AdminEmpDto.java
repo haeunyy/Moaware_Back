@@ -15,6 +15,7 @@ public class AdminEmpDto {
 	private String empName;
 	private String phone;
 	private String empID;
+	private String empPwd;
 	private String email;
 	private String retireYn;
 	private Date hireDate;

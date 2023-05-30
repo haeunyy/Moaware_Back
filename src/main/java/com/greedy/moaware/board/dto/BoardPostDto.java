@@ -1,13 +1,15 @@
-package com.greedy.moaware.boardPost.dto;
+package com.greedy.moaware.board.dto;
 
 
 
 import java.sql.Date;
 
+import com.greedy.moaware.boardPost.dto.BoardDTO;
 import com.greedy.moaware.boardPost.entity.Board;
 import com.greedy.moaware.employee.dto.EmpDto;
 
 import lombok.Data;
+
 
 
 
