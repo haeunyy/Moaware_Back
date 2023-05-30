@@ -23,6 +23,7 @@ import com.greedy.moaware.common.paging.PagingButtonInfo;
 import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.work.dto.WorkDto;
+import com.greedy.moaware.work.dto.WorkEmpDto2;
 import com.greedy.moaware.work.dto.WorkPkDto;
 import com.greedy.moaware.work.dto.WorkTimeDto;
 import com.greedy.moaware.work.service.WorkService;
@@ -189,7 +190,8 @@ public class WorkController {
 	        e.printStackTrace();
 	    }
 		
-	    Page<WorkDto> workDtoList = workService.empWorkList(parsedDate, page);
+//	    Page<WorkDto> workDtoList = workService.empWorkList(parsedDate, page);
+	    Page<WorkEmpDto2> workDtoList = workService.empWorkList1(parsedDate, page);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(workDtoList);
 		
 		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
@@ -204,6 +206,17 @@ public class WorkController {
 	    
 	}
 	
+	@PutMapping("status/modify")
+	public ResponseEntity<ResponseDto> empStatusModify(@RequestBody WorkDto workDto){
+		
+		log.info("put객체 확인 workDto{}", workDto);
+		
+		workService.statusUpdate(workDto);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "출결 변경 완료"));
+	}
 	
 	/* 이름 + 날짜로 근무 조회 */
 //	@GetMapping("name/{empName}/{workDate}")

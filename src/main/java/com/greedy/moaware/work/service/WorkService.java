@@ -23,10 +23,13 @@ import com.greedy.moaware.employee.repository.EmpRepository;
 import com.greedy.moaware.exception.NotLogin;
 import com.greedy.moaware.exception.UserNotFoundException;
 import com.greedy.moaware.work.dto.WorkDto;
+import com.greedy.moaware.work.dto.WorkEmpDto2;
 import com.greedy.moaware.work.dto.WorkTimeDto;
 import com.greedy.moaware.work.entity.Work;
+import com.greedy.moaware.work.entity.WorkEmp2;
 import com.greedy.moaware.work.entity.WorkPk;
 import com.greedy.moaware.work.entity.WorkTime;
+import com.greedy.moaware.work.repository.WorkEmpRepositoty;
 import com.greedy.moaware.work.repository.WorkRepository;
 import com.greedy.moaware.work.repository.WorkTimeRepository;
 
@@ -40,13 +43,15 @@ public class WorkService {
 	private final WorkTimeRepository workTimeRepository;
 	private ModelMapper modelMapper;
 	private final AuthEmpRepository authEmpRepository;
+	private final WorkEmpRepositoty workEmpRepository;
 
 	public WorkService(WorkRepository workRepository, ModelMapper modelMapper, EmpRepository empRepository,
-			AuthEmpRepository authEmpRepository, WorkTimeRepository workTimeRepository) {
+			AuthEmpRepository authEmpRepository, WorkTimeRepository workTimeRepository, WorkEmpRepositoty workEmpRepository) {
 		this.modelMapper = modelMapper;
 		this.workRepository = workRepository;
 		this.authEmpRepository = authEmpRepository;
 		this.workTimeRepository = workTimeRepository;
+		this.workEmpRepository= workEmpRepository;
 	}
 
 	/* 자기 근태 현황 조회 */
@@ -186,15 +191,36 @@ public class WorkService {
 
 	}
 
-	public Page<WorkDto> empWorkList(Date workDate, int page) {
+//	public Page<WorkDto> empWorkList(Date workDate, int page) {
+//
+//
+//		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("workPk.empCode").descending());
+//		Page<Work> workList = workRepository.findByWorkPkWorkDate(workDate, pageable);
+//		Page<WorkDto> workDtoList = workList.map(work -> modelMapper.map(work, WorkDto.class));
+//
+//		return workDtoList;
+//	}
+	
+	@Transactional
+	public void statusUpdate(WorkDto workDto) {
+		
+		Work findWork = workRepository.findByWorkPkEmpCodeAndWorkPkWorkDate(workDto.getWorkPk().getEmpCode(), workDto.getWorkPk().getWorkDate())
+                .orElseThrow(() -> new IllegalArgumentException("해당 사원의 정보가 없습니다. findWork=" + workDto.getWorkPk().getEmpCode()));
+		if(findWork != null) {			
+			findWork.update(
+					workDto.getWorkStatus());
+		}
+		
+	}
 
-
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("workPk.empCode").descending());
-		Page<Work> workList = workRepository.findByWorkPkWorkDate(workDate, pageable);
-		Page<WorkDto> workDtoList = workList.map(work -> modelMapper.map(work, WorkDto.class));
+	public Page<WorkEmpDto2> empWorkList1(Date workDate, int page) {
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("EMP_CODE").descending());
+		Page<WorkEmp2> workList = workEmpRepository.findByWorkWorkPkWorkDate(workDate, pageable);
+		Page<WorkEmpDto2> workDtoList = workList.map(work -> modelMapper.map(work, WorkEmpDto2.class));
 
 		return workDtoList;
 	}
+
 
 //	public Page<WorkDto> selectDateAllList(Date parsedDate, int page) {
 //		// TODO Auto-generated method stub

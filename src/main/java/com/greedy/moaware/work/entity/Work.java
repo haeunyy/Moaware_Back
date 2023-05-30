@@ -41,6 +41,11 @@ public class Work {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="EMP_CODE", referencedColumnName="EMP_CODE", insertable=false, updatable=false)
 	private AuthEmp auth;
+
+	public void update(String workStatus) {
+		this.workStatus = workStatus;
+		
+	}
 	
 
 }

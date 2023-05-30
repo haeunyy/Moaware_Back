@@ -15,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 import com.greedy.moaware.employee.entity.AuthEmp;
 import com.greedy.moaware.work.dto.WorkTimeDto;
 import com.greedy.moaware.work.entity.Work;
+import com.greedy.moaware.work.entity.WorkEmp;
 import com.greedy.moaware.work.entity.WorkPk;
 
 public interface WorkRepository extends JpaRepository<Work, WorkPk> {
@@ -24,13 +25,12 @@ public interface WorkRepository extends JpaRepository<Work, WorkPk> {
 	
 			Pageable pageable);
 	
+//	@Query("SELECT w FROM WorkEmp w JOIN fetch w.work wk WHERE w.empCode = wk.workPk.empCode AND wk.workPk.workDate = :workDate")
 	Page<Work> findByWorkPkWorkDate(Date workDate, Pageable pageable);
-	
-//	@EntityGraph(attributePaths = {"workPk", "auth.roleList"})
-//	Page<Work> findAllByWorkPkEmpCodeAndWorkPkWorkDateBetween(Integer emp, Date startDate, Date endDate, Pageable pageable);
 
-//	Page<Work> findAllByWorkPkEmpCodeAndWorkPkWorkDateBetween(Integer empCode, LocalDate firstDayOfMonth,
-//			LocalDate lastDayOfMonth, Pageable pageable);
+	Optional<Work> findByWorkPkEmpCodeAndWorkPkWorkDate(Integer empCode, Date workDate);
+	
+
 	
 
 }
