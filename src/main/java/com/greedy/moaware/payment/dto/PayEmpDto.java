@@ -23,6 +23,7 @@ public class PayEmpDto {
 	private String empSsi;
 	private PayJobDto job;
 	private PayDeptDto dept;
+	private List<PayFileCategoryDto> payFileCategory;
 	
 
 }

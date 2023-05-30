@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +22,6 @@ import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.payment.dto.PayAttachedFileDto;
-import com.greedy.moaware.payment.dto.PayEmpDto;
 import com.greedy.moaware.payment.dto.PaymentDto;
 import com.greedy.moaware.payment.service.PaymentService;
 
@@ -130,6 +131,14 @@ public class PaymentController {
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 대기 문서 조회.", responseDtoPage ));
 	}
 	
+	@GetMapping("/payDetail/{payCode}")
+	public ResponseEntity<ResponseDto> paymentDetail(@PathVariable Integer payCode){
+		
+		
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 문서 상세 조회"));
+	}
+	
 	/* 결재 완료 문서 전체 조회 */
 	@GetMapping("/complete")
 	public ResponseEntity<ResponseDto> PaymentCompleteList(@AuthenticationPrincipal AuthEmpDto payEmp, @RequestParam(name="page", defaultValue="1") int page){
@@ -228,6 +237,22 @@ public class PaymentController {
 		
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "사인 저장 완료." ));
+				
+	}
+	
+	/* 서명 수정 */
+	@PutMapping("/sign")
+	public ResponseEntity<ResponseDto> PaymentSignUpdate( @AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PayAttachedFileDto payAttachedFile){
+		
+		log.info("[PaymentController] PaymentSign start ============================== ");
+		log.info("[PaymentController] PaymentSign emp : {} " , payAttachedFile);
+		
+		paymentService.paymentSignUpdate(payEmp.getEmpCode(), payAttachedFile);
+		
+		log.info("[PaymentController] PaymentSign end ============================== ");
+		
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "사인 수정 완료." ));
 				
 	}
 	

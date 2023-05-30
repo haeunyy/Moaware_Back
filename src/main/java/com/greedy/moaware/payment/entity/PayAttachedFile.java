@@ -39,5 +39,14 @@ public class PayAttachedFile {
 	@OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="F_CATEGORY_CODE")
 	private PayFileCategory payFileCategory;
+	
+	/* 서명 update 용 메소드 */
+	public void update (String originalFileName, String filePath, String savedFileName) {
+		
+		this.originalFileName = originalFileName;
+		this.filePath = filePath;
+		this.savedFileName = savedFileName;
+		
+	}
   
 }
