@@ -11,6 +11,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,7 +25,9 @@ import com.greedy.moaware.employee.repository.EmpRepository;
 import com.greedy.moaware.payment.dto.FormDto;
 import com.greedy.moaware.payment.dto.PayAttachedFileDto;
 import com.greedy.moaware.payment.dto.PayEmpDto;
+import com.greedy.moaware.payment.dto.PayFileCategoryDto;
 import com.greedy.moaware.payment.dto.PaymentDto;
+import com.greedy.moaware.payment.dto.PaymentMemberDto;
 import com.greedy.moaware.payment.entity.Form;
 import com.greedy.moaware.payment.entity.PayAttachedFile;
 import com.greedy.moaware.payment.entity.PayEmp;
@@ -118,6 +121,16 @@ public class PaymentService {
 		
 		log.info("[PaymentService] formSelect formDtoList : {}" , formDtoList);
 		log.info("[PaymentService] formSelect empDto : {}" , empDto);
+		
+		if(empDto.getPayFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).count() != 0) {
+			List<PayFileCategoryDto> empFileCategoryDto = empDto.getPayFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).collect(Collectors.toList());
+			
+			empFileCategoryDto.get(0).getFile().setFilePath(IMAGE_URL + empFileCategoryDto.get(0).getFile().getFilePath());
+			
+			log.info("[PaymentService] empFileCategoryDto : {}" , empFileCategoryDto);
+			
+			empDto.setPayFileCategory(empFileCategoryDto);
+			}
 		
 		Map<String, Object> result = new HashMap<>();
 		
@@ -229,7 +242,9 @@ public class PaymentService {
 		
 		paymentMemberPk.setEmpCode(empCode);
 		
-		List<PaymentMember> paymentMemberList = paymentMemberRepository.findByPaymentMemberPkEmpCode(empCode);
+		String PayType = null;
+		
+		List<PaymentMember> paymentMemberList = paymentMemberRepository.findByPaymentMemberPkEmpCodeAndPayType(empCode, PayType);
 		
 		log.info("[PaymentService] paymentMemberList paymentMemberList : {} ", paymentMemberList);
 		
@@ -238,10 +253,62 @@ public class PaymentService {
 		log.info("[PaymentService] paymentMemberList paymentList : {} ", paymentList);
 		
 		Page<PaymentDto> paymentListDto = paymentList.map( pay -> modelMapper.map(pay, PaymentDto.class));
+
+		List<PaymentDto> filterPayList = paymentListDto.getContent();
+		
+		List<PaymentDto> filterPay = filterPayList.stream().filter( p -> {
+
+			List<PaymentMemberDto> filterPayMember = p.getPaymentMember().stream().filter( f -> {
+				
+				if(f.getPaymentMemberPk().getEmpCode() == empCode ) {
+					Integer rank = f.getPayRank();
+					if( f.getPayRank() == 1) {
+						return true;
+					} else if ( f.getPayRank() > 1 ) {
+						
+						return p.getPaymentMember().stream().anyMatch( pay -> pay.getPayRank() == rank-1 && "결재".equals(pay.getPayType()));
+					}
+				}
+				return false;
+			}).collect(Collectors.toList());
+			
+			return filterPayMember.size() > 0;
+			
+		}).collect(Collectors.toList());
+		
+		Page<PaymentDto> filteredPage = new PageImpl<>(filterPay, paymentListDto.getPageable(), filterPay.size());
+		
+		log.info("[PaymentService] paymentMemberList filterPay : {} ", filterPay);
+		log.info("[PaymentService] paymentMemberList filteredPage : {} ", filteredPage	);
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
+		
+		PayEmpDto empDto = modelMapper.map(emp, PayEmpDto.class);
+		
+		result.put("paymentListDto", paymentListDto);
+		result.put("payEmp", empDto);
+	
+	
 		
 		log.info("[PaymentService] paymentMemberList end ============================== ");
 		
-		return paymentListDto;
+		return filteredPage;
+	}
+	
+	/* 결재 문서 상세 조회 */
+	public PaymentDto paymentDetail ( Integer payCode) {
+		
+		log.info("[PaymentService] paymentDetail start ============================== ");
+		
+		
+		
+		
+		
+		log.info("[PaymentService] paymentDetail end ============================== ");
+		
+		return null;
 	}
 	
 	

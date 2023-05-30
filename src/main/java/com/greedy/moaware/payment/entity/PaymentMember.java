@@ -9,11 +9,13 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Entity
 @Table(name="PAYMENT_MEMBER")
+@ToString
 public class PaymentMember {
 	
 	@EmbeddedId
@@ -27,6 +29,9 @@ public class PaymentMember {
 	
 	@Column(name="PAY_DATE")
 	private Date payDate;
+	
+	@Column(name="PAY_TYPE")
+	private String payType;
 	
 	@Column(name="CANCLE_REASON")
 	private String cancleReason;

@@ -65,7 +65,9 @@ public class PayEmp {
 	@JoinColumn(name="DEPT_CODE")
 	private PayDept dept;
 	
-	
+	@OneToMany(cascade=CascadeType.PERSIST)
+	@JoinColumn(name="EMP_CODE")
+	private List<PayFileCategory> payFileCategory;
 	
 
 }

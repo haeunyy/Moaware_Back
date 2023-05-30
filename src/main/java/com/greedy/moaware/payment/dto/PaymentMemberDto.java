@@ -15,6 +15,7 @@ public class PaymentMemberDto {
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date payDate;
+	private String payType;
 	private String cancleReason;
 	private Integer payRank;
 

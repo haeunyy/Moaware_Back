@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -128,6 +129,14 @@ public class PaymentController {
 		log.info("[PaymentController] PaymentList end ============================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 대기 문서 조회.", responseDtoPage ));
+	}
+	
+	@GetMapping("/payDetail/{payCode}")
+	public ResponseEntity<ResponseDto> paymentDetail(@PathVariable Integer payCode){
+		
+		
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 문서 상세 조회"));
 	}
 	
 	/* 결재 완료 문서 전체 조회 */
