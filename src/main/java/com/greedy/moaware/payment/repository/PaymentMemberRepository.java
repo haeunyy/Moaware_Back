@@ -12,8 +12,11 @@ public interface PaymentMemberRepository extends JpaRepository<PaymentMember, Pa
 
 	List<PaymentMember> findByPaymentMemberPkEmpCode(Integer empCode);
 
-	
-	
+	List<PaymentMember> findByPaymentMemberPkEmpCodeAndPayType(Integer empCode, String payType);
+
+
+
+
 	
 	
 }

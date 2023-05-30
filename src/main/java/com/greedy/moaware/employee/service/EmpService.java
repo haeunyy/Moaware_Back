@@ -94,6 +94,7 @@ public class EmpService {
 		
 		EmpDto empDto = modelMapper.map(emp, EmpDto.class);
 		
+
 		for (FileCategoryDto file : empDto.getFileCategory()) {
 			
 			String type = "emp";
@@ -102,6 +103,16 @@ public class EmpService {
 		        file.getFile().setFilePath(
 		        		IMAGE_URL + file.getFile().getFilePath());
 		    }
+
+		if(empDto.getFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("emp")).count() != 0) {
+		List<FileCategoryDto> empFileCategoryDto = empDto.getFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("emp")).collect(Collectors.toList());
+		
+		empFileCategoryDto.get(0).getFile().setFilePath(IMAGE_URL + empFileCategoryDto.get(0).getFile().getFilePath());
+		
+		log.info("[EmpService] empFileCategoryDto : {}" , empFileCategoryDto);
+		
+		empDto.setFileCategory(empFileCategoryDto);
+
 		}
 		
 		log.info("[EmpService] empDto : {}" , empDto);

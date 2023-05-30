@@ -1,6 +1,7 @@
 package com.greedy.moaware.work.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,12 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.greedy.moaware.employee.entity.Dept;
-import com.greedy.moaware.employee.entity.FileCategory;
 import com.greedy.moaware.employee.entity.Job;
 
 import lombok.Getter;
@@ -32,6 +32,9 @@ public class WorkEmp {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EMP_SEQ_GENERATOR")
 	private Integer empCode;
 	
+	@Column(name="EMP_NAME")
+	private String empName;
+	
 	@ManyToOne
 	@JoinColumn(name="JOB_CODE")
 	private Job job;
@@ -42,5 +45,5 @@ public class WorkEmp {
 	
 	@Column(name="HIRE_DATE")
 	private Date hireDate;
-
+	
 }

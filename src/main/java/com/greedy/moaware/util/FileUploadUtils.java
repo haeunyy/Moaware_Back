@@ -43,7 +43,8 @@ public class FileUploadUtils {
 		try {
 			Files.delete(filePath);
 		} catch (IOException e) {
-			throw new IOException("파일을 삭제하지 못하였습니다. filename : " + fileName);
+			e.printStackTrace();
+			// new IOException("파일을 삭제하지 못하였습니다. filename : " + fileName);
 		}
 		
 	}
