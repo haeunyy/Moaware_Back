@@ -5,14 +5,12 @@ import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.mail.Multipart;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.greedy.moaware.common.configuration.MailSenderConfig;
 import com.greedy.moaware.employee.dto.AttachedFileDto;
@@ -22,6 +20,7 @@ import com.greedy.moaware.employee.dto.TokenDto;
 import com.greedy.moaware.employee.entity.AttachedFile;
 import com.greedy.moaware.employee.entity.AuthEmp;
 import com.greedy.moaware.employee.entity.Emp;
+import com.greedy.moaware.employee.entity.FileCategory;
 import com.greedy.moaware.employee.repository.AuthEmpRepository;
 import com.greedy.moaware.employee.repository.EmpRepository;
 import com.greedy.moaware.employee.repository.FileRepository;
@@ -189,7 +188,7 @@ public class AuthService {
 		log.info("fileDto : {}", fileDto);
 		
 		Emp originalEmp = empRepository.findById(emp.getEmpCode())
-				.orElseThrow(()-> new IllegalArgumentException("오류가 발생하였습니다. 다시 시도 해주세요."));
+					.orElseThrow(()-> new IllegalArgumentException("오류가 발생하였습니다. 다시 시도 해주세요."));
 		
 		// 프로필 이미지 업로드 
 		try {
@@ -198,7 +197,20 @@ public class AuthService {
 				
 				String imgRandomName = UUID.randomUUID().toString().replace("-","");
 				String uploadDir = IMAGE_DIR+"/profile/";
-				AttachedFile originalFile = originalEmp.getFileCategory().getFile();
+				log.info("originalEmp : ======================\n{}", originalEmp);
+
+//				AttachedFile originalFile = originalEmp.getFileCategory().getFile();
+				
+				AttachedFile originalFile = null;
+				
+				for (FileCategory file : originalEmp.getFileCategory()) {
+					
+					String type = "emp";
+					
+				    if (file.getFCategoryType().equals(type)) {
+				    	originalFile = file.getFile();
+				    }
+				} 
 				
 				String replaceImgName = FileUploadUtils.saveFile( uploadDir, imgRandomName, fileDto.getFileInfo() );
 				
@@ -207,8 +219,6 @@ public class AuthService {
 				originalFile.setFilePath("/profile/"+replaceImgName);
 				originalFile.setSavedFileName(replaceImgName);
 				originalFile.setOriginalFileName(fileDto.getFileInfo().getOriginalFilename());
-				
-				
 				
 				fileRepository.save(originalFile);
 			}

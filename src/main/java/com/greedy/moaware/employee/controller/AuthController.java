@@ -76,12 +76,8 @@ public class AuthController {
 	
 	
 	/* 회원 정보 수정 */
-	@PostMapping("/modify"
-//			, consumes = "multipart/form-data"
-			)
+	@PostMapping("/modify")
 	public ResponseEntity<ResponseDto> memberModify(@AuthenticationPrincipal AuthEmpDto emp,
-//	        @RequestPart("file") MultipartFile file,
-//	        @RequestPart("fileDto") AttachedFileDto fileDto
 			@ModelAttribute AttachedFileDto fileDto) {
 		
 		authService.memberModify(emp, fileDto);
