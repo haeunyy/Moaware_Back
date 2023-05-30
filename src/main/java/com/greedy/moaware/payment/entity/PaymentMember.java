@@ -15,7 +15,6 @@ import lombok.ToString;
 @Setter
 @Entity
 @Table(name="PAYMENT_MEMBER")
-@ToString
 public class PaymentMember {
 	
 	@EmbeddedId

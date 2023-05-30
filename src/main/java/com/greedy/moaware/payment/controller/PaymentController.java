@@ -136,7 +136,7 @@ public class PaymentController {
 		
 		
 		
-		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 문서 상세 조회"));
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 문서 상세 조회", paymentService.paymentDetail(payCode)));
 	}
 	
 	/* 결재 완료 문서 전체 조회 */
