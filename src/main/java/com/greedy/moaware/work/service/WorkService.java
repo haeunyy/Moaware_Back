@@ -24,6 +24,7 @@ import com.greedy.moaware.exception.NotLogin;
 import com.greedy.moaware.exception.UserNotFoundException;
 import com.greedy.moaware.work.dto.WorkDto;
 import com.greedy.moaware.work.dto.WorkEmpDto2;
+import com.greedy.moaware.work.dto.WorkPkDto;
 import com.greedy.moaware.work.dto.WorkTimeDto;
 import com.greedy.moaware.work.entity.Work;
 import com.greedy.moaware.work.entity.WorkEmp2;
@@ -204,13 +205,28 @@ public class WorkService {
 	@Transactional
 	public void statusUpdate(WorkDto workDto) {
 		
-		Work findWork = workRepository.findByWorkPkEmpCodeAndWorkPkWorkDate(workDto.getWorkPk().getEmpCode(), workDto.getWorkPk().getWorkDate())
-                .orElseThrow(() -> new IllegalArgumentException("해당 사원의 정보가 없습니다. findWork=" + workDto.getWorkPk().getEmpCode()));
-		if(findWork != null) {			
-			findWork.update(
-					workDto.getWorkStatus());
+		try {
+		    Work findWork = workRepository.findByWorkPkEmpCodeAndWorkPkWorkDate(workDto.getWorkPk().getEmpCode(), workDto.getWorkPk().getWorkDate())
+		            .orElseThrow(() -> new IllegalArgumentException("해당 사원의 정보가 없습니다. findWork=" + workDto.getWorkPk().getEmpCode()));
+
+		    findWork.update(workDto.getWorkStatus());
+		    
+		    
+		    //트라이 캐치로 익셉션 발생시 밑으로 이동
+		} catch (IllegalArgumentException e) {
+		    log.info("dkdkdkdk");
+		    WorkTimeDto workTimeDto = new WorkTimeDto();
+		    WorkPkDto workPkDto = new WorkPkDto();
+
+		    workPkDto.setEmpCode(workDto.getWorkPk().getEmpCode());
+		    workPkDto.setWorkDate(workDto.getWorkPk().getWorkDate());
+
+		    workTimeDto.setWorkPk(workPkDto);
+
+		    workTimeDto.setWorkStatus(workDto.getWorkStatus());
+
+		    workTimeRepository.save(modelMapper.map(workTimeDto, WorkTime.class));
 		}
-		
 	}
 
 	public Page<WorkEmpDto2> empWorkList1(Date workDate, int page) {
@@ -221,6 +237,17 @@ public class WorkService {
 		return workDtoList;
 	}
 
+	public Page<WorkEmpDto2> findByEmpName(String name, int page, Date workDate) {
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("EMP_CODE").descending());
+		Page<WorkEmp2> workList = workEmpRepository.findByEmpNameAndWorkWorkPkWorkDate(name, workDate, pageable);
+		Page<WorkEmpDto2> workDtoList = workList.map(work -> modelMapper.map(work, WorkEmpDto2.class));
+
+		
+		return workDtoList;
+	}
+
+	
 
 //	public Page<WorkDto> selectDateAllList(Date parsedDate, int page) {
 //		// TODO Auto-generated method stub
