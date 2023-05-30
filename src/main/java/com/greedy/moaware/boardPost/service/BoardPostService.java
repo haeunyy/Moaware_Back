@@ -132,7 +132,7 @@ public class BoardPostService {
 		log.info("[BoardPostService] postCode : {}", postCode);
 		
 		BoardPost boardPost = boardPostRepository.findByPostCode(postCode)
-				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 상품이 없습니다. postCode=" + postCode));
+				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 게시물이 없습니다. postCode=" + postCode));
 		
 		BoardPostDto boardPostDto = modelMapper.map(boardPost, BoardPostDto.class);
 		//boardPostDto.setProductImgUrl(IMAGE_URL + boardPostDto.getBoardPostImgUrl());
@@ -150,7 +150,7 @@ public class BoardPostService {
 		log.info("[BoardPostService] postCode : {}", postCode);
 		
 		BoardPost boardPost = boardPostRepository.findById(postCode)
-				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 상품이 없습니다. postCode=" + postCode));
+				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 게시물이 없습니다. postCode=" + postCode));
 		
 		BoardPostDto boardPostDto = modelMapper.map(boardPost, BoardPostDto.class);
 		//boardPostDto.setProductImgUrl(IMAGE_URL + productDto.getProductImgUrl());
