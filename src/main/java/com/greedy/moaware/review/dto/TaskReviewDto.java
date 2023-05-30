@@ -2,8 +2,7 @@ package com.greedy.moaware.review.dto;
 
 import java.util.Date;
 
-import com.greedy.moaware.project.entity.Task;
-import com.greedy.moaware.review.entity.ReviewEmp;
+import com.greedy.moaware.project.dto.TaskDto;
 
 import lombok.Data;
 
@@ -12,10 +11,10 @@ public class TaskReviewDto {
 	
 	private Integer reviewCode;
 	private String content;
-	private ReviewEmp emp;
+	private ReviewEmpDto emp;
 	private Date date;
 	private String type;
-	private Task task;
+	private TaskDto task;
 	private String status;
 	private Date modifyDate;
 
