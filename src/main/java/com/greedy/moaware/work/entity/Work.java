@@ -42,5 +42,4 @@ public class Work {
 	@JoinColumn(name="EMP_CODE", referencedColumnName="EMP_CODE", insertable=false, updatable=false)
 	private AuthEmp auth;
 	
-
 }

@@ -71,6 +71,8 @@ public class SchController {
 
 		log.info("[SchController] : insertSchedule start ===================================== ");
 
+		log.info("[SchController] : {}", scheduleDto);
+		
 		schService.insertSchedule(scheduleDto);
 		
 	    log.info("[SchController] : insertSchedule  end  ===================================== ");
@@ -79,6 +81,21 @@ public class SchController {
 	            .ok()
 	            .body(new ResponseDto(HttpStatus.OK, "일정 등록 성공"));
 	    		
+	}
+	
+	/* 일정 참여자 조회 */
+	@GetMapping("/emp/{empCode}")
+	public ResponseEntity<ResponseDto> findPrarEmpList() {
+		
+		log.info("[SchController] : findPrarEmpList start ===================================== ");
+
+//		schService.findPrarEmpList;
+		
+	    log.info("[SchController] : findPrarEmpList  end  ===================================== ");
+	    
+	    return ResponseEntity 
+	            .ok()
+	            .body(new ResponseDto(HttpStatus.OK, "일정 참여자 조회 성공"));
 	}
 	
 }
