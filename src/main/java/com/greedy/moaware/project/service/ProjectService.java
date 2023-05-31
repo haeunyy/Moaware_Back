@@ -56,72 +56,72 @@ public class ProjectService {
 		this.entityManager = entityManager;
 	}
 
-//	public Page<CreateProjectDto> selectMyProgressProj(Integer empCode, int page) {
-//
-//		log.info("[ProjectService] selectMyproject start ===========================");
-//		log.info("[ProjectService] empCode : {}", empCode);
-//
-//		AuthEmp emp = authEmpRepository.findById(empCode).orElseThrow(() -> new UserNotFoundException("해당 사원이 없습니다."));
-//
-//		AuthEmpDto projEmp = new AuthEmpDto();
-//		projEmp.setEmpCode(empCode);
-//
-//		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("projCode").descending());
-//		Page<CreateProject> projList = createProjectRepository.findByEmployeeEmpCodeAndProjStatus(pageable,
-//				projEmp.getEmpCode(), "진행중");
-//
-//		Page<CreateProjectDto> projDtoList = projList.map(proj -> modelMapper.map(proj, CreateProjectDto.class));
-//
-//		// 참여자 정보 매칭
-//		projDtoList.forEach(dto -> {
-//			List<ProjParticipant> participants = projectparticipantRepository.findByProjCodeProjCode(dto.getProjCode());
-//			List<ProjParticipantDto> participantDtos = participants.stream().map(participant -> {
-//				ProjParticipantDto participantDto = new ProjParticipantDto();
-//				ProjParticipantPkDto projParticipantPkDto = new ProjParticipantPkDto();
-//				projParticipantPkDto.setProjCode(participant.getProjCode().getProjCode());
-//				projParticipantPkDto.setProjMember(participant.getProjCode().getProjMember());
-//				participantDto.setProjMember(projParticipantPkDto);
-//				participantDto.setEmp(modelMapper.map(participant.getEmp(), ProjEmpDto.class));
-//				return participantDto;
-//			}).collect(Collectors.toList());
-//			dto.setProjMember(participantDtos);
-//		});
-//		return projDtoList;
-//	}
+	public Page<CreateProjectDto> selectMyProgressProj(Integer empCode, int page) {
 
-//	public Page<CreateProjectDto> selectMyDoneProj(Integer empCode, int page) {
-//
-//		log.info("[ProjectService] selectMyDoneProj start ===========================");
-//		log.info("[ProjectService] empCode : {}", empCode);
-//
-//		AuthEmp emp = authEmpRepository.findById(empCode).orElseThrow(() -> new UserNotFoundException("해당 사원이 없습니다."));
-//
-//		AuthEmpDto projEmp = new AuthEmpDto();
-//		projEmp.setEmpCode(empCode);
-//
-//		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("projCode").descending());
-//		Page<CreateProject> projList = createProjectRepository.findByEmployeeEmpCodeAndProjStatus(pageable,
-//				projEmp.getEmpCode(), "완료");
-//
-//		Page<CreateProjectDto> projDtoList = projList.map(proj -> modelMapper.map(proj, CreateProjectDto.class));
-//
-//		// 참여자 정보 매칭
-//		projDtoList.forEach(dto -> {
-//			List<ProjParticipant> participants = projectparticipantRepository.findByProjCodeProjCode(dto.getProjCode());
-//			List<ProjParticipantDto> participantDtos = participants.stream().map(participant -> {
-//				ProjParticipantDto participantDto = new ProjParticipantDto();
-//				ProjParticipantPkDto projParticipantPkDto = new ProjParticipantPkDto();
-//				projParticipantPkDto.setProjCode(participant.getProjCode().getProjCode());
-//				projParticipantPkDto.setProjMember(participant.getProjCode().getProjMember());
-//				participantDto.setProjMember(projParticipantPkDto);
-//				participantDto.setEmp(modelMapper.map(participant.getEmp(), ProjEmpDto.class));
-//				return participantDto;
-//			}).collect(Collectors.toList());
-//			dto.setProjMember(participantDtos);
-//		});
-//
-//		return projDtoList;
-//	}
+		log.info("[ProjectService] selectMyproject start ===========================");
+		log.info("[ProjectService] empCode : {}", empCode);
+
+		AuthEmp emp = authEmpRepository.findById(empCode).orElseThrow(() -> new UserNotFoundException("해당 사원이 없습니다."));
+
+		AuthEmpDto projEmp = new AuthEmpDto();
+		projEmp.setEmpCode(empCode);
+
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("PROJ_CODE").descending());
+		Page<CreateProject> projList = createProjectRepository.findByEmployeeEmpCodeAndProjStatus(pageable,
+				projEmp.getEmpCode(), "진행중");
+
+		Page<CreateProjectDto> projDtoList = projList.map(proj -> modelMapper.map(proj, CreateProjectDto.class));
+
+		// 참여자 정보 매칭
+		projDtoList.forEach(dto -> {
+			List<ProjParticipant> participants = projectparticipantRepository.findByProjCodeProjCode(dto.getProjCode());
+			List<ProjParticipantDto> participantDtos = participants.stream().map(participant -> {
+				ProjParticipantDto participantDto = new ProjParticipantDto();
+				ProjParticipantPkDto projParticipantPkDto = new ProjParticipantPkDto();
+				projParticipantPkDto.setProjCode(participant.getProjCode().getProjCode());
+				projParticipantPkDto.setProjMember(participant.getProjCode().getProjMember());
+				participantDto.setProjMember(projParticipantPkDto);
+				participantDto.setEmp(modelMapper.map(participant.getEmp(), ProjEmpDto.class));
+				return participantDto;
+			}).collect(Collectors.toList());
+			dto.setProjMember(participantDtos);
+		});
+		return projDtoList;
+	}
+
+	public Page<CreateProjectDto> selectMyDoneProj(Integer empCode, int page) {
+
+		log.info("[ProjectService] selectMyDoneProj start ===========================");
+		log.info("[ProjectService] empCode : {}", empCode);
+
+		AuthEmp emp = authEmpRepository.findById(empCode).orElseThrow(() -> new UserNotFoundException("해당 사원이 없습니다."));
+
+		AuthEmpDto projEmp = new AuthEmpDto();
+		projEmp.setEmpCode(empCode);
+
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("projCode").descending());
+		Page<CreateProject> projList = createProjectRepository.findByEmployeeEmpCodeAndProjStatus(pageable,
+				projEmp.getEmpCode(), "완료");
+
+		Page<CreateProjectDto> projDtoList = projList.map(proj -> modelMapper.map(proj, CreateProjectDto.class));
+
+		// 참여자 정보 매칭
+		projDtoList.forEach(dto -> {
+			List<ProjParticipant> participants = projectparticipantRepository.findByProjCodeProjCode(dto.getProjCode());
+			List<ProjParticipantDto> participantDtos = participants.stream().map(participant -> {
+				ProjParticipantDto participantDto = new ProjParticipantDto();
+				ProjParticipantPkDto projParticipantPkDto = new ProjParticipantPkDto();
+				projParticipantPkDto.setProjCode(participant.getProjCode().getProjCode());
+				projParticipantPkDto.setProjMember(participant.getProjCode().getProjMember());
+				participantDto.setProjMember(projParticipantPkDto);
+				participantDto.setEmp(modelMapper.map(participant.getEmp(), ProjEmpDto.class));
+				return participantDto;
+			}).collect(Collectors.toList());
+			dto.setProjMember(participantDtos);
+		});
+
+		return projDtoList;
+	}
 
 	@Transactional
 	public void createPorj(CreateProjectDto projectDto, AuthEmpDto emp) {
@@ -160,7 +160,6 @@ public class ProjectService {
 		log.info("[ProjectService] createPorj end ===========================");
 
 	}
-	
 	@Transactional
 	public void deleteProj(CreateProjectDto proj) {
 		
