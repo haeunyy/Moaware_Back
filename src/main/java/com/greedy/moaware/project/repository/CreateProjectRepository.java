@@ -24,5 +24,5 @@ public interface CreateProjectRepository extends JpaRepository<CreateProject, In
 	
 	@Query("SELECT p.projCode FROM CreateProject p ORDER BY p.projCode DESC")
 	CreateProject findByProjCode(Integer projCode);
-
+	//다시보냄
 }
