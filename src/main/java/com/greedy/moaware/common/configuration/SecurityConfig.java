@@ -62,13 +62,12 @@ public class SecurityConfig {
 		             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		             .antMatchers("/auth/**").permitAll()
 		             .antMatchers(HttpMethod.GET, "/emp/**").permitAll()
-//		             .antMatchers("/proj/**").hasRole("PROJECT")
+//		             .antMatchers("/proj/**", "/project/**", "/task/**").hasRole("PROJECT")
 		         .and()
 		         	.cors()
 		         .and()
 		         	.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 		         .build();
-		 
 	}
 	
 
