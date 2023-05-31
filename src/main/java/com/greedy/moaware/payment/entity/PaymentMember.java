@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -37,6 +39,10 @@ public class PaymentMember {
 	
 	@Column(name="payRank")
 	private Integer payRank;
+	
+	@OneToOne
+	@JoinColumn(name="EMP_CODE", insertable = false, updatable = false)
+	private PayEmp emp;
 	
 	
 

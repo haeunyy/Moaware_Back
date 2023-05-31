@@ -114,7 +114,7 @@ public class EmpService {
 		empDto.setFileCategory(empFileCategoryDto);
 
 		}
-		
+		}
 		log.info("[EmpService] empDto : {}" , empDto);
 		log.info("[EmpService] selectEmpDetail end ================================ ");
 		return empDto;
