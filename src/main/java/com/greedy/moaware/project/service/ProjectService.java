@@ -66,12 +66,12 @@ public class ProjectService {
 		AuthEmpDto projEmp = new AuthEmpDto();
 		projEmp.setEmpCode(empCode);
 
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("PROJ_CODE").descending());
+		Pageable pageable = PageRequest.of(page - 1, 10);
 		Page<CreateProject> projList = createProjectRepository.findByEmployeeEmpCodeAndProjStatus(pageable,
 				projEmp.getEmpCode(), "진행중");
 
 		Page<CreateProjectDto> projDtoList = projList.map(proj -> modelMapper.map(proj, CreateProjectDto.class));
-
+		
 		// 참여자 정보 매칭
 		projDtoList.forEach(dto -> {
 			List<ProjParticipant> participants = projectparticipantRepository.findByProjCodeProjCode(dto.getProjCode());
@@ -102,7 +102,7 @@ public class ProjectService {
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("projCode").descending());
 		Page<CreateProject> projList = createProjectRepository.findByEmployeeEmpCodeAndProjStatus(pageable,
 				projEmp.getEmpCode(), "완료");
-
+		
 		Page<CreateProjectDto> projDtoList = projList.map(proj -> modelMapper.map(proj, CreateProjectDto.class));
 
 		// 참여자 정보 매칭
