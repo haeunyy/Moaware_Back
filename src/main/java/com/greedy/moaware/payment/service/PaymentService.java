@@ -306,13 +306,33 @@ public class PaymentService {
 			
 			empFileCategoryDto.get(0).getFile().setFilePath(IMAGE_URL + empFileCategoryDto.get(0).getFile().getFilePath());
 			
-			log.info("[PaymentService] empFileCategoryDto : {}" , empFileCategoryDto);
+			log.info("[PaymentService] paymentDetail empFileCategoryDto : {}" , empFileCategoryDto);
 			
 			payEmpDto.setPayFileCategory(empFileCategoryDto);
 		}
 		
 		paymentDto.setEmp(payEmpDto);
 		
+		List<PaymentMemberDto> payMember = paymentDto.getPaymentMember().stream().map(member -> {
+			
+			List<PayFileCategoryDto> payFileCategory =
+			member.getEmp().getPayFileCategory().stream().filter( fileCategory -> {
+				if(fileCategory.getFCategoryType().equals("sign"))
+				{
+					fileCategory.getFile().setFilePath(IMAGE_URL + fileCategory.getFile().getFilePath());
+				
+					return true;
+				}
+				
+				return false;
+			}).collect(Collectors.toList());
+			
+			log.info("[PaymentService] paymentDetail fileCategory : {} " , payFileCategory);
+			member.getEmp().setPayFileCategory(payFileCategory);
+			return member;
+			}).collect(Collectors.toList());
+		paymentDto.setPaymentMember(payMember);
+		log.info("[PaymentService] paymentDetail payMember : {} " , payMember);
 		
 		log.info("[PaymentService] paymentDetail paymentDto : {} " , paymentDto);
 		
