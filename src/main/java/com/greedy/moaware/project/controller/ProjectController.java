@@ -43,41 +43,41 @@ public class ProjectController {
 	}
 	
 	//진행중 프로젝트 조회 
-//	@GetMapping("progressProj")
-//	public ResponseEntity<ResponseDto> selectMyProgressProj(@AuthenticationPrincipal AuthEmpDto emp,
-//			@RequestParam(name = "page", defaultValue = "1") int page) {
-//
-//		log.info("[ProjectController] : selectMyProgressProj start =========================================================");
-//
-//		Page<CreateProjectDto> projDtoList = projectService.selectMyProgressProj(emp.getEmpCode(), page);
-//		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(projDtoList);
-//
-//		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
-//		responseDtoWithPaging.setPageInfo(pageInfo);
-//		responseDtoWithPaging.setData(projDtoList.getContent());
-//
-//		log.info("[ProjectController] : myWorkList end =========================================================");
-//
-//		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "진행 중 프로젝트 조회 완료", responseDtoWithPaging));
-//	}
+	@GetMapping("progressProj")
+	public ResponseEntity<ResponseDto> selectMyProgressProj(@AuthenticationPrincipal AuthEmpDto emp,
+			@RequestParam(name = "page", defaultValue = "1") int page) {
+
+		log.info("[ProjectController] : selectMyProgressProj start =========================================================");
+
+		Page<CreateProjectDto> projDtoList = projectService.selectMyProgressProj(emp.getEmpCode(), page);
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(projDtoList);
+
+		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+		responseDtoWithPaging.setPageInfo(pageInfo);
+		responseDtoWithPaging.setData(projDtoList.getContent());
+
+		log.info("[ProjectController] : myWorkList end =========================================================");
+
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "진행 중 프로젝트 조회 완료", responseDtoWithPaging));
+	}
 	//완료한 프로젝트 조회
-//	@GetMapping("doneProj")
-//	public ResponseEntity<ResponseDto> selectMyDoneProj(@AuthenticationPrincipal AuthEmpDto emp,
-//			@RequestParam(name = "page", defaultValue = "1") int page) {
-//
-//		log.info("[ProjectController] : selectMyDoneProj start =========================================================");
-//
-//		Page<CreateProjectDto> projDtoList = projectService.selectMyDoneProj(emp.getEmpCode(), page);
-//		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(projDtoList);
-//
-//		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
-//		responseDtoWithPaging.setPageInfo(pageInfo);
-//		responseDtoWithPaging.setData(projDtoList.getContent());
-//
-//		log.info("[ProjectController] : selectMyDoneProj end =========================================================");
-//
-//		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "완료 프로젝트 조회 완료", responseDtoWithPaging));
-//	}
+	@GetMapping("doneProj")
+	public ResponseEntity<ResponseDto> selectMyDoneProj(@AuthenticationPrincipal AuthEmpDto emp,
+			@RequestParam(name = "page", defaultValue = "1") int page) {
+
+		log.info("[ProjectController] : selectMyDoneProj start =========================================================");
+
+		Page<CreateProjectDto> projDtoList = projectService.selectMyDoneProj(emp.getEmpCode(), page);
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(projDtoList);
+
+		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+		responseDtoWithPaging.setPageInfo(pageInfo);
+		responseDtoWithPaging.setData(projDtoList.getContent());
+
+		log.info("[ProjectController] : selectMyDoneProj end =========================================================");
+
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "완료 프로젝트 조회 완료", responseDtoWithPaging));
+	}
 	//프로젝트 생성
 	@PostMapping("createProj")
 	public ResponseEntity<ResponseDto> createProj(@RequestBody CreateProjectDto projectDto,
