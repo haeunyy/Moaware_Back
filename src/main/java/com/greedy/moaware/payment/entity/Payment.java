@@ -63,4 +63,16 @@ public class Payment {
 	@OneToMany(cascade=CascadeType.PERSIST)
     @JoinColumn(name="PAY_CODE", referencedColumnName="PAY_CODE")  
 	private List<RefenceMember> refenceMember;
+
+	@Override
+	public String toString() {
+		return "Payment [payCode=" + payCode + ", draftDate=" + draftDate + ", emp=" + emp + ", draftTitle="
+				+ draftTitle  + ", payStatus=" + payStatus + ", payFileCategory="
+				+ payFileCategory + ", paymentMember=" + paymentMember + ", refenceMember=" + refenceMember + "]";
+	}
+	
+	
+	
+	
+	
 }
