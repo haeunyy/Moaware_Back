@@ -61,6 +61,11 @@ public class CreateProject {
 	@JoinColumn(name="PROJ_CODE", referencedColumnName="PROJ_CODE") 
 	private List<ProjParticipant> projMember;
 
+	public void update(String projStatus) {
+		
+		this.projStatus = projStatus;
+	}
+
 	
 	
 	

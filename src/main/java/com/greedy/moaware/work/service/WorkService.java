@@ -192,15 +192,6 @@ public class WorkService {
 
 	}
 
-//	public Page<WorkDto> empWorkList(Date workDate, int page) {
-//
-//
-//		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("workPk.empCode").descending());
-//		Page<Work> workList = workRepository.findByWorkPkWorkDate(workDate, pageable);
-//		Page<WorkDto> workDtoList = workList.map(work -> modelMapper.map(work, WorkDto.class));
-//
-//		return workDtoList;
-//	}
 	
 	@Transactional
 	public void statusUpdate(WorkDto workDto) {
@@ -230,7 +221,8 @@ public class WorkService {
 	}
 
 	public Page<WorkEmpDto2> empWorkList1(Date workDate, int page) {
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("EMP_CODE").descending());
+//		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("WORK_TIME").descending());
+		Pageable pageable = PageRequest.of(page - 1, 10);
 		Page<WorkEmp2> workList = workEmpRepository.findByWorkWorkPkWorkDate(workDate, pageable);
 		Page<WorkEmpDto2> workDtoList = workList.map(work -> modelMapper.map(work, WorkEmpDto2.class));
 
