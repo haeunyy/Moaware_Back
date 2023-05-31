@@ -77,6 +77,8 @@ public class SchService {
 	
 	}
 
+	/* 일정 참여자 검색 */
+	
 	/* 일정 수정 */
 	@Transactional
 	public void modifySchedule(ScheduleDto scheduleDto) {
