@@ -39,7 +39,7 @@ public class ProjDetailService {
 
 
 	
-	/* 프로젝트의 업무 리스트 조회 */
+	/* 업무 리스트 조회 */
 	public List<TaskDto> selectTaskList(int projCode) {
 
 		log.info("[ProjDetailService] selectTaskList start =============================================");
