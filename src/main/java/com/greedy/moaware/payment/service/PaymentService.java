@@ -341,6 +341,37 @@ public class PaymentService {
 		return paymentDto;
 	}
 	
+	/* 결재 처리 진행 */
+	public void PaymentUpdate (Integer empCode) {
+		
+		log.info("[PaymentService] PaymentUpdate start ============================== ");
+		
+		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
+		
+		Integer payCode = 10 ;
+		
+		PaymentMember paymentMember = paymentMemberRepository.findByPaymentMemberPkEmpCodeAndPaymentMemberPkPayCode(empCode , payCode);
+		
+		Payment payment = paymentRepository.findByPaymentMember(paymentMember);
+		
+		log.info("[PaymentService] PaymentUpdate paymentMember : {} " , payment);
+		
+		
+		List<PaymentMember> pay = payment.getPaymentMember().stream().map( member ->{
+		
+		if(member.getPaymentMemberPk().getEmpCode()== empCode) {
+			member.setPayType("결재");
+		}
+			
+		return member;
+		
+		}).collect(Collectors.toList());
+		log.info("[PaymentService] PaymentUpdate paymentMember2 : {} " , pay);
+		
+		log.info("[PaymentService] PaymentUpdate end ============================== ");
+		
+	}
+	
 	
 	/* 결재 완료 조회 */
 	public Page<PaymentDto> PaymentCompleteList(Integer empCode, int page) {
