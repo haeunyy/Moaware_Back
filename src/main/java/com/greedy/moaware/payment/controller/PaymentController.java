@@ -136,8 +136,23 @@ public class PaymentController {
 		
 		
 		
-		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 문서 상세 조회"));
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 문서 상세 조회", paymentService.paymentDetail(payCode)));
 	}
+	
+	
+	/* 결재 처리 진행 */
+	@PutMapping("/updateSign")
+	public ResponseEntity<ResponseDto> PaymentUpdate (@AuthenticationPrincipal AuthEmpDto payEmp) {
+		
+		log.info("[PaymentController] PaymentUpdateSign start ============================== ");
+		paymentService.PaymentUpdate(payEmp.getEmpCode());
+		
+		log.info("[PaymentController] PaymentUpdateSign end ============================== ");
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 처리 완료"));
+	};
+	
+	
 	
 	/* 결재 완료 문서 전체 조회 */
 	@GetMapping("/complete")

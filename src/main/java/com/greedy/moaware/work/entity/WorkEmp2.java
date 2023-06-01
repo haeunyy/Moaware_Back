@@ -23,7 +23,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="EMPLOYEE")
-//@JsonIgnoreProperties("highDept")
 @SequenceGenerator(name="EMP_SEQ_GENERATOR", sequenceName="SEQ_EMP_CODE", initialValue=1, allocationSize=1)
 public class WorkEmp2{
 	
@@ -78,8 +77,7 @@ public class WorkEmp2{
 	    })
 	    private WorkTime work;
 
-	    @Column(name = "WORK_DATE")
-	    private Date workDate;
+//	    @Column(name = "WORK_DATE")
+//	    private Date workDate;
 
-	    // 생성자, 게터/세터, toString 등의 필요한 메소드는 생략
 	}

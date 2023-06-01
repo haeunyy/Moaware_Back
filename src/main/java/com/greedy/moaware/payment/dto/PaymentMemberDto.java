@@ -18,5 +18,7 @@ public class PaymentMemberDto {
 	private String payType;
 	private String cancleReason;
 	private Integer payRank;
+	
+	private PayEmpDto emp;
 
 }

@@ -1,5 +1,6 @@
 package com.greedy.moaware.project.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,7 +66,7 @@ public class ProjectService {
 		AuthEmpDto projEmp = new AuthEmpDto();
 		projEmp.setEmpCode(empCode);
 
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("projCode").descending());
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("PROJ_CODE").descending());
 		Page<CreateProject> projList = createProjectRepository.findByEmployeeEmpCodeAndProjStatus(pageable,
 				projEmp.getEmpCode(), "진행중");
 
@@ -81,10 +82,12 @@ public class ProjectService {
 				projParticipantPkDto.setProjMember(participant.getProjCode().getProjMember());
 				participantDto.setProjMember(projParticipantPkDto);
 				participantDto.setEmp(modelMapper.map(participant.getEmp(), ProjEmpDto.class));
+				log.info("[ProjectService] participantDto : {}", participantDto);
 				return participantDto;
 			}).collect(Collectors.toList());
 			dto.setProjMember(participantDtos);
 		});
+
 		return projDtoList;
 	}
 
@@ -159,5 +162,27 @@ public class ProjectService {
 		log.info("[ProjectService] createPorj end ===========================");
 
 	}
+	@Transactional
+	public void deleteProj(CreateProjectDto proj) {
+		
+		try {
+			CreateProject findProj = createProjectRepository.findById(proj.getProjCode())
+					.orElseThrow(() -> new IllegalArgumentException("해당 사원의 정보가 없습니다. findProj=" + proj.getProjCode()));			
+			
+			proj.setProjStatus("삭제");
+			
+			findProj.update(
+							proj.getProjStatus()
+							);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	
+		
+		
+		
+	}	
 
 }

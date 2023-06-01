@@ -28,6 +28,6 @@ public class WorkEmpDto2 {
     private JobDto job;
     private PdeptDto dept;
     private WorkTimeDto work;
-    private Date workDate;
+//    private Date workDate;
     
 }

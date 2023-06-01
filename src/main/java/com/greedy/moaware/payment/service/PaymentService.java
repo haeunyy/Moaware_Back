@@ -280,16 +280,6 @@ public class PaymentService {
 		
 		log.info("[PaymentService] paymentMemberList filterPay : {} ", filterPay);
 		log.info("[PaymentService] paymentMemberList filteredPage : {} ", filteredPage	);
-		
-		Map<String, Object> result = new HashMap<>();
-		
-		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
-		
-		PayEmpDto empDto = modelMapper.map(emp, PayEmpDto.class);
-		
-		result.put("paymentListDto", paymentListDto);
-		result.put("payEmp", empDto);
-	
 	
 		
 		log.info("[PaymentService] paymentMemberList end ============================== ");
@@ -302,13 +292,84 @@ public class PaymentService {
 		
 		log.info("[PaymentService] paymentDetail start ============================== ");
 		
+		Payment payment = paymentRepository.findById(payCode).orElseThrow( () -> new IllegalArgumentException("해당 결재문서가 없습니다. payCode=" + payCode) );
+		
+		log.info("[PaymentService] paymentDetail payment : {} " , payment);
+		
+		PaymentDto paymentDto = modelMapper.map(payment, PaymentDto.class);
+		
+		PayEmpDto payEmpDto = paymentDto.getEmp();
 		
 		
+		if(payEmpDto.getPayFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).count() != 0) {
+			List<PayFileCategoryDto> empFileCategoryDto = payEmpDto.getPayFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).collect(Collectors.toList());
+			
+			empFileCategoryDto.get(0).getFile().setFilePath(IMAGE_URL + empFileCategoryDto.get(0).getFile().getFilePath());
+			
+			log.info("[PaymentService] paymentDetail empFileCategoryDto : {}" , empFileCategoryDto);
+			
+			payEmpDto.setPayFileCategory(empFileCategoryDto);
+		}
 		
+		paymentDto.setEmp(payEmpDto);
+		
+		List<PaymentMemberDto> payMember = paymentDto.getPaymentMember().stream().map(member -> {
+			
+			List<PayFileCategoryDto> payFileCategory =
+			member.getEmp().getPayFileCategory().stream().filter( fileCategory -> {
+				if(fileCategory.getFCategoryType().equals("sign"))
+				{
+					fileCategory.getFile().setFilePath(IMAGE_URL + fileCategory.getFile().getFilePath());
+				
+					return true;
+				}
+				
+				return false;
+			}).collect(Collectors.toList());
+			
+			log.info("[PaymentService] paymentDetail fileCategory : {} " , payFileCategory);
+			member.getEmp().setPayFileCategory(payFileCategory);
+			return member;
+			}).collect(Collectors.toList());
+		paymentDto.setPaymentMember(payMember);
+		log.info("[PaymentService] paymentDetail payMember : {} " , payMember);
+		
+		log.info("[PaymentService] paymentDetail paymentDto : {} " , paymentDto);
 		
 		log.info("[PaymentService] paymentDetail end ============================== ");
 		
-		return null;
+		return paymentDto;
+	}
+	
+	/* 결재 처리 진행 */
+	public void PaymentUpdate (Integer empCode) {
+		
+		log.info("[PaymentService] PaymentUpdate start ============================== ");
+		
+		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
+		
+		Integer payCode = 10 ;
+		
+		PaymentMember paymentMember = paymentMemberRepository.findByPaymentMemberPkEmpCodeAndPaymentMemberPkPayCode(empCode , payCode);
+		
+		Payment payment = paymentRepository.findByPaymentMember(paymentMember);
+		
+		log.info("[PaymentService] PaymentUpdate paymentMember : {} " , payment);
+		
+		
+		List<PaymentMember> pay = payment.getPaymentMember().stream().map( member ->{
+		
+		if(member.getPaymentMemberPk().getEmpCode()== empCode) {
+			member.setPayType("결재");
+		}
+			
+		return member;
+		
+		}).collect(Collectors.toList());
+		log.info("[PaymentService] PaymentUpdate paymentMember2 : {} " , pay);
+		
+		log.info("[PaymentService] PaymentUpdate end ============================== ");
+		
 	}
 	
 	

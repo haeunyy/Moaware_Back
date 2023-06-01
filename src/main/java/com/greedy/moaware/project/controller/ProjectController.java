@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -117,5 +118,17 @@ public class ProjectController {
 		List<CreateProjectEmpDto> deptEmpDtoList = pdeptService.findAllDeptMember(deptCode);
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "부서에 속한 emp 조회 성공" , deptEmpDtoList));
+	}
+	
+	@PutMapping("/delete/{projCode}")
+	public ResponseEntity<ResponseDto> deleteProj(@PathVariable(name="projCode") Integer prodCode) {
+		
+		CreateProjectDto proj = new CreateProjectDto();
+		
+		proj.setProjCode(prodCode);
+		
+		projectService.deleteProj(proj);
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "프로젝트 삭제 완료"));
 	}
 }

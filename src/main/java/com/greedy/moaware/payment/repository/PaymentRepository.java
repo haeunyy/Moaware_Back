@@ -18,16 +18,14 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 	@EntityGraph(attributePaths= {"form"})
 	List<Payment> findAll();
 
-//	@EntityGraph(attributePaths= {"form"})
-//	Page<Payment> findByEmp(Pageable pageable, PayEmp emp);
-
-
 	@EntityGraph(attributePaths= {"form"})
 	Page<Payment> findByEmpAndPayStatus(Pageable pageable, PayEmp emp, String payStatus);
 
 	List<Payment> findByEmp(PayEmp emp);
 
 	Page<Payment> findByPaymentMemberInOrderByPayCode(Pageable pageable, List<PaymentMember> paymentMemberList);
+
+	Payment findByPaymentMember(PaymentMember paymentMember);
 
 
 
