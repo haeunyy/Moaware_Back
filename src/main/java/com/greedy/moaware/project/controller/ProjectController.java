@@ -110,7 +110,7 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/emp/{deptCode}")
-	public ResponseEntity<ResponseDto> findDeptEmpList(@PathVariable(name="deptCode") Integer deptCode) {
+	public ResponseEntity<ResponseDto> findDeptEmpList(@AuthenticationPrincipal AuthEmpDto emp, @PathVariable(name="deptCode") Integer deptCode) {
 		
 		log.info("아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
 		log.info("deptService.findAllDeptMember() {}", pdeptService.findAllDeptMember(deptCode));		
