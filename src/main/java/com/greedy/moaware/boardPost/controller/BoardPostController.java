@@ -1,31 +1,27 @@
 package com.greedy.moaware.boardPost.controller;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.boardPost.dto.BoardPostDto;
-import com.greedy.moaware.boardPost.repository.BoardPostRepository;
 import com.greedy.moaware.boardPost.service.BoardPostService;
 import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.common.paging.Pagenation;
 import com.greedy.moaware.common.paging.PagingButtonInfo;
 import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
-import com.greedy.moaware.employee.dto.EmpDto;
+import com.greedy.moaware.employee.dto.AuthEmpDto;
 
-import io.jsonwebtoken.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -155,9 +151,10 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 		
 		/* 7.게시물 등록 */
 		@PostMapping("/boardPosts")
-		public ResponseEntity<ResponseDto> insertBoardPost(@ModelAttribute BoardPostDto boardPostDto) {
+		public ResponseEntity<ResponseDto> insertBoardPost(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute BoardPostDto boardPostDto) {
 			//키&밸류 값의 형태를 띄어 url 인코디드 방식으로 전달->포스트맨에서는 바디-> 폼데이터 검색
-			boardPostService.insertBoardPost(boardPostDto);
+			
+			boardPostService.insertBoardPost(authEmpDto.getEmpCode(), boardPostDto);
 			
 			return ResponseEntity
 					.ok()
@@ -165,6 +162,19 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 
 	
 		}
+		
+//		/* 8. 게시물 수정 */
+//		@PutMapping("/boardPosts")
+//		public ResponseEntity<ResponseDto> updateBoardPost(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute BoardPostDto boardPostDto) {
+//			//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
+//			boardPostService.updateBoardPost(authEmpDto.getEmpCode(), boardPostDto);
+//			
+//			return ResponseEntity
+//					.ok()
+//					.body(new ResponseDto(HttpStatus.OK, "게시물 수정 성공"));
+//			
+//		}
+		
 		
 		/* 8. 게시물 수정 */
 		@PutMapping("/boardPosts")
@@ -175,6 +185,18 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 			return ResponseEntity
 					.ok()
 					.body(new ResponseDto(HttpStatus.OK, "게시물 수정 성공"));
+		}
+		
+		
+		/* 9. 게시물 삭제 */
+		@DeleteMapping("/boardPosts")
+		public ResponseEntity<ResponseDto> deleteBoardPost(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute BoardPostDto boardPostDto) {
+			//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
+			boardPostService.deleteBoardPost(authEmpDto.getEmpCode(), boardPostDto);
+			
+			return ResponseEntity
+					.ok()
+					.body(new ResponseDto(HttpStatus.OK, "게시물 삭제 성공"));
 			
 		}
 		
