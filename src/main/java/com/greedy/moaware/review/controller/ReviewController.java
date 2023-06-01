@@ -33,7 +33,7 @@ public class ReviewController {
 	}
 	
 	
-	@GetMapping("/task/{taskCode}")
+	@GetMapping("/{taskCode}")
 	public ResponseEntity<ResponseDto> selectTaskReviews(@PathVariable int taskCode
 //			, @RequestParam(name = "page", defaultValue = "1") int page
 			){
@@ -44,7 +44,7 @@ public class ReviewController {
 	}
 	
 	
-	@PostMapping("/regist/{taskCode}")
+	@PostMapping("/{taskCode}")
 	public ResponseEntity<ResponseDto> taskReviewRegist(
 			  @PathVariable int taskCode
 			, @RequestBody TaskReviewDto review

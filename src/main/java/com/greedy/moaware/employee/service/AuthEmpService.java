@@ -190,7 +190,7 @@ public class AuthEmpService {
 		Emp originalEmp = empRepository.findById(emp.getEmpCode())
 					.orElseThrow(()-> new IllegalArgumentException("오류가 발생하였습니다. 다시 시도 해주세요."));
 		
-		EmpDto empDto =  modelMapper.map(originalEmp, EmpDto.class);
+		EmpDto empDto = modelMapper.map(originalEmp, EmpDto.class);
 		
 		// 프로필 이미지 업로드 
 		try {
