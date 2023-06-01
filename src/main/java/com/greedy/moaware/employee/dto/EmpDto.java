@@ -22,6 +22,4 @@ public class EmpDto {
 	private DeptDto dept;
 	private List<FileCategoryDto> fileCategory;
 	
-	
-	
 }

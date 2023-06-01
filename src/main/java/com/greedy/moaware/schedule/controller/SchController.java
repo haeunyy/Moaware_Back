@@ -8,13 +8,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
-import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.schedule.dto.ScheduleDto;
 import com.greedy.moaware.schedule.service.SchService;
 
@@ -68,19 +68,34 @@ public class SchController {
 	/* 일정 등록 */
 	@PostMapping("/calendar")
 	public ResponseEntity<ResponseDto> insertSchedule(@AuthenticationPrincipal AuthEmpDto authEmp, @RequestBody ScheduleDto scheduleDto) {
+	    log.info("[SchController] : insertSchedule start ===================================== ");
 
-		log.info("[SchController] : insertSchedule start ===================================== ");
-
-		log.info("[SchController] : {}", scheduleDto);
-		
-		schService.insertSchedule(scheduleDto);
-		
-	    log.info("[SchController] : insertSchedule  end  ===================================== ");
+	    log.info("[SchController] : {}", scheduleDto);
 	    
-	    return ResponseEntity 
+	    schService.insertSchedule(authEmp.getEmpCode(), scheduleDto);
+
+	    log.info("[SchController] : insertSchedule  end  ===================================== ");
+
+	    return ResponseEntity
 	            .ok()
-	            .body(new ResponseDto(HttpStatus.OK, "일정 등록 성공"));
-	    		
+	            .body(new ResponseDto(HttpStatus.OK, "일정 등록 완료"));
+	}
+	
+	/* 일정 삭제 */
+	@PutMapping("/calendar/{schCode}")
+	public ResponseEntity<ResponseDto> deleteSchedule(@AuthenticationPrincipal AuthEmpDto authEmp, @PathVariable("schCode") Integer schCode) {
+	    
+		log.info("[SchController] : deleteSchedule start ===================================== ");
+	    
+		log.info("schCode : {} ", schCode);
+	    
+	    Integer authEmpId = authEmp.getEmpCode(); // 로그인한 사용자의 사원 번호 가져오기
+	    
+	    schService.deleteSchedule(schCode, authEmpId);
+	    
+	    log.info("[SchController] : deleteSchedule end ===================================== ");
+	    
+	    return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "일정 삭제 완료"));
 	}
 	
 	/* 일정 참여자 조회 */
