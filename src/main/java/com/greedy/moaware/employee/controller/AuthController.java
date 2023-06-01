@@ -6,28 +6,24 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.employee.dto.AttachedFileDto;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
-import com.greedy.moaware.employee.dto.EmpDto;
-import com.greedy.moaware.employee.service.AuthService;
+import com.greedy.moaware.employee.service.AuthEmpService;
 import com.greedy.moaware.employee.service.EmpService;
 
 @RestController	
 @RequestMapping("/auth")
 public class AuthController {
 
-	private final AuthService authService;
+	private final AuthEmpService authService;
 	private final EmpService empService;
 	
-	public AuthController(AuthService authService, EmpService empService) {
+	public AuthController(AuthEmpService authService, EmpService empService) {
 		this.authService = authService;
 		this.empService = empService;
 	}

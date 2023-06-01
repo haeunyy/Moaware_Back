@@ -82,10 +82,12 @@ public class ProjectService {
 				projParticipantPkDto.setProjMember(participant.getProjCode().getProjMember());
 				participantDto.setProjMember(projParticipantPkDto);
 				participantDto.setEmp(modelMapper.map(participant.getEmp(), ProjEmpDto.class));
+				log.info("[ProjectService] participantDto : {}", participantDto);
 				return participantDto;
 			}).collect(Collectors.toList());
 			dto.setProjMember(participantDtos);
 		});
+
 		return projDtoList;
 	}
 
