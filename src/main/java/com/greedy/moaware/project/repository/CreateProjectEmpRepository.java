@@ -15,10 +15,5 @@ public interface CreateProjectEmpRepository extends JpaRepository<CreateProjectE
 	   "  JOIN Pdept p ON e.dept.deptCode = p.deptCode " +
 	   " WHERE p.deptCode = :deptCode ")
 	List<CreateProjectEmp> findByDeptDeptCode(@Param("deptCode") Integer deptCode);			
-//	@Query("SELECT e " + 
-//		   "  FROM CreateProjectEmp e " +
-//		   "  JOIN Pdept p ON e.dept.deptCode = p.deptCode " +
-//		   " WHERE p.deptName = :deptName ")
-//
-//	List<CreateProjectEmp> findByDeptDeptName(@Param("deptName") String deptName);
+
 }
