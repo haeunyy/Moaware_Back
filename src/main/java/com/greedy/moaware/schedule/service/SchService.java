@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.repository.EmpRepository;
 import com.greedy.moaware.exception.ScheduleNotFoundException;
@@ -44,7 +45,7 @@ public class SchService {
         
         List<Schedule> schedules = schRepository.findBySchAuthor(employee);
         
-        log.info("[SchService] getScheduleListByUser: {}", schedules);
+        log.info("[SchService] getScheduleListByUser : {}", schedules);
         
         List<ScheduleDto> scheduleDto = schedules.stream()
                 .map(schedule -> modelMapper.map(schedule, ScheduleDto.class))
@@ -62,20 +63,24 @@ public class SchService {
 		Schedule schedule = schRepository.findBySchCodeAndSchAuthor(schCode, employee)
 	            .orElseThrow(() -> new ScheduleNotFoundException(schCode + "번의 일정을 찾을 수 없습니다."));
 
-	    log.info("[SchService] getScheduleByCodeAndUser: {}", schedule);
+	    log.info("[SchService] getScheduleByCodeAndUser : {}", schedule);
 
 	    return modelMapper.map(schedule, ScheduleDto.class);
 	}
 
 	/* 일정 등록 */
 	@Transactional
-	public void insertSchedule(@ModelAttribute ScheduleDto scheduleDto) {
-		
-		log.info("[SchService] insertSchedule: {}", scheduleDto);
-		
-		schRepository.save(modelMapper.map(scheduleDto, Schedule.class));		
-	
+	public void insertSchedule(Integer authEmp, @ModelAttribute ScheduleDto scheduleDto) {
+	    Emp employee = empRepository.findById(authEmp)
+	            .orElseThrow(() -> new UserNotFoundException(authEmp + "번의 사원을 찾을 수 없습니다."));
+
+	    scheduleDto.setSchAuthor(modelMapper.map(employee, EmpDto.class)); // 사원 정보를 scheduleDto의 schAuthor 필드에 설정
+
+	    log.info("[SchService] insertSchedule : {}", scheduleDto);
+
+	    schRepository.save(modelMapper.map(scheduleDto, Schedule.class));
 	}
+
 
 	/* 일정 참여자 검색 */
 	
@@ -83,11 +88,25 @@ public class SchService {
 	@Transactional
 	public void modifySchedule(ScheduleDto scheduleDto) {
 		
-		log.info("[SchService] modifySchedule: {}", scheduleDto);
+		log.info("[SchService] modifySchedule : {}", scheduleDto);
 		
 	}
-	
+
 	/* 일정 삭제 */
+	@Transactional
+	public void deleteSchedule(Integer schCode, Integer authEmp) {
+		
+		Emp employee = empRepository.findById(authEmp)
+	            .orElseThrow(() -> new UserNotFoundException(authEmp + "번의 사원을 찾을 수 없습니다."));
+		
+		Schedule schedule = schRepository.findBySchCodeAndSchAuthor(schCode, employee)
+	            .orElseThrow(() -> new ScheduleNotFoundException(schCode + "번의 일정을 찾을 수 없습니다."));
+		
+		schRepository.delete(schedule);
+		
+		log.info("[SchService] deleteSchedule : {}", schCode);
+		
+	}
 	
 }
 
