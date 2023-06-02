@@ -15,6 +15,7 @@ import com.greedy.moaware.boardPost.entity.BoardPost;
 import com.greedy.moaware.boardPost.repository.BoardPostRepository;
 import com.greedy.moaware.boardPost.repository.BoardRepository;
 import com.greedy.moaware.employee.entity.Emp;
+import com.greedy.moaware.project.entity.CreateProject;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -180,40 +181,40 @@ public class BoardPostService {
 
 		log.info("[BoardPostService] insertBoardPost End ==============================");
 	}
-//
-//	/* 8. 게시물 수정 */
-//
-//	@Transactional
-//	public void updateBoardPost(Integer empCode, BoardPostDto boardPostDto) {
-//
-//		log.info("[BoardPostService] insertBoardPost start ============================== ");
-//		log.info("[BoardPostService] boardPostDto : {}", boardPostDto);
-//
-//		if (empCode == 1) {
-//
-////			BoardPost originBoardPost = boardPostRepository.findById(boardPostDto.getPostCode())
-////					.orElseThrow(() -> new IllegalArgumentException("해당 코드의 게시물이 없습니다. postCode=" + boardPostDto.getPostCode()));
-//
-//			/* 조회했던 기존 엔티티의 내용을 수정 -> 별도의 수정 메소드를 정의해서 사용하면 다른 방식의 수정을 막을 수 있다. */
-//			originBoardPost.update(boardPostDto.getPostCode(), 
-//									modelMapper.map(boardPostDto.getBoard(), Board.class),
-//					// 엔티티로 값을 바꿔서 처리하는 과정
-//					boardPostDto.getPostCategory(), 
-//					boardPostDto.getPostTitle(), 
-//					boardPostDto.getPostContent(),
-//					boardPostDto.getCreateDate(),
-//					boardPostDto.getModifyDate(),
-//					boardPostDto.getStatus(),
-//					boardPostDto.getViews(),
-//					modelMapper.map(boardPostDto.getWriter(), Emp.class)
-//			// 엔티티로 값을 바꿔서 처리하는 과정
-//			);
-//			
-//		} else {
-//			throw new IllegalArgumentException("수정 권한이 없습니다.");
-//		}
-//			log.info("[BoardPostService] insertBoardPost end ============================== ");
-//	}
+
+	/* 8. 게시물 수정 */
+
+	@Transactional
+	public void updateBoardPost(Integer empCode, BoardPostDto boardPostDto) {
+
+		log.info("[BoardPostService] updateBoardPost start ============================== ");
+		log.info("[BoardPostService] boardPostDto : {}", boardPostDto);
+
+		if (empCode == 1) {
+
+			BoardPost originBoardPost = boardPostRepository.findById(boardPostDto.getPostCode())
+					.orElseThrow(() -> new IllegalArgumentException("해당 코드의 게시물이 없습니다. postCode=" + boardPostDto.getPostCode()));
+
+			/* 조회했던 기존 엔티티의 내용을 수정 -> 별도의 수정 메소드를 정의해서 사용하면 다른 방식의 수정을 막을 수 있다. */
+			originBoardPost.update(
+									boardPostDto.getPostCode(), 
+									modelMapper.map(boardPostDto.getBoard(), Board.class),
+									//modelMapper.map(boardPostDto.getWriter(), Emp.class),
+											//엔티티로 값을 바꿔서 처리하는 과정
+								        boardPostDto.getPostTitle(),
+										boardPostDto.getStatus(),
+									       boardPostDto.getPostContent()
+								    );
+	
+			
+		} else {
+			throw new IllegalArgumentException("수정 권한이 없습니다.");
+		}
+			log.info("[BoardPostService] updateBoardPost end ============================== ");
+	}
+
+	
+
 //	
 //	} catch (IOException e) {
 //	e.printStackTrace();
@@ -238,33 +239,42 @@ public class BoardPostService {
 //		 
 
 	
-	/* 8. 게시물 수정 */
-
-	@Transactional
-	public void updateBoardPost(BoardPostDto boardPostDto) {
-		
-		log.info("[BoardPostService] updateBoardPost start ============================== ");
-		log.info("[BoardPostService] boardPostDto : {}", boardPostDto);
-		
-		BoardPost originBoardPost = boardPostRepository.findById(boardPostDto.getPostCode())
-				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 게시물이 없습니다. postCode=" + boardPostDto.getPostCode()));
 	
-			/* 이미지를 변경하지 않는 경우에는 
-			 * 별도의 처리가 필요 없음 = 할 일이 없고 코드가 흘러가게 처리 */
-			
-			/* 조회했던 기존 엔티티의 내용을 수정 -> 별도의 수정 메소드를 정의해서 사용하면 다른 방식의 수정을 막을 수 있다. */
-			originBoardPost.update(
-					modelMapper.map(boardPostDto.getBoard(), Board.class),
-					//엔티티로 값을 바꿔서 처리하는 과정
-			        boardPostDto.getPostTitle(),
-					boardPostDto.getStatus(),
-			        boardPostDto.getPostContent()
-			);
-		
-
-		
-		log.info("[BoardPostService] updateBoardPost end ============================== ");
-	}
+	
+	
+	
+	
+	
+	
+//	/* 8. 게시물 수정 */
+//
+//	@Transactional
+//	public void updateBoardPost(BoardPostDto boardPostDto) {
+//		
+//		log.info("[BoardPostService] updateBoardPost start ============================== ");
+//		log.info("[BoardPostService] boardPostDto : {}", boardPostDto);
+//		
+//		BoardPost originBoardPost = boardPostRepository.findById(boardPostDto.getPostCode())
+//				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 게시물이 없습니다. postCode=" + boardPostDto.getPostCode()));
+//	
+//			/* 이미지를 변경하지 않는 경우에는 
+//			 * 별도의 처리가 필요 없음 = 할 일이 없고 코드가 흘러가게 처리 */
+//			
+//			/* 조회했던 기존 엔티티의 내용을 수정 -> 별도의 수정 메소드를 정의해서 사용하면 다른 방식의 수정을 막을 수 있다. */
+//			originBoardPost.update(
+//					modelMapper.map(boardPostDto.getBoard(), Board.class),
+//					//엔티티로 값을 바꿔서 처리하는 과정
+//			        boardPostDto.getPostTitle(),
+//					boardPostDto.getStatus(),
+//			        boardPostDto.getPostContent()
+//			);
+//		
+//
+//		
+//		log.info("[BoardPostService] updateBoardPost end ============================== ");
+//	}
+//	
+	
 	
 	
 	
@@ -275,22 +285,30 @@ public class BoardPostService {
 	
 	/* 9. 게시물 삭제 */
 
-	public void deleteBoardPost(Integer empCode, BoardPostDto boardPostDto) {
-	    log.info("[BoardPostService] deleteBoardPost start ================================");
-	    log.info("[BoardPostService] boardPostDto : {}", boardPostDto);
-
-	    if (empCode == 1) {
-	        BoardPost boardPost = boardPostRepository.findById(boardPostDto.getPostCode())
-	                .orElseThrow(() -> new IllegalArgumentException("해당 코드의 게시물이 없습니다. postCode=" + boardPostDto.getPostCode()));
-	        
-	        boardPostRepository.delete(boardPost);
-	    } else {
-	        throw new IllegalArgumentException("삭제 권한이 없습니다.");
-	    }
-
-	    log.info("[BoardPostService] deleteBoardPost end ================================");
+	@Transactional
+	public void deleteBoardPost(BoardPostDto boardPostDto) {
+	   
+		
+			try {
+				BoardPost findBoardPost = boardPostRepository.findById(boardPostDto.getPostCode())
+						.orElseThrow(() -> new IllegalArgumentException("해당 게시물의 정보가 없습니다. findBoardPost=" + boardPostDto.getPostCode()));
+				
+				
+				boardPostDto.setStatus("N");
+				
+			    findBoardPost.update(
+						boardPostDto.getStatus()
+								);
+				
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		
+	
+		}
 	}
-}
+
 //	위의 코드는 다음을 포함하는 삭제 로직을 가지고 있습니다:
 //
 //	사용자가 삭제를 요청한 게시물을 postCode를 기반으로 조회합니다.

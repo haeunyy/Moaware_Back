@@ -24,6 +24,7 @@ import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.common.paging.Pagenation;
 import com.greedy.moaware.common.paging.PagingButtonInfo;
 import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
+import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.employee.dto.EmpDto;
 
 import io.jsonwebtoken.io.IOException;
@@ -42,7 +43,7 @@ public class BoardController {
 	
 	/* 1. 게시 판 목록 조회 - 페이징(사용자) */
 	@GetMapping("/list")
-public ResponseEntity<ResponseDto> selectBoardList(@RequestParam(name="page", defaultValue="1") int page) {
+		public ResponseEntity<ResponseDto> selectBoardList(@RequestParam(name="page", defaultValue="1") int page) {
 		
 		log.info("[BoardController] : selectBoardList start ==================================== ");
 		log.info("[BoardController] : page : {}", page);
@@ -79,7 +80,7 @@ public ResponseEntity<ResponseDto> selectBoardList(@RequestParam(name="page", de
 
 
 	}
-}
+
 	
 	/* 2. 게시 판 목록 조회 - 페이징(관리자) */
 //	@GetMapping("/boards-management")
@@ -105,3 +106,37 @@ public ResponseEntity<ResponseDto> selectBoardList(@RequestParam(name="page", de
 //		
 //	}
 //	}
+
+	
+	/* 8. 게시판 수정 */
+	@PutMapping("/modify")
+	public ResponseEntity<ResponseDto> updateBoard(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute BoardDto boardDto) {
+		//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
+		boardService.updateBoard(authEmpDto.getEmpCode(), boardDto);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "게시판 수정 성공"));
+		
+	}
+	
+	
+
+/* 9. 게시판 Status N(삭제) */
+@PutMapping("/delete/{boardCode}")
+public ResponseEntity<ResponseDto> deleteBoard(@PathVariable(name="boardCode") long boardCode) {
+
+	BoardDto boardDto = new BoardDto();
+
+	boardDto.setBoardCode(boardCode);
+
+	boardService.deleteBoard(boardDto);
+
+	
+	return ResponseEntity
+			.ok()
+			.body(new ResponseDto(HttpStatus.OK, "게시판 삭제 완료"));
+	
+}
+}
+
