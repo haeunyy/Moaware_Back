@@ -248,7 +248,9 @@ public class PaymentService {
 		
 		log.info("[PaymentService] paymentMemberList paymentMemberList : {} ", paymentMemberList);
 		
-		Page<Payment> paymentList = paymentRepository.findByPaymentMemberInOrderByPayCode(pageable, paymentMemberList);
+		String payStatus = "진행중";
+		
+		Page<Payment> paymentList = paymentRepository.findByPayStatusAndPaymentMemberInOrderByPayCode(pageable, payStatus, paymentMemberList);
 				
 		log.info("[PaymentService] paymentMemberList paymentList : {} ", paymentList);
 		
@@ -374,6 +376,9 @@ public class PaymentService {
 					paymentDto.setPayStatus(paymentDto.getPayStatus());
 				} else {
 
+					log.info("[PaymentService] PaymentUpdate paymentMember12 : {} " , member.getPayFinalYn());
+					log.info("[PaymentService] PaymentUpdate paymentMember12 : {} " , member.getPayFinalYn().equals("Y "));
+					log.info("[PaymentService] PaymentUpdate paymentMember12 : {} " , member.getPayFinalYn()=="Y");
 					if(member.getPayFinalYn().equals("Y")) {
 						paymentDto.setPayStatus("결재완료");
 					} else {
@@ -390,7 +395,7 @@ public class PaymentService {
 				paymentDto.setPayStatus("반려");
 
 			}
-		}
+		} else { member.setPayType("전결");}
 		
 			
 		return member;
