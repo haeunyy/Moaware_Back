@@ -32,7 +32,7 @@ public class Schedule {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SCH_SEQ_GENERATOR")
 	private Integer schCode;
 	
-	@Column(name="SCH_NAME")
+	@Column(name="SCH_NAME")  
 	private String schName;
 	
 	@Column(name="SCH_CONTENT")
