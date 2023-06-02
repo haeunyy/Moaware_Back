@@ -76,6 +76,32 @@ public class WorkController {
 
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "내 근태 현황 조회 완료", responseDtoWithPaging));
 	}
+	
+	/* 자기 근태 현항 일일 조회 */
+	@GetMapping("/works/day/{workDate}")
+	public ResponseEntity<ResponseDto> myWorkDay(@AuthenticationPrincipal AuthEmpDto emp,
+			@PathVariable String workDate) {
+
+		log.info(
+				"[WorkController] : @AuthenticationPrincipal emp : {} =========================================================",
+				emp);
+
+
+		// workDate를 Date 타입으로 파싱
+		// 객체에 담아서 보낸게 아닌 문자열 그대로 보냈기 때문에 이렇게 파싱한다.
+		Date parsedDate = null;
+		try {
+			parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(workDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		log.info(
+				"[WorkController] : @AuthenticationPrincipal 일일 조회 완료 ",
+				emp);
+
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", workService.selectMywork(emp.getEmpCode(), parsedDate)/* 반환 된 ReviewDto 객체 담기*/));	
+	}
 
 	/* 사원 번호 + 날짜로 조회 */
 	@GetMapping("/works/{empCode}/{workDate}")
@@ -201,7 +227,6 @@ public class WorkController {
 			e.printStackTrace();
 		}
 
-//	    Page<WorkDto> workDtoList = workService.empWorkList(parsedDate, page);
 		Page<WorkEmpDto2> workDtoList = workService.empWorkList1(parsedDate, page);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(workDtoList);
 
@@ -212,6 +237,46 @@ public class WorkController {
 		log.info("[WorkController] : myWorkList end =========================================================");
 
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "직원 일일 현황 조회 완료", responseDtoWithPaging));
+
+	}
+	
+	@GetMapping("emp/name/{name}/{workDate2}/{workDate}")
+	public ResponseEntity<ResponseDto> empWorkList(@PathVariable String name, @PathVariable String workDate2,
+			@PathVariable String workDate,
+			@RequestParam(name = "page", defaultValue = "1") int page) {
+		
+		log.info("[WorkController] : 이름 조회 투  시작~~~~~~~~~~~~~");
+		
+		Date parsedDate2 = null;
+		try {
+			parsedDate2 = new SimpleDateFormat("yyyy-MM-dd").parse(workDate2);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Date parsedDate = null;
+		try {
+			parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(workDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		log.info("[WorkController] : 이름 조회 투  시작~~~~~~~~~~~~~{}", name , parsedDate2, parsedDate);
+		log.info("[WorkController] : 이름 조회 투  시작~~~~~~~~~~~~~{}", parsedDate2);
+		log.info("[WorkController] : 이름 조회 투  시작~~~~~~~~~~~~~{}", parsedDate);
+		
+		
+
+		Page<WorkDto> workDtoList = workService.empNameWorkList(name, parsedDate2, parsedDate, page);
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(workDtoList);
+
+		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+		responseDtoWithPaging.setPageInfo(pageInfo);
+		responseDtoWithPaging.setData(workDtoList.getContent());
+
+		log.info("[WorkController] : myWorkList end =========================================================");
+		log.info("[responseDtoWithPaging] : responseDtoWithPaging{}", responseDtoWithPaging);
+
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "직원 월 현황 조회 완료", responseDtoWithPaging));
 
 	}
 

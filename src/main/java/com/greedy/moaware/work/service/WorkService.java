@@ -82,6 +82,7 @@ public class WorkService {
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("workPk.workDate").descending());
 		Page<Work> workList = workRepository.findAllByWorkPkEmpCodeAndWorkPkWorkDateBetween(workPk.getEmpCode(),
 				startDate, endDate, pageable);
+		// 리스트 엔티티의 지연로딩을 강제 초기화
 		workList.forEach(work -> Hibernate.initialize(work.getAuth().getRoleList()));
 
 		Page<WorkDto> workDtoList = workList.map(work -> modelMapper.map(work, WorkDto.class));
@@ -236,6 +237,43 @@ public class WorkService {
 		Page<WorkEmpDto2> workDtoList = workList.map(work -> modelMapper.map(work, WorkEmpDto2.class));
 
 		
+		return workDtoList;
+	}
+
+	
+	public Optional<WorkDto> selectMywork(Integer empCode, Date workDate) {
+	    AuthEmp emp = authEmpRepository.findByEmpCode(empCode)
+	            .orElseThrow(() -> new IllegalArgumentException("해당코드의 기록이 없습니다. emp=" + empCode));
+
+	    Optional<Work> workOptional = workRepository.findByWorkPkEmpCodeAndWorkPkWorkDate(emp.getEmpCode(), workDate);
+	    if (workOptional.isEmpty()) {
+	        return Optional.empty();
+	    }
+
+	    Work work = workOptional.get();
+	    WorkDto workDto = modelMapper.map(work, WorkDto.class);
+	    return Optional.ofNullable(workDto);
+	}
+
+
+	public Page<WorkDto> empNameWorkList(String name, Date workDate2, Date workDate, int page) {
+		
+		log.info("[WorkController] : 이름 조회 투  서비스  시작~~~~~~~~~~~~~{}", name);
+		log.info("[WorkController] : 이름 조회 투  서비스ㅜ   시작~~~~~~~~~~~~~{}", workDate2);
+		log.info("[WorkController] : 이름 조회 투  서비스     시작~~~~~~~~~~~~~{}", workDate);
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("workPk.workDate").descending());
+		Page<Work> workList = workRepository.findAllByEmpEmpNameAndWorkPkWorkDateBetween(name,
+				workDate2, workDate, pageable);
+		
+		workList.forEach(work -> Hibernate.initialize(work.getAuth().getRoleList()));
+
+		Page<WorkDto> workDtoList = workList.map(work -> modelMapper.map(work, WorkDto.class));
+
+		log.info("[WorkService] workDtoList.getContent() : {}", workDtoList.getContent());
+
+		log.info("[WorkService] selectMyWorkList end ======================= ");
+
 		return workDtoList;
 	}
 
