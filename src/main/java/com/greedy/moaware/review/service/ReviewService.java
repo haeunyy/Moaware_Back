@@ -62,7 +62,7 @@ public class ReviewService {
 	    Task task = taskRepository.findById(taskCode)
 	            .orElseThrow(()-> new IllegalArgumentException(taskCode + "번 업무가 존재하지 않습니다."));
 	    
-	    List<TaskReview> reviewList = reviewRepository.findByTaskAndStatus(task, "Y ");
+	    List<TaskReview> reviewList = reviewRepository.findByTaskAndStatus(task, "Y");
 
 	    log.info("[ReviewService] taskList : {}", reviewList);
 
@@ -120,6 +120,7 @@ public class ReviewService {
 		log.info("[ReviewService] taskReviewRegist end =============================================");
 	}
 	
+	/* 댓글 수정 */
 	@Transactional
 	public void taskReviewUpdate(AuthEmpDto logEmp, TaskReviewDto review) {
 		
@@ -135,4 +136,23 @@ public class ReviewService {
 
 	}
 
+	/* 댓글 삭제 */
+	@Transactional
+	public void taskReviewDelete(AuthEmpDto logEmp, int reviewCode) {
+		
+		log.info("[ReviewService] taskReviewDelete start =============================================");
+		log.info("[ReviewService] reviewCode : {}", reviewCode);
+		
+		TaskReview newReview = reviewRepository.findById(reviewCode)
+				.orElseThrow(()-> new IllegalArgumentException(reviewCode+ "번 댓글을 찾을 수 없습니다."));
+		
+		if(!(newReview.getEmp().getEmpCode() == logEmp.getEmpCode())) {
+			new IllegalArgumentException("작성자만 댓글 삭제가 가능합니다.");
+		}
+		
+		newReview.setStatus("N");
+		
+		log.info("[ReviewService] taskReviewDelete end =============================================");
+
+	}
 }
