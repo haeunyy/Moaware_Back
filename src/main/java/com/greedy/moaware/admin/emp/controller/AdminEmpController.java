@@ -40,11 +40,13 @@ public class AdminEmpController {
 	
 	/* 계정(회원) 전체 조회 */
 	@GetMapping("/list")
-	public ResponseEntity<ResponseDto> selectAdminEmpList(){
+	public ResponseEntity<ResponseDto> selectAdminEmpList(@RequestParam(name="page", defaultValue="1") int page){
 		
 		log.info("[AdminEmpController] selectAdmninEmpList start ============================== ");
+		log.info("[BoardController] : page : {}", page);
+
 		
-		List<AdminEmpDto> adminEmpDtoList =  adminEmpService.selectAdminEmpList();
+		Page<AdminEmpDto> adminEmpDtoList =  adminEmpService.selectAdminEmpList(page);
 		
 		log.info("adminEmpDtoList : {}" , adminEmpDtoList);
 		log.info("[AdminEmpController] selectAdminEmpList end ================================ ");

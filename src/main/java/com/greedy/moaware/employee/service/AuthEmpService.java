@@ -16,11 +16,11 @@ import com.greedy.moaware.common.configuration.MailSenderConfig;
 import com.greedy.moaware.employee.dto.AttachedFileDto;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.employee.dto.EmpDto;
+import com.greedy.moaware.employee.dto.FileCategoryDto;
 import com.greedy.moaware.employee.dto.TokenDto;
 import com.greedy.moaware.employee.entity.AttachedFile;
 import com.greedy.moaware.employee.entity.AuthEmp;
 import com.greedy.moaware.employee.entity.Emp;
-import com.greedy.moaware.employee.entity.FileCategory;
 import com.greedy.moaware.employee.repository.AuthEmpRepository;
 import com.greedy.moaware.employee.repository.EmpRepository;
 import com.greedy.moaware.employee.repository.FileRepository;
@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class AuthService {
+public class AuthEmpService {
 	
 	@Value("${image.image-url}")
 	private String IMAGE_URL;
@@ -49,7 +49,7 @@ public class AuthService {
 	private final MailSenderConfig mailSender;
 	private final FileRepository fileRepository;
 	
-	public AuthService(AuthEmpRepository authEmpRepository
+	public AuthEmpService(AuthEmpRepository authEmpRepository
 			, ModelMapper modelMapper
 			, TokenProvider tokenProvider
 			, PasswordEncoder passwordEncoder
@@ -190,6 +190,8 @@ public class AuthService {
 		Emp originalEmp = empRepository.findById(emp.getEmpCode())
 					.orElseThrow(()-> new IllegalArgumentException("오류가 발생하였습니다. 다시 시도 해주세요."));
 		
+		EmpDto empDto = modelMapper.map(originalEmp, EmpDto.class);
+		
 		// 프로필 이미지 업로드 
 		try {
 			
@@ -197,18 +199,16 @@ public class AuthService {
 				
 				String imgRandomName = UUID.randomUUID().toString().replace("-","");
 				String uploadDir = IMAGE_DIR+"/profile/";
-				log.info("originalEmp : ======================\n{}", originalEmp);
+				log.info("try-catch originalEmp : ======================\n{}", originalEmp);
 
-//				AttachedFile originalFile = originalEmp.getFileCategory().getFile();
+				AttachedFileDto originalFile = null;
 				
-				AttachedFile originalFile = null;
-				
-				for (FileCategory file : originalEmp.getFileCategory()) {
+				for (FileCategoryDto file : empDto.getFileCategory()) {
 					
 					String type = "emp";
 					
 				    if (file.getFCategoryType().equals(type)) {
-				    	originalFile = file.getFile();
+				    	originalFile = file.getFile(); // fCategoryType이 'emp'인 AttachedFileDto를 담는다.
 				    }
 				} 
 				
@@ -220,7 +220,7 @@ public class AuthService {
 				originalFile.setSavedFileName(replaceImgName);
 				originalFile.setOriginalFileName(fileDto.getFileInfo().getOriginalFilename());
 				
-				fileRepository.save(originalFile);
+				fileRepository.save(modelMapper.map(originalFile, AttachedFile.class));
 			}
 			
 			EmpDto fileEmp = fileDto.getFileCategory().getEmp();
@@ -238,6 +238,17 @@ public class AuthService {
 		
 		log.info("[AuthService] memberModify end ======================================");
 	}
-		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

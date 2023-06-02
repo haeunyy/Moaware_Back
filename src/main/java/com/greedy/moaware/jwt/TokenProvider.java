@@ -44,6 +44,7 @@ public class TokenProvider {
 	public TokenDto generateTokenDto(AuthEmpDto emp) {
 
 		log.info("[TokenProvider] generateTokenDto Start =====================================");
+	    
 		Claims claims = Jwts.claims().setSubject(emp.getEmpId());
 
 		/* 권한 담기 */

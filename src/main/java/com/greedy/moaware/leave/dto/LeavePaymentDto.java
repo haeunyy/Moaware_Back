@@ -2,6 +2,8 @@ package com.greedy.moaware.leave.dto;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.greedy.moaware.employee.dto.AuthEmpDto;
 import com.greedy.moaware.employee.dto.EmpDto;
 
@@ -16,7 +18,7 @@ public class LeavePaymentDto {
 	
 	private String leaveType;
 	
-//	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date leaveReqDate;
 	
 	private AuthEmpDto employee;
@@ -25,12 +27,15 @@ public class LeavePaymentDto {
 	
 	private EmpDto payEmp;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date lPayDate;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date lFinalPayDate;
 	
 	private EmpDto payFinalEmp;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date leaveEndDate;
 	
 }

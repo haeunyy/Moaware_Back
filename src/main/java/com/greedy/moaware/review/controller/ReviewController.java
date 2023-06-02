@@ -33,7 +33,7 @@ public class ReviewController {
 	}
 	
 	
-	@GetMapping("/task/{taskCode}")
+	@GetMapping("/{taskCode}")
 	public ResponseEntity<ResponseDto> selectTaskReviews(@PathVariable int taskCode
 //			, @RequestParam(name = "page", defaultValue = "1") int page
 			){
@@ -44,7 +44,7 @@ public class ReviewController {
 	}
 	
 	
-	@PostMapping("/regist/{taskCode}")
+	@PostMapping("/{taskCode}")
 	public ResponseEntity<ResponseDto> taskReviewRegist(
 			  @PathVariable int taskCode
 			, @RequestBody TaskReviewDto review
@@ -62,12 +62,29 @@ public class ReviewController {
 	public ResponseEntity<ResponseDto> taskReviewUpdate( 
 			  @AuthenticationPrincipal AuthEmpDto logEmp
 			, @RequestBody TaskReviewDto review ){
-
+		
+		log.info("TaskReviewDto : {}", review );
+		
 		if(logEmp.getEmpCode() == review.getEmp().getEmpCode()) {
 			reviewService.taskReviewUpdate(logEmp, review);
 		} else {
 			new IllegalArgumentException("댓글 작성자만 수정이 가능합니다.");
 		}
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "업무 댓글 수정 완료"));
+	}
+	
+	
+	@PutMapping("/delete/{reviewCode}")
+	public ResponseEntity<ResponseDto> taskReviewDelete( 
+			  @AuthenticationPrincipal AuthEmpDto logEmp
+			, @PathVariable int reviewCode ){
+		
+		log.info("reviewCode : {}", reviewCode );
+		
+		reviewService.taskReviewDelete(logEmp, reviewCode); 	
 		
 		return ResponseEntity
 				.ok()

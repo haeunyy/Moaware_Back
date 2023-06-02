@@ -25,7 +25,7 @@ public interface AdminEmpRepository extends JpaRepository<AdminEmp, Integer> {
 	 * N + 1 문제가 발생하게 된다. (성능 이슈) fetch 조인을 사용하게 되면 한 번에 조인해서 결과를 가져오게 된다.
 	 * @EntityGraph는 Data JPA에서 fetch 조인은 어노테이션으로 사용할 수 있도록 만들어준 기능이다.*/
 	@EntityGraph(attributePaths = {"job", "dept"})
-	List<AdminEmp> findAll();
+	Page<AdminEmp> findAll(Pageable pageable);
 	
 	@EntityGraph(attributePaths = {"job", "dept"})
 	Optional<AdminEmp> findById(Integer EmpCode);

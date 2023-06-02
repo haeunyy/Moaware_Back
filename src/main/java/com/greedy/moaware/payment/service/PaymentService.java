@@ -248,7 +248,9 @@ public class PaymentService {
 		
 		log.info("[PaymentService] paymentMemberList paymentMemberList : {} ", paymentMemberList);
 		
-		Page<Payment> paymentList = paymentRepository.findByPaymentMemberInOrderByPayCode(pageable, paymentMemberList);
+		String payStatus = "진행중";
+		
+		Page<Payment> paymentList = paymentRepository.findByPayStatusAndPaymentMemberInOrderByPayCode(pageable, payStatus, paymentMemberList);
 				
 		log.info("[PaymentService] paymentMemberList paymentList : {} ", paymentList);
 		
@@ -279,8 +281,8 @@ public class PaymentService {
 		Page<PaymentDto> filteredPage = new PageImpl<>(filterPay, paymentListDto.getPageable(), filterPay.size());
 		
 		log.info("[PaymentService] paymentMemberList filterPay : {} ", filterPay);
+		
 		log.info("[PaymentService] paymentMemberList filteredPage : {} ", filteredPage	);
-	
 		
 		log.info("[PaymentService] paymentMemberList end ============================== ");
 		
@@ -332,9 +334,14 @@ public class PaymentService {
 			return member;
 			}).collect(Collectors.toList());
 		paymentDto.setPaymentMember(payMember);
+		
+		if(paymentDto.getPayFileCategory() != null) {
+			paymentDto.getPayFileCategory().getFile().setFilePath(IMAGE_URL + paymentDto.getPayFileCategory().getFile().getFilePath());
+		}
+		
 		log.info("[PaymentService] paymentDetail payMember : {} " , payMember);
 		
-		log.info("[PaymentService] paymentDetail paymentDto : {} " , paymentDto);
+		log.info("[PaymentService] paymentDetail paymentDto : {} " , paymentDto.getPayFileCategory());
 		
 		log.info("[PaymentService] paymentDetail end ============================== ");
 		
@@ -342,31 +349,65 @@ public class PaymentService {
 	}
 	
 	/* 결재 처리 진행 */
-	public void PaymentUpdate (Integer empCode) {
+	@Transactional
+	public void PaymentUpdate (Integer empCode, PaymentDto paymentDto) {
 		
 		log.info("[PaymentService] PaymentUpdate start ============================== ");
 		
 		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
 		
-		Integer payCode = 10 ;
-		
-		PaymentMember paymentMember = paymentMemberRepository.findByPaymentMemberPkEmpCodeAndPaymentMemberPkPayCode(empCode , payCode);
-		
-		Payment payment = paymentRepository.findByPaymentMember(paymentMember);
+		Payment payment = paymentRepository.findById(paymentDto.getPayCode()).orElseThrow( () -> new IllegalArgumentException("해당 결재 문서가 없습니다. payCode=" + paymentDto.getPayCode()) );
 		
 		log.info("[PaymentService] PaymentUpdate paymentMember : {} " , payment);
 		
 		
-		List<PaymentMember> pay = payment.getPaymentMember().stream().map( member ->{
+		 payment.getPaymentMember().stream().map( member ->{
 		
-		if(member.getPaymentMemberPk().getEmpCode()== empCode) {
-			member.setPayType("결재");
-		}
+		if(member.getPaymentMemberPk().getEmpCode() == empCode) {
+			
+			if(paymentDto.getPaymentMember().get(0).getPayType().equals("결재")) {
+				
+				
+				member.setPayType(paymentDto.getPaymentMember().get(0).getPayType());
+				member.setPayDate(paymentDto.getPaymentMember().get(0).getPayDate());
+				
+				if("Y".equals(paymentDto.getPaymentMember().get(0).getPayTotalYn())) {
+					member.setPayTotalYn(paymentDto.getPaymentMember().get(0).getPayTotalYn());
+					paymentDto.setPayStatus(paymentDto.getPayStatus());
+				} else {
+
+					log.info("[PaymentService] PaymentUpdate paymentMember12 : {} " , member.getPayFinalYn());
+					log.info("[PaymentService] PaymentUpdate paymentMember12 : {} " , member.getPayFinalYn().equals("Y "));
+					log.info("[PaymentService] PaymentUpdate paymentMember12 : {} " , member.getPayFinalYn()=="Y");
+					if(member.getPayFinalYn().equals("Y")) {
+						paymentDto.setPayStatus("결재완료");
+					} else {
+						paymentDto.setPayStatus("진행중");
+					}
+				}
+				
+				
+			} else if(paymentDto.getPaymentMember().get(0).getPayType().equals("반려")) {
+				member.setPayType(paymentDto.getPaymentMember().get(0).getPayType());
+				member.setPayDate(paymentDto.getPaymentMember().get(0).getPayDate());
+				member.setCancleReason(paymentDto.getPaymentMember().get(0).getCancleReason());
+				
+				paymentDto.setPayStatus("반려");
+
+			}
+		} else { member.setPayType("전결");}
+		
 			
 		return member;
 		
 		}).collect(Collectors.toList());
-		log.info("[PaymentService] PaymentUpdate paymentMember2 : {} " , pay);
+	
+		log.info("[PaymentService] PaymentUpdate paymentMember2 : {} " , paymentDto);
+		
+		payment.setPayStatus(paymentDto.getPayStatus());
+
+		log.info("[PaymentService] PaymentUpdate paymentMember3 : {} " , payment);
+		
 		
 		log.info("[PaymentService] PaymentUpdate end ============================== ");
 		

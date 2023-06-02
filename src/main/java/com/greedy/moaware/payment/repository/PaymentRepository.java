@@ -27,6 +27,9 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
 	Payment findByPaymentMember(PaymentMember paymentMember);
 
+	Page<Payment> findByPayStatusAndPaymentMemberInOrderByPayCode(Pageable pageable, String payStatus,
+			List<PaymentMember> paymentMemberList);
+
 
 
 

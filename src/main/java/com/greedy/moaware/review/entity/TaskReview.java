@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.project.entity.ProjEmp;
 import com.greedy.moaware.project.entity.Task;
@@ -25,6 +27,7 @@ import lombok.ToString;
 @Getter
 @Entity
 @Table(name="REVIEW")
+@DynamicUpdate
 @SequenceGenerator(name="REVIEW_SEQ_GENERATOR", sequenceName="SEQ_REVIEW_CODE", initialValue=1, allocationSize=1)
 public class TaskReview {
 	

@@ -8,20 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.greedy.moaware.common.ResponseDto;
-import com.greedy.moaware.employee.dto.AuthEmpDto;
-import com.greedy.moaware.employee.dto.EmpDto;
-import com.greedy.moaware.employee.service.AuthService;
-import com.greedy.moaware.employee.service.EmpService;
 
+import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.common.paging.Pagenation;
 import com.greedy.moaware.common.paging.PagingButtonInfo;
 import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
+import com.greedy.moaware.employee.dto.AuthEmpDto;
+import com.greedy.moaware.employee.dto.EmpDto;
+import com.greedy.moaware.employee.service.EmpService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +29,8 @@ public class EmpController {
 	
 	private EmpService empService;
 	
-	public EmpController(EmpService empService, AuthService authService) {
+	
+	public EmpController(EmpService empService) {
 		this.empService = empService;
 	}
 	

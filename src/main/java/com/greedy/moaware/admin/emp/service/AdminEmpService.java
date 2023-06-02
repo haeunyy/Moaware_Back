@@ -5,6 +5,10 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Service;
 
@@ -39,14 +43,21 @@ public class AdminEmpService {
 		this.modelMapper = modelMapper;
 	}
 	
+	
+	
 	/* 계정(회원) 전체 조회*/
-	public List<AdminEmpDto> selectAdminEmpList() {
+	public Page<AdminEmpDto> selectAdminEmpList(int page) {
+		
+		log.info("[AdminEmpService] selectAdminEmpList start ============================== ");
+
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
+
+		
+		Page<AdminEmp> adminEmpList = adminEmpRepository.findAll(pageable);
 		
 		
-		List<AdminEmp> adminEmpList = adminEmpRepository.findAll();
-		
-		
-		List<AdminEmpDto> adminEmpDtoList = adminEmpList.stream().map( adminEmp -> modelMapper.map(adminEmp, AdminEmpDto.class)).collect(Collectors.toList());
+		Page<AdminEmpDto> adminEmpDtoList = adminEmpList
+				.map( adminEmp -> modelMapper.map(adminEmp, AdminEmpDto.class));
 		
 		
 		
@@ -90,8 +101,10 @@ public class AdminEmpService {
 		
 		
 	}
+
+	
+	}
 	
 	
 	
 	
-}
