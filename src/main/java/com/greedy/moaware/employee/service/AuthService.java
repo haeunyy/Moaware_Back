@@ -238,17 +238,6 @@ public class AuthService {
 		
 		log.info("[AuthService] memberModify end ======================================");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 }

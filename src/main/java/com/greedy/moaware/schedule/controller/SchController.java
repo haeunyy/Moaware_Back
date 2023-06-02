@@ -89,14 +89,27 @@ public class SchController {
 	    
 		log.info("schCode : {} ", schCode);
 	    
-	    Integer authEmpId = authEmp.getEmpCode(); // 로그인한 사용자의 사원 번호 가져오기
+	    // Integer authEmpId = authEmp.getEmpCode(); // 로그인한 사용자의 사원 번호 가져오기
 	    
-	    schService.deleteSchedule(schCode, authEmpId);
+	    schService.deleteSchedule(schCode, authEmp.getEmpCode());
 	    
 	    log.info("[SchController] : deleteSchedule end ===================================== ");
 	    
 	    return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "일정 삭제 완료"));
 	}
+	
+	/* 일정 수정 */
+	@PutMapping("calendar")
+	public ResponseEntity<ResponseDto> modifySchedule(@AuthenticationPrincipal AuthEmpDto authEmp, @RequestBody ScheduleDto scheduleDto) {
+	    
+		log.info("[SchController] : modifySchedule start ===================================== ");
+		
+		schService.modifySchedule(authEmp.getEmpCode(), scheduleDto);
+		
+		log.info("[SchController] : modifySchedule  end  ===================================== ");
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "일정 수정 완료"));
+	}	
 	
 	/* 일정 참여자 조회 */
 	@GetMapping("/emp/{empCode}")

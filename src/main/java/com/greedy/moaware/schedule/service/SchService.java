@@ -15,6 +15,8 @@ import com.greedy.moaware.employee.repository.EmpRepository;
 import com.greedy.moaware.exception.ScheduleNotFoundException;
 import com.greedy.moaware.exception.UserNotFoundException;
 import com.greedy.moaware.schedule.dto.ScheduleDto;
+import com.greedy.moaware.schedule.entity.SchCategory;
+import com.greedy.moaware.schedule.entity.SchPrarticipant;
 import com.greedy.moaware.schedule.entity.Schedule;
 import com.greedy.moaware.schedule.repository.SchCategoryRepository;
 import com.greedy.moaware.schedule.repository.SchRepository;
@@ -84,13 +86,6 @@ public class SchService {
 
 	/* 일정 참여자 검색 */
 	
-	/* 일정 수정 */
-	@Transactional
-	public void modifySchedule(ScheduleDto scheduleDto) {
-		
-		log.info("[SchService] modifySchedule : {}", scheduleDto);
-		
-	}
 
 	/* 일정 삭제 */
 	@Transactional
@@ -108,5 +103,31 @@ public class SchService {
 		
 	}
 	
+	/* 일정 수정 */
+	@Transactional
+	public void modifySchedule(Integer authEmp, @ModelAttribute ScheduleDto scheduleDto) {
+
+	    log.info("[SchService] modifySchedule : {}", scheduleDto);
+		
+		Emp employee = empRepository.findById(authEmp)
+	            .orElseThrow(() -> new UserNotFoundException(authEmp + "번의 사원을 찾을 수 없습니다."));
+	    
+	    Schedule sch = schRepository.findById(scheduleDto.getSchCode())
+	    		.orElseThrow(() -> new ScheduleNotFoundException(scheduleDto.getSchCode() + "번의 일정을 찾을 수 없습니다."));
+	    		
+	    sch.setSchName(scheduleDto.getSchName());
+	    sch.setSchContent(scheduleDto.getSchContent());
+	    sch.setSchDate(scheduleDto.getSchDate());
+	    sch.setSchEndDate(scheduleDto.getSchEndDate());
+	    sch.setSchType(modelMapper.map(scheduleDto.getSchType(), SchCategory.class));
+//	    sch.setSchPrarticipant(modelMapper.map(scheduleDto.getSchPrarticipant(), SchPrarticipant.class));
+	    
+	    log.info("sch : {}", sch);
+	    
+//	    schRepository.save(schedule);
+//	    schRepository.save(modelMapper.map(scheduleDto, ScheduleDto.class));
+	    
+	}
+
 }
 
