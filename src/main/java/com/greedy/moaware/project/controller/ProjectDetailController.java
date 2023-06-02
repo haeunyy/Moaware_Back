@@ -3,7 +3,6 @@ package com.greedy.moaware.project.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,7 +77,9 @@ public class ProjectDetailController {
 	
 	/* 업무 수정 */
 	@PutMapping("/task/update")
-	public ResponseEntity<ResponseDto> taskUpdate(@RequestBody TaskDto task){
+	public ResponseEntity<ResponseDto> taskUpdate(
+			@AuthenticationPrincipal AuthEmpDto emp,
+			@RequestBody TaskDto task){
 		log.info("task : {} ", task);
 		
 		projService.taskUpdate(task);
@@ -98,7 +99,7 @@ public class ProjectDetailController {
 		
 		return ResponseEntity
 				.ok()
-				.body(new ResponseDto(HttpStatus.OK, "'" + taskCode + "'번 프로젝트 업무가 삭제 되었습니다."));
+				.body(new ResponseDto(HttpStatus.OK, "업무 삭제 완료 ."));
 	}
 }
  

@@ -48,16 +48,13 @@ public class EmpUserDetailService implements UserDetailsService{
 	    AuthEmpDto empDto = modelMapper.map(emp, AuthEmpDto.class);
 	    
 	    /* 권한명 추출 */
-	    List<String> roles = emp.getRoleList()
-	            .stream()
-	            .map(role -> role.getAuth().getAuthTitle())
-	            .collect(Collectors.toList());
+	    List<String> roles = emp.getRoleList().stream()
+	    		.map(role -> role.getAuth().getAuthTitle()).collect(Collectors.toList());
 	    log.info("[EmpUserDetailService] roles : {}", roles);
 	    
 	    /* SimpleGrantedAuthority 객체로 변환 */
 	    List<SimpleGrantedAuthority> authorities = roles.stream()
-	            .map(SimpleGrantedAuthority::new)
-	            .collect(Collectors.toList());
+	            .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	    
 	    empDto.setAuthorities(authorities);
 	    
