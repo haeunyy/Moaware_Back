@@ -159,6 +159,11 @@ public class LeaveService {
 		
 	}
 
+	public void insertLeaveRequest(LeavePaymentDto leavePayDto, AuthEmpDto emp) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	
 }

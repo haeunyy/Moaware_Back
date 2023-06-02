@@ -28,7 +28,13 @@ public interface WorkRepository extends JpaRepository<Work, WorkPk> {
 //	@Query("SELECT w FROM WorkEmp w JOIN fetch w.work wk WHERE w.empCode = wk.workPk.empCode AND wk.workPk.workDate = :workDate")
 	Page<Work> findByWorkPkWorkDate(Date workDate, Pageable pageable);
 
-	Optional<Work> findByWorkPkEmpCodeAndWorkPkWorkDate(Integer empCode, Date workDate);
+	Optional<Work> findByWorkPkEmpCodeAndWorkPkWorkDate(Integer emp, Date workDate);
+
+	Optional<Work> findByAuthEmpCode(Integer empCode);
+	
+//	@EntityGraph(attributePaths = { "workPk", "emp" })
+	Page<Work> findAllByEmpEmpNameAndWorkPkWorkDateBetween(String name, Date workDate2, Date workDate,
+			Pageable pageable);
 	
 
 	

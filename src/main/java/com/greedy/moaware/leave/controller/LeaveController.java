@@ -2,7 +2,6 @@ package com.greedy.moaware.leave.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.data.domain.Page;
@@ -125,5 +124,33 @@ public class LeaveController {
 				.ok()
 				.body(new ResponseDto(HttpStatus.OK, "연차삽입 완료"));
 	}
+	
+	@PostMapping("request")
+	public ResponseEntity<ResponseDto> requestLeave(@AuthenticationPrincipal AuthEmpDto emp, @RequestBody LeavePaymentDto leavePayDto){
+		
+		leaveService.insertLeaveRequest(leavePayDto, emp);
+		
+		
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "연차 신청 성공"));
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 

@@ -10,4 +10,6 @@ public interface AuthEmpRepository extends JpaRepository<AuthEmp, Integer>{
 	
 	Optional<AuthEmp> findByEmpId(String empId);
 
+	Optional<AuthEmp> findByEmpCode(Integer empCode);
+
 }
