@@ -158,10 +158,19 @@ public class LeaveService {
 		
 		
 	}
-
+	
+	@Transactional
 	public void insertLeaveRequest(LeavePaymentDto leavePayDto, AuthEmpDto emp) {
-		// TODO Auto-generated method stub
 		
+		log.info("[LeaveService] insertLeaveRequest start ======================= ");
+		
+		log.info("연차 신청 시작------------------------------------------------------------------");
+	
+		leavePayDto.setEmployee(emp);
+		leavePayDto.setLPayStatus("대기중");
+		
+		leavePaymentRepository.save(modelMapper.map(leavePayDto, LeavePayment.class));
+		log.info("[LeaveService] insertLeaveRequest end ======================= ");
 	}
 
 

@@ -32,7 +32,6 @@ public interface WorkRepository extends JpaRepository<Work, WorkPk> {
 
 	Optional<Work> findByAuthEmpCode(Integer empCode);
 	
-//	@EntityGraph(attributePaths = { "workPk", "emp" })
 	Page<Work> findAllByEmpEmpNameAndWorkPkWorkDateBetween(String name, Date workDate2, Date workDate,
 			Pageable pageable);
 	
