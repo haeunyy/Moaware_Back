@@ -10,9 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.greedy.moaware.board.dto.BoardDto;
-import com.greedy.moaware.boardPost.dto.BoardPostDto;
 import com.greedy.moaware.boardPost.entity.Board;
-import com.greedy.moaware.boardPost.entity.BoardPost;
 import com.greedy.moaware.boardPost.repository.BoardPostRepository;
 import com.greedy.moaware.boardPost.repository.BoardRepository;
 import com.greedy.moaware.employee.entity.Emp;
@@ -69,8 +67,81 @@ public class BoardService {
 	
 		log.info("[BoardService] insertBoard End ==============================");
 	}
-	}
+
+
+
+	/* 게시판 수정 */
+	@Transactional
+	public void updateBoard(Integer empCode, BoardDto boardDto) {
+		
+		log.info("[BoardService] updateBoard start ============================== ");
+		log.info("[BoardService] boardDto : {}", boardDto);	
+		
+		
+		if (empCode == 1) {
+
+			Board originBoard = boardRepository.findById(boardDto.getBoardCode())
+					.orElseThrow(() -> new IllegalArgumentException("해당 코드의 게시판이 없습니다. boardCode=" + boardDto.getBoardCode()));
+
+			/* 조회했던 기존 엔티티의 내용을 수정 -> 별도의 수정 메소드를 정의해서 사용하면 다른 방식의 수정을 막을 수 있다. */
+			originBoard.update(
+									boardDto.getBoardCode(), 
+									boardDto.getBoardName(),
+									boardDto.getStatus()
+									       
+								    );
 	
+			
+		} else {
+			throw new IllegalArgumentException("수정 권한이 없습니다.");
+		}
+			log.info("[BoardPService] updateBoard end ============================== ");
+	}
+
+	
+
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	/* 게시판 삭제 */
+	
+	
+	@Transactional
+	public void deleteBoard(BoardDto boardDto)  {
+
+
+		try {
+	
+	
+		Board findBoard = boardRepository.findById(boardDto.getBoardCode())		
+				
+				.orElseThrow(() -> new IllegalArgumentException("해당 게시판의 정보가 없습니다. findBoard=" + boardDto.getBoardCode()));
+				boardDto.setStatus("N");
+		
+	    findBoard.update(
+				boardDto.getStatus()
+						);
+	
+	} catch (IllegalArgumentException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}		
+	
+	
+	
+	}
+	}
+
+
+
+
 	
 	
 	

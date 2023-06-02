@@ -76,13 +76,21 @@ public class BoardPost {
 	
 	
 	/* BoardPost entity 수정 용도의 메소드를 별도로 정의 */
-	public void update( Board board, String postTitle, String status, String postContent ) {
+	public void update( Long postCode, Board board, String postTitle, String status, String postContent ) {
 		
+		this.postCode= postCode;
 		this.board = board;
 		this.postTitle = postTitle;
 		this.status = status;
 		this.postContent = postContent;
-				
+//		this.writer = writer; 
+
+	}
+
+
+	public void update(String status) {
+		this.status = status;
+		
 	}
 	
 	

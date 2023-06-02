@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +20,7 @@ import com.greedy.moaware.common.paging.Pagenation;
 import com.greedy.moaware.common.paging.PagingButtonInfo;
 import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
 import com.greedy.moaware.employee.dto.AuthEmpDto;
+import com.greedy.moaware.project.dto.CreateProjectDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -163,40 +163,45 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 	
 		}
 		
-//		/* 8. 게시물 수정 */
-//		@PutMapping("/boardPosts")
-//		public ResponseEntity<ResponseDto> updateBoardPost(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute BoardPostDto boardPostDto) {
-//			//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
-//			boardPostService.updateBoardPost(authEmpDto.getEmpCode(), boardPostDto);
-//			
-//			return ResponseEntity
-//					.ok()
-//					.body(new ResponseDto(HttpStatus.OK, "게시물 수정 성공"));
-//			
-//		}
-		
-		
 		/* 8. 게시물 수정 */
 		@PutMapping("/boardPosts")
-		public ResponseEntity<ResponseDto> updateBoardPost(@ModelAttribute BoardPostDto boardPostDto) {
+		public ResponseEntity<ResponseDto> updateBoardPost(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute BoardPostDto boardPostDto) {
 			//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
-			boardPostService.updateBoardPost(boardPostDto);
+			boardPostService.updateBoardPost(authEmpDto.getEmpCode(), boardPostDto);
 			
 			return ResponseEntity
 					.ok()
 					.body(new ResponseDto(HttpStatus.OK, "게시물 수정 성공"));
+			
 		}
+
+//		
+//		/* 8. 게시물 수정 */
+//		@PutMapping("/boardPosts")
+//		public ResponseEntity<ResponseDto> updateBoardPost(@ModelAttribute BoardPostDto boardPostDto) {
+//			//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
+//			boardPostService.updateBoardPost(boardPostDto);
+//			
+//			return ResponseEntity
+//					.ok()
+//					.body(new ResponseDto(HttpStatus.OK, "게시물 수정 성공"));
+//		}
 		
+//		
+		/* 9. 게시물 Status N(삭제) */
+		@PutMapping("/delete/{postCode}")
+		public ResponseEntity<ResponseDto> deleteBoardPost(@PathVariable(name="postCode") long postCode) {
+
+			BoardPostDto boardPostDto = new BoardPostDto();
+
+			boardPostDto.setPostCode(postCode);
 		
-		/* 9. 게시물 삭제 */
-		@DeleteMapping("/boardPosts")
-		public ResponseEntity<ResponseDto> deleteBoardPost(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute BoardPostDto boardPostDto) {
-			//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
-			boardPostService.deleteBoardPost(authEmpDto.getEmpCode(), boardPostDto);
+			boardPostService.deleteBoardPost(boardPostDto);
+
 			
 			return ResponseEntity
 					.ok()
-					.body(new ResponseDto(HttpStatus.OK, "게시물 삭제 성공"));
+					.body(new ResponseDto(HttpStatus.OK, "게시물 삭제 완료"));
 			
 		}
 		

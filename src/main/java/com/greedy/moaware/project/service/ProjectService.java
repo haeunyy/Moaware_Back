@@ -162,6 +162,10 @@ public class ProjectService {
 		log.info("[ProjectService] createPorj end ===========================");
 
 	}
+	
+	
+	
+	
 	@Transactional
 	public void deleteProj(CreateProjectDto proj) {
 		
