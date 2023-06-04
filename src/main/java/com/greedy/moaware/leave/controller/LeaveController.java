@@ -139,8 +139,35 @@ public class LeaveController {
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "연차 신청 성공"));
 	}
 	
+	@GetMapping("request/list")
+	public ResponseEntity<ResponseDto> leaveRequestList(@AuthenticationPrincipal AuthEmpDto emp,
+			@RequestParam(name = "page", defaultValue = "1") int page) {
+		
+
+		
+		Page<LeavePaymentDto> LeavePaymentDtoList = leaveService.myLeaveRequestList(emp.getEmpCode(), page);
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(LeavePaymentDtoList);
+		
+		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+		responseDtoWithPaging.setPageInfo(pageInfo);
+		responseDtoWithPaging.setData(LeavePaymentDtoList.getContent());
+
+		log.info("[LeaveController] : leaveList end =========================================================");
+
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "연차 신청 조회 완료", responseDtoWithPaging));
+	}
 	
+	@GetMapping("/request/{leaveCode}")
+	public ResponseEntity<ResponseDto> selectLeaveDetail (@PathVariable Integer leaveCode) {
+		
+//		LeavePaymentDto LeavePaymentDtoList = leaveService.selectLeaveDetail(leaveCode);
+
 	
+		log.info("[LeaveController] : selectLeaveDetail start =========================================================");
+
+		return ResponseEntity.ok().body(
+				new ResponseDto(HttpStatus.OK, "조회 성공", leaveService.selectLeaveDetail(leaveCode)));
+	}
 	
 	
 	
@@ -157,4 +184,3 @@ public class LeaveController {
 	
 	
 }
-
