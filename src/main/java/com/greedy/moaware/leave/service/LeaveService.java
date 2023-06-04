@@ -3,7 +3,9 @@ package com.greedy.moaware.leave.service;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,8 @@ import com.greedy.moaware.leave.entity.LeavePayment;
 import com.greedy.moaware.leave.entity.LeavePk;
 import com.greedy.moaware.leave.repository.LeavePaymentRepository;
 import com.greedy.moaware.leave.repository.LeaveRepository;
+import com.greedy.moaware.project.dto.CreateProjectEmpDto;
+import com.greedy.moaware.project.entity.CreateProjectEmp;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -119,6 +123,7 @@ public class LeaveService {
 		if(findLeave == null) {
 			if(year == nowYear) {
 				leave.setLeaveTotalDay("10");
+				leave.setLeaveUseDay("0");
 				leaveRepository.save(leave);
 				log.info("저장 완료1");
 			} else if(nowYear > year) {
@@ -171,6 +176,26 @@ public class LeaveService {
 		
 		leavePaymentRepository.save(modelMapper.map(leavePayDto, LeavePayment.class));
 		log.info("[LeaveService] insertLeaveRequest end ======================= ");
+	}
+
+	public Page<LeavePaymentDto> myLeaveRequestList(Integer empCode, int page) {
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("leaveCode").descending());
+		Page<LeavePayment> leaveList = leavePaymentRepository.findByEmployeeEmpCodeAndlPayStatus(empCode, "대기중",  pageable);
+		
+		Page<LeavePaymentDto> leaveDtoList = leaveList.map(proj -> modelMapper.map(proj, LeavePaymentDto.class));
+		
+		return leaveDtoList;
+	}
+
+	public LeavePaymentDto selectLeaveDetail(Integer leaveCode) {
+		
+		LeavePayment leave = leavePaymentRepository.findByLeaveCode(leaveCode)
+				.orElseThrow(() -> new IllegalArgumentException("해당코드의 연차가 없습니다. leaveCode=" + leaveCode));
+		
+		LeavePaymentDto leavePaymentDto = modelMapper.map(leave, LeavePaymentDto.class);
+		
+		return leavePaymentDto;
 	}
 
 
