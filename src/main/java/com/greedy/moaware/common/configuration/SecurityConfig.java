@@ -36,7 +36,7 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer configure() {
-		return (web) -> web.ignoring().antMatchers("/productimgs/**");
+		return (web) -> web.ignoring().antMatchers("/images/**");
 	}
 	
 	@Bean
@@ -48,21 +48,36 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
 		 return http
-		         .csrf()
-		         	.disable()
-		         	.exceptionHandling()
-		         	.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-		         	.accessDeniedHandler(jwtAccessDeniedHandler)
-		         .and()	
-		         .sessionManagement()
-		             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		         .and()
-		         	 // 권한 체크
-		             .authorizeRequests()
+		         .csrf().disable().exceptionHandling()
+			         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+			         .accessDeniedHandler(jwtAccessDeniedHandler)
+		         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		         .and().authorizeRequests()
 		             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		             .antMatchers("/auth/**").permitAll()
-		             .antMatchers(HttpMethod.GET, "/emp/**").permitAll()
-//		             .antMatchers("/proj/**", "/project/**", "/task/**").hasRole("PROJECT")
+//		             .antMatchers(HttpMethod.GET, "/review/**").permitAll()
+		             .antMatchers("/proj/**","/review/**").hasAnyAuthority("PROJECT", "ADMIN")
+		             .antMatchers(HttpMethod.GET,"/api/v1/**", "/admin/board/**").hasAnyAuthority("EMPLOYEE", "ADMIN")
+		             .antMatchers(HttpMethod.POST,"/admin/board/**").hasAnyAuthority("BOARD", "ADMIN")
+		             .antMatchers(HttpMethod.POST,"/api/v1/**").hasAnyAuthority("POST", "BOARD","ADMIN")
+//		             .antMatchers("/proj").hasAnyAuthority("PROJECT", "ADMIN")
+//		             .antMatchers().hasAnyAuthority("PROJECT")
+//		             .antMatchers("/api/v1/**", "/admin/board").hasAnyAuthority("BOARD", "ADMIN")
+//			             ("hasAuthority('ADMIN') or hasAuthority('PROJECT')")
+//			             .antMatchers("/api/b/**").access("hasAuthority('ADMIN') or hasAuthority('POST')")
+//			             .antMatchers("/api/v1/**").access("hasAuthority('ADMIN') or hasAuthority('POST')")
+//			             .antMatchers("/admin/board/**").access("hasAuthority('ADMIN') or hasAuthority('BOARD')")
+//			             .antMatchers("/admin/board/**").hasAuthority("BOARD")
+//		             .antMatchers("/proj/**", "/project/**", "/review/**").hasAuthority("ADMIN")
+//		             .antMatchers("/proj/**", "/project/**", "/review/**").hasAuthority("BOARD")
+//		             .antMatchers("/proj/**", "/project/**", "/review/**").hasAuthority("POST")
+//	                .and().formLogin().loginPage("/auth/login")
+//	                    .usernameParameter("empId")
+//	                    .permitAll()
+//		         	.loginPage("/auth/login")
+//		         .and()
+//		         	.logout()
+//		         		.logoutSuccessUrl("/login")
 		         .and()
 		         	.cors()
 		         .and()
