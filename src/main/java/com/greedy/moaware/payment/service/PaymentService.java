@@ -31,6 +31,7 @@ import com.greedy.moaware.payment.dto.PaymentMemberDto;
 import com.greedy.moaware.payment.entity.Form;
 import com.greedy.moaware.payment.entity.PayAttachedFile;
 import com.greedy.moaware.payment.entity.PayEmp;
+import com.greedy.moaware.payment.entity.PayFileCategory;
 import com.greedy.moaware.payment.entity.Payment;
 import com.greedy.moaware.payment.entity.PaymentMember;
 import com.greedy.moaware.payment.entity.PaymentMemberPk;
@@ -614,6 +615,138 @@ public class PaymentService {
 		
 		
 		log.info("[PaymentService] paymentSignUpdate end ============================== ");
+		
+	}
+	
+	/* 임시 저장문서 업데이트 */
+	@Transactional
+	public void updatePaymentStorage (Integer empCode, PayAttachedFileDto payAttachedFile) {
+		
+		log.info("[PaymentService] updatePaymentStorage start ============================== ");
+		log.info("[PaymentService] updatePaymentStorage emp : {}" , payAttachedFile);
+		
+		PayEmp payEmp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
+
+		
+		log.info("[PaymentService] insertPayment start ============================== ");
+		log.info("[PaymentService] insertPayment payAttachedFile : {}" , payAttachedFile);
+		
+		
+		if(payAttachedFile.getFileInfo() != null) {
+			
+			Payment payment = paymentRepository.findById(payAttachedFile.getPayFileCategory().getPay().getPayCode())
+					.orElseThrow( () -> new IllegalArgumentException("해당 결재문서가 없습니다. PayCode=" + payAttachedFile.getPayFileCategory().getPay().getPayCode()));
+			
+			if(payment.getPayFileCategory() != null ) {
+		
+				
+			log.info("[PaymentService] insertPayment if 안 payment : {}" , payment);
+			PayAttachedFile originFile = payment.getPayFileCategory().getFile();
+			log.info("[PaymentService] insertPayment if 안 originFile : {}" , originFile);
+			
+			String fileName = UUID.randomUUID().toString().replace("-","");
+			
+			String savedName = fileName + "." + FilenameUtils.getExtension(payAttachedFile.getOriginalFileName());
+			
+			originFile.setSavedFileName(savedName);
+			
+			
+			try {
+				
+				String uploadDir = IMAGE_DIR+"/payment";
+				
+				log.info("업로드 dir  : {}", uploadDir);
+				
+				String replaceFileName = FileUploadUtils.saveFile(uploadDir, fileName, payAttachedFile.getFileInfo());
+				String path = "/payment/" + replaceFileName;
+				
+				log.info("업로드 path  : {}", path);
+				
+				FileUploadUtils.deleteFile(uploadDir, originFile.getSavedFileName());
+				
+				log.info("[PaymentService] updatePaymentStorage  payAttachedFile.getOriginalFileName() : {}", payAttachedFile.getOriginalFileName());
+				
+				originFile.update( payAttachedFile.getOriginalFileName(), path, savedName);
+				
+				log.info("[PaymentService] updatePaymentStorage  savedName : {}", savedName);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+				
+			} 
+			
+			
+			originFile.getPayFileCategory().getPay().setEmp(payEmp);
+			
+			
+			log.info("[PaymentService] updatePaymentStorage originFile : {} ", originFile);
+			} else {
+				String fileName = UUID.randomUUID().toString().replace("-","");
+				
+				String savedName = fileName + "." + FilenameUtils.getExtension(payAttachedFile.getOriginalFileName());
+				
+				payAttachedFile.setSavedFileName(savedName);
+				
+				try {
+					
+					String uploadDir = IMAGE_DIR+"/payment";
+					
+					log.info("업로드 dir  : {}", uploadDir);
+					
+					String replaceFileName = FileUploadUtils.saveFile(uploadDir, fileName, payAttachedFile.getFileInfo());
+					String path = "/payment/" + replaceFileName;
+					
+					log.info("업로드 path  : {}", path);
+					payAttachedFile.setFilePath(path);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+					
+				} 
+				
+				PayAttachedFile file = modelMapper.map(payAttachedFile, PayAttachedFile.class);
+				
+				Payment pay = modelMapper.map(payAttachedFile.getPayFileCategory().getPay(), Payment.class);		
+				
+				log.info("[PaymentService] updatePaymentStorage file : {} ", file);
+						
+
+				log.info("[PaymentService] updatePaymentStorage file2 : {} ", modelMapper.map(file, PayAttachedFileDto.class));
+				
+				payment.updatePayment(pay.getPayCode(), pay.getDraftDate(),pay.getDraftTitle(), pay.getDraftContent(), pay.getPayStatus(), pay.getForm(), pay.getPaymentMember(), pay.getRefenceMember());
+				
+				
+				log.info("[PaymentService] updatePaymentStorage file : {} ", file);
+
+				
+				
+				file.getPayFileCategory().setPay(payment);
+				
+				
+				payAttachedFileRepository.save(file);
+						
+				}
+			
+			}
+				
+		
+		else {
+			
+		Payment payment = paymentRepository.findById(payAttachedFile.getPayFileCategory().getPay().getPayCode())
+				.orElseThrow( () -> new IllegalArgumentException("해당 결재문서가 없습니다. PayCode=" + payAttachedFile.getPayFileCategory().getPay().getPayCode()));
+		
+		Payment pay = modelMapper.map(payAttachedFile.getPayFileCategory().getPay(), Payment.class);
+		
+		payment.updatePayment(pay.getPayCode(), pay.getDraftDate(),pay.getDraftTitle(), pay.getDraftContent(), pay.getPayStatus(), pay.getForm(), pay.getPayFileCategory(), pay.getPaymentMember(), pay.getRefenceMember());
+		
+		log.info("[PaymentService] updatePaymentStorage pay : {} ", pay);
+		log.info("[PaymentService] updatePaymentStorage pay : {} ", payment);
+		
+		
+		}
+		
+		
+		log.info("[PaymentService] updatePaymentStorage end ============================== ");
 		
 	}
 	
