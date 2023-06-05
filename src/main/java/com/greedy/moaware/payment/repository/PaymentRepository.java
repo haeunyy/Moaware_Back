@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.greedy.moaware.payment.entity.PayEmp;
+import com.greedy.moaware.payment.entity.PayFileCategory;
 import com.greedy.moaware.payment.entity.Payment;
 import com.greedy.moaware.payment.entity.PaymentMember;
 
@@ -29,6 +30,8 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
 	Page<Payment> findByPayStatusAndPaymentMemberInOrderByPayCode(Pageable pageable, String payStatus,
 			List<PaymentMember> paymentMemberList);
+
+	void deleteByPayFileCategory(PayFileCategory payFileCategory);
 
 
 
