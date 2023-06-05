@@ -17,11 +17,8 @@ import org.springframework.stereotype.Service;
 import com.greedy.moaware.admin.emp.dto.AdminEmpDto;
 import com.greedy.moaware.admin.emp.entity.AdminEmp;
 import com.greedy.moaware.admin.emp.repository.AdminEmpRepository;
-import com.greedy.moaware.boardPost.entity.Board;
-import com.greedy.moaware.boardPost.entity.BoardPost;
 import com.greedy.moaware.employee.dto.EmpDto;
 import com.greedy.moaware.employee.entity.Dept;
-import com.greedy.moaware.employee.entity.Emp;
 import com.greedy.moaware.employee.entity.Job;
 
 import lombok.extern.slf4j.Slf4j;
@@ -139,8 +136,7 @@ public class AdminEmpService {
 		log.info("[AdminEmpService] updateAdminEmp start ============================== ");
 		log.info("[AdminEmpService] adminEmpDto : {}", adminEmpDto);
 
-		if (empCode == 1) {
-
+		
 			AdminEmp originAdminEmp = adminEmpRepository.findById(adminEmpDto.getEmpCode())
 					.orElseThrow(() -> new IllegalArgumentException("해당 코드의 계정이 없습니다. empCode=" + adminEmpDto.getEmpCode()));
 
@@ -150,7 +146,6 @@ public class AdminEmpService {
 						adminEmpDto.getEmpName(),
 						adminEmpDto.getPhone(),
 						adminEmpDto.getEmpID(),
-						adminEmpDto.getEmpPwd(),
 						modelMapper.map(adminEmpDto.getJob(), Job.class),
 						modelMapper.map(adminEmpDto.getDept(), Dept.class)
 
@@ -160,11 +155,8 @@ public class AdminEmpService {
 					
 					);
 	
-			
-		} else {
-			throw new IllegalArgumentException("수정 권한이 없습니다.");
-		}
-			log.info("[BoardPostService] updateBoardPost end ============================== ");
+	
+			log.info("[AdminEmpService] updateAdminEmp end ============================== ");
 	}
 		
 		

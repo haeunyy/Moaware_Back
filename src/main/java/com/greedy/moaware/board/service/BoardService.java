@@ -100,7 +100,7 @@ public class BoardService {
 		log.info("[BoardService] boardDto : {}", boardDto);	
 		
 		
-		if (empCode == 1) {
+	
 
 			Board originBoard = boardRepository.findById(boardDto.getBoardCode())
 					.orElseThrow(() -> new IllegalArgumentException("해당 코드의 게시판이 없습니다. boardCode=" + boardDto.getBoardCode()));
@@ -113,10 +113,8 @@ public class BoardService {
 									       
 								    );
 	
-			
-		} else {
-			throw new IllegalArgumentException("수정 권한이 없습니다.");
-		}
+		
+		
 			log.info("[BoardPService] updateBoard end ============================== ");
 	}
 

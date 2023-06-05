@@ -55,7 +55,3 @@ public interface BoardPostRepository extends JpaRepository<BoardPost, Long> {
 
 	/* 8. 게시글 수정(관리자) => findById 메소드로 조회 후 필드 값 수정하면 변화를 감지하여 update 구문이 생성 되므로 별도의 정의 필요 없음 */
 }
-
-	
-	
-
