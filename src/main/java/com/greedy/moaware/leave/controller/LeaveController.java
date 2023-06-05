@@ -54,7 +54,6 @@ public class LeaveController {
 		responseDtoWithPaging.setPageInfo(pageInfo);
 		responseDtoWithPaging.setData(LeavePaymentDtoList.getContent());
 
-		log.info("[LeaveController] : leaveList end =========================================================");
 
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "연차 조회 완료", responseDtoWithPaging));
 	}
@@ -75,8 +74,7 @@ public class LeaveController {
 		
 		Page<LeavePaymentDto> LeavePaymentDtoList = leaveService.selectMyLeaveList(emp.getEmpCode(), parsedDate , page);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(LeavePaymentDtoList);
-		
-		log.info("[LeaveController] : leaveList Start =========================================================");
+	
 		
 		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
 		responseDtoWithPaging.setPageInfo(pageInfo);
@@ -91,7 +89,6 @@ public class LeaveController {
 	@GetMapping("year/{year}")
 	public ResponseEntity<ResponseDto> leaveList2(@AuthenticationPrincipal AuthEmpDto emp, @PathVariable String year) {
 
-		log.info("[LeaveController] : leaveList2 Start =========================================================");
 		
 		Integer leaveYear = Integer.parseInt(year);
 
@@ -105,9 +102,6 @@ public class LeaveController {
 		
 		
 		
-		log.info("[LeaveController] : InsertLeave Start =========================================================");
-		
-		log.info("입사일 확인 ㅇㅇㅇㅇㅇㅇㅇㅇemp.getHireDate(){},", emp.getHireDate());
 		
 	    
 		Integer leaveYear = Integer.parseInt(year);
@@ -129,8 +123,6 @@ public class LeaveController {
 	@PostMapping("request")
 	public ResponseEntity<ResponseDto> requestLeave(@AuthenticationPrincipal AuthEmpDto emp, @ModelAttribute LeavePaymentDto leavePayDto){
 		
-		log.info("연차신청 시작 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		log.info("리브페이먼트 DTO 값 leavePayDto {}", leavePayDto);
 		
 		leaveService.insertLeaveRequest(leavePayDto, emp);
 		
@@ -152,7 +144,6 @@ public class LeaveController {
 		responseDtoWithPaging.setPageInfo(pageInfo);
 		responseDtoWithPaging.setData(LeavePaymentDtoList.getContent());
 
-		log.info("[LeaveController] : leaveList end =========================================================");
 
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "연차 신청 조회 완료", responseDtoWithPaging));
 	}
@@ -160,7 +151,6 @@ public class LeaveController {
 	@GetMapping("/request/{leaveCode}")
 	public ResponseEntity<ResponseDto> selectLeaveDetail (@PathVariable Integer leaveCode) {
 			
-		log.info("[LeaveController] : selectLeaveDetail start =========================================================");
 
 		return ResponseEntity.ok().body(
 				new ResponseDto(HttpStatus.OK, "조회 성공", leaveService.selectLeaveDetail(leaveCode)));

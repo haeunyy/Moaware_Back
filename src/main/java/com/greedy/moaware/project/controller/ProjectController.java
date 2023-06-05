@@ -47,7 +47,6 @@ public class ProjectController {
 	public ResponseEntity<ResponseDto> selectMyProgressProj(@AuthenticationPrincipal AuthEmpDto emp,
 			@RequestParam(name = "page", defaultValue = "1") int page) {
 
-		log.info("[ProjectController] : selectMyProgressProj start =========================================================");
 
 		Page<CreateProjectDto> projDtoList = projectService.selectMyProgressProj(emp.getEmpCode(), page);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(projDtoList);
@@ -56,7 +55,6 @@ public class ProjectController {
 		responseDtoWithPaging.setPageInfo(pageInfo);
 		responseDtoWithPaging.setData(projDtoList.getContent());
 
-		log.info("[ProjectController] : myWorkList end =========================================================");
 
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "진행 중 프로젝트 조회 완료", responseDtoWithPaging));
 	}
@@ -65,7 +63,6 @@ public class ProjectController {
 	public ResponseEntity<ResponseDto> selectMyDoneProj(@AuthenticationPrincipal AuthEmpDto emp,
 			@RequestParam(name = "page", defaultValue = "1") int page) {
 
-		log.info("[ProjectController] : selectMyDoneProj start =========================================================");
 
 		Page<CreateProjectDto> projDtoList = projectService.selectMyDoneProj(emp.getEmpCode(), page);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(projDtoList);
@@ -74,7 +71,6 @@ public class ProjectController {
 		responseDtoWithPaging.setPageInfo(pageInfo);
 		responseDtoWithPaging.setData(projDtoList.getContent());
 
-		log.info("[ProjectController] : selectMyDoneProj end =========================================================");
 
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "완료 프로젝트 조회 완료", responseDtoWithPaging));
 	}
@@ -93,7 +89,6 @@ public class ProjectController {
 	    projectDto.setEmployee(emp);
 		projectService.createPorj(projectDto,emp);
 		
-		log.info("프로젝트 생성 끝------------------------------------------------------------------");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "프로젝트 생성 성공"));
 	}
@@ -101,8 +96,6 @@ public class ProjectController {
 	@GetMapping("/dept")
 	public ResponseEntity<ResponseDto> findDeptList() {
 		
-		log.info("아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
-		log.info("deptService.findAllDept() {}", pdeptService.findAllDept());		
 		
 		List<PdeptDto> deptDtoList = pdeptService.findAllDept();
 		
@@ -111,9 +104,7 @@ public class ProjectController {
 	
 	@GetMapping("/emp/{deptCode}")
 	public ResponseEntity<ResponseDto> findDeptEmpList(@AuthenticationPrincipal AuthEmpDto emp, @PathVariable(name="deptCode") Integer deptCode) {
-		
-		log.info("아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
-		log.info("deptService.findAllDeptMember() {}", pdeptService.findAllDeptMember(deptCode));		
+			
 		
 		List<CreateProjectEmpDto> deptEmpDtoList = pdeptService.findAllDeptMember(deptCode);
 		

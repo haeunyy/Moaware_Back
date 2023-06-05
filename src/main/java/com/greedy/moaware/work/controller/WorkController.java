@@ -47,12 +47,6 @@ public class WorkController {
 	public ResponseEntity<ResponseDto> myWorkList(@AuthenticationPrincipal AuthEmpDto emp,
 			@PathVariable String workDate, @RequestParam(name = "page", defaultValue = "1") int page) {
 
-		log.info(
-				"[WorkController] : @AuthenticationPrincipal emp : {} =========================================================",
-				emp);
-
-		log.info("[WorkController] : page : {}", page);
-		log.info("[WorkController] : page : {}", page);
 
 		// workDate를 Date 타입으로 파싱
 		// 객체에 담아서 보낸게 아닌 문자열 그대로 보냈기 때문에 이렇게 파싱한다.
@@ -72,7 +66,6 @@ public class WorkController {
 		responseDtoWithPaging.setPageInfo(pageInfo);
 		responseDtoWithPaging.setData(workDtoList.getContent());
 
-		log.info("[WorkController] : myWorkList end =========================================================");
 
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "내 근태 현황 조회 완료", responseDtoWithPaging));
 	}
@@ -82,9 +75,6 @@ public class WorkController {
 	public ResponseEntity<ResponseDto> myWorkDay(@AuthenticationPrincipal AuthEmpDto emp,
 			@PathVariable String workDate) {
 
-		log.info(
-				"[WorkController] : @AuthenticationPrincipal emp : {} =========================================================",
-				emp);
 
 
 		// workDate를 Date 타입으로 파싱
@@ -96,9 +86,6 @@ public class WorkController {
 			e.printStackTrace();
 		}
 		
-		log.info(
-				"[WorkController] : @AuthenticationPrincipal 일일 조회 완료 ",
-				emp);
 
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", workService.selectMywork(emp.getEmpCode(), parsedDate)/* 반환 된 ReviewDto 객체 담기*/));	
 	}
@@ -108,8 +95,6 @@ public class WorkController {
 	public ResponseEntity<ResponseDto> selectWorkList(@PathVariable Integer empCode, @PathVariable String workDate,
 			@RequestParam(name = "page", defaultValue = "1") int page) {
 
-		log.info("[WorkController] : selectWorkList Start =========================================================");
-		log.info("[WorkController] : page : {}", page);
 
 		// 객체에 담아서 보낸게 아닌 문자열 그대로 보냈기 때문에 이렇게 파싱한다.
 		Date parsedDate = null;
@@ -129,7 +114,6 @@ public class WorkController {
 		responseDtoWithPaging.setPageInfo(pageInfo);
 		responseDtoWithPaging.setData(workDtoList.getContent());
 
-		log.info("[WorkController] : selectWorkList end =========================================================");
 
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 	}
@@ -164,8 +148,6 @@ public class WorkController {
 			@PathVariable String workDate,
 			@RequestParam(name = "page", defaultValue = "1") int page) {
 		
-		log.info("[WorkController] : 이름 조회 투  시작~~~~~~~~~~~~~");
-		
 		Date parsedDate2 = null;
 		try {
 			parsedDate2 = new SimpleDateFormat("yyyy-MM-dd").parse(workDate2);
@@ -179,10 +161,6 @@ public class WorkController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		log.info("[WorkController] : 이름 조회 투  시작~~~~~~~~~~~~~{}", name=="홍길동");
-		log.info("[WorkController] : 이름 조회 투  시작~~~~~~~~~~~~~{}", parsedDate2);
-		log.info("[WorkController] : 이름 조회 투  시작~~~~~~~~~~~~~{}", parsedDate);
-		
 		
 		
 		Page<WorkDto> workDtoList = workService.empNameWorkList(name, parsedDate2, parsedDate, page);
@@ -192,8 +170,6 @@ public class WorkController {
 		responseDtoWithPaging.setPageInfo(pageInfo);
 		responseDtoWithPaging.setData(workDtoList.getContent());
 		
-		log.info("[WorkController] : myWorkList end =========================================================");
-		log.info("[responseDtoWithPaging] : responseDtoWithPaging{}", responseDtoWithPaging);
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "직원 월 현황 조회 완료", responseDtoWithPaging));
 		
@@ -219,7 +195,6 @@ public class WorkController {
 
 		workTimeDto.setWorkPk(workPkDto);
 
-		log.info("[WorkController] workTimeDto.workpK.workDate : {}", workTimeDto.getWorkPk().getWorkDate());
 
 		workService.insertStart(workTimeDto);
 
@@ -245,9 +220,6 @@ public class WorkController {
 		workTimeDto.setQuitTime(parsedDate);
 		workTimeDto.setWorkPk(workPkDto);
 
-		log.info("[WorkController] workTimeDto.workpK.workDate : {}", workTimeDto.getWorkPk().getEmpCode());
-
-		log.info("[WorkController] parsedDate : {}", parsedDate);
 
 		workService.quitTime(workTimeDto);
 
@@ -273,7 +245,6 @@ public class WorkController {
 		responseDtoWithPaging.setPageInfo(pageInfo);
 		responseDtoWithPaging.setData(workDtoList.getContent());
 
-		log.info("[WorkController] : myWorkList end =========================================================");
 
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "직원 일일 현황 조회 완료", responseDtoWithPaging));
 
@@ -283,7 +254,6 @@ public class WorkController {
 	@PutMapping("status/modify")
 	public ResponseEntity<ResponseDto> empStatusModify(@RequestBody WorkDto workDto) {
 
-		log.info("put객체 확인 workDto{}", workDto);
 
 		workService.statusUpdate(workDto);
 

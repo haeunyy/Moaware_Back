@@ -58,9 +58,6 @@ public class WorkService {
 	/* 자기 근태 현황 조회 */
 	public Page<WorkDto> selectMyWorkList(Integer empCode, Date workDate, int page) {
 
-		log.info("[WorkService] selectMyWorkList start ======================= ");
-
-		log.info("[WorkService] empCode : {}", empCode);
 
 		Optional<AuthEmp> empOptional = authEmpRepository.findById(empCode);
 		AuthEmp emp = empOptional.orElseThrow(() -> new UserNotFoundException("해당 사원이 없습니다."));
@@ -87,9 +84,6 @@ public class WorkService {
 
 		Page<WorkDto> workDtoList = workList.map(work -> modelMapper.map(work, WorkDto.class));
 
-		log.info("[WorkService] workDtoList.getContent() : {}", workDtoList.getContent());
-
-		log.info("[WorkService] selectMyWorkList end ======================= ");
 
 		return workDtoList;
 	}
@@ -123,12 +117,6 @@ public class WorkService {
 	@Transactional
 	public void insertStart(WorkTimeDto workTimeDto) {
 
-		log.info("[WorkService] insertStart start ======================= ");
-		log.info("[WorkService] workTimeDto : {}", workTimeDto);
-		log.info("[WorkService] empCode : {}", workTimeDto.getWorkPk().getEmpCode());
-		log.info("[WorkService] authEmpRepository : {}",
-				authEmpRepository.findById(workTimeDto.getWorkPk().getEmpCode()));
-		log.info("[WorkService] workTimeDto.workpK.workDate : {}", workTimeDto.getWorkPk().getWorkDate());
 		// findById 는 반환 타입이 optional<T>로 지정 되어있다.
 
 		Optional<AuthEmp> authEmpOptional = authEmpRepository.findById(workTimeDto.getWorkPk().getEmpCode());
@@ -179,8 +167,6 @@ public class WorkService {
 
 		Optional<AuthEmp> authEmpOptional = authEmpRepository.findById(workTimeDto.getWorkPk().getEmpCode());
 
-		log.info("[WorkService] quitTimeauthEmpOptional : {}",
-				authEmpRepository.findById(workTimeDto.getWorkPk().getEmpCode()));
 
 		if (authEmpOptional.isPresent()) {
 			WorkTime lastWork = workTimeRepository.findAllByWorkPkEmpCode(workTimeDto.getWorkPk().getEmpCode());
@@ -206,7 +192,6 @@ public class WorkService {
 		    
 		    //트라이 캐치로 익셉션 발생시 밑으로 이동
 		} catch (IllegalArgumentException e) {
-		    log.info("dkdkdkdk");
 		    WorkTimeDto workTimeDto = new WorkTimeDto();
 		    WorkPkDto workPkDto = new WorkPkDto();
 
@@ -222,7 +207,6 @@ public class WorkService {
 	}
 
 	public Page<WorkEmpDto2> empWorkList1(Date workDate, int page) {
-//		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("WORK_TIME").descending());
 		Pageable pageable = PageRequest.of(page - 1, 10);
 		Page<WorkEmp2> workList = workEmpRepository.findByWorkWorkPkWorkDate(workDate, pageable);
 		Page<WorkEmpDto2> workDtoList = workList.map(work -> modelMapper.map(work, WorkEmpDto2.class));
@@ -242,9 +226,6 @@ public class WorkService {
 
 	public Page<WorkDto> empNameWorkList(String name, Date workDate2, Date workDate, int page) {
 		
-		log.info("[WorkController] : 이름 조회 투  서비스  시작~~~~~~~~~~~~~{}", name);
-		log.info("[WorkController] : 이름 조회 투  서비스ㅜ   시작~~~~~~~~~~~~~{}", workDate2);
-		log.info("[WorkController] : 이름 조회 투  서비스     시작~~~~~~~~~~~~~{}", workDate);
 		
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("workPk.workDate").descending());
 		Page<Work> workList = workRepository.findAllByEmpEmpNameAndWorkPkWorkDateBetween(name,
@@ -254,9 +235,6 @@ public class WorkService {
 		
 		Page<WorkDto> workDtoList = workList.map(work -> modelMapper.map(work, WorkDto.class));
 		
-		log.info("[WorkService] workDtoList.getContent() : {}", workDtoList.getContent());
-		
-		log.info("[WorkService] selectMyWorkList end ======================= ");
 		
 		return workDtoList;
 	}
