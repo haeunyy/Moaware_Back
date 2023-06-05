@@ -46,14 +46,4 @@ public class PdeptService {
 		return deptEmpDtoList;
 	}
 
-
-//	public List<CreateProjectEmpDto> findAllDeptMember(String deptName) {
-//		
-//		List<CreateProjectEmp> deptEmpList = createProjectEmpRepository.findByDeptDeptName(deptName);
-//		
-//		List<CreateProjectEmpDto> deptEmpDtoList = deptEmpList.stream().map(emp -> modelMapper.map(emp, CreateProjectEmpDto.class)).collect(Collectors.toList());
-//		
-//		
-//		return deptEmpDtoList;
-//	}
 }
