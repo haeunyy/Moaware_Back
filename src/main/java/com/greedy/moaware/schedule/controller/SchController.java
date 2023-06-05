@@ -68,7 +68,8 @@ public class SchController {
 	/* 일정 등록 */
 	@PostMapping("/calendar")
 	public ResponseEntity<ResponseDto> insertSchedule(@AuthenticationPrincipal AuthEmpDto authEmp, @RequestBody ScheduleDto scheduleDto) {
-	    log.info("[SchController] : insertSchedule start ===================================== ");
+	    
+		log.info("[SchController] : insertSchedule start ===================================== ");
 
 	    log.info("[SchController] : {}", scheduleDto);
 	    
