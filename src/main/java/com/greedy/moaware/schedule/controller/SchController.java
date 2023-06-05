@@ -31,20 +31,14 @@ public class SchController {
 		this.schService = schService;
 	}
 	
-	@GetMapping("/hello")
-	public String hellowolrd() {
-		return "안냥 이거는 한번해보는 실험이야";
-	}
 	
 	/* 전체 캘린더 조회 */
 	@GetMapping("/calendar")
 	public ResponseEntity<ResponseDto> mySchList(@AuthenticationPrincipal AuthEmpDto authEmp) {
 	
-		log.info("[SchController] : mySchList start ===================================== ");
 		
 		List<ScheduleDto> schedules = schService.getScheduleListByUser(authEmp.getEmpCode());
 		
-		log.info("[SchController] : mySchList  end  ===================================== ");
 		
 		return ResponseEntity
 				.ok()
@@ -56,9 +50,6 @@ public class SchController {
 	@GetMapping("/calendar/{schCode}")
 	public ResponseEntity<ResponseDto> mySchDetail(@AuthenticationPrincipal AuthEmpDto authEmp, @PathVariable("schCode") Integer schCode) {
 
-		log.info("[SchController] : mySchDetail start ===================================== ");
-
-	    log.info("[SchController] : mySchDetail  end  ===================================== ");
 
 	    return ResponseEntity 
 	            .ok()
@@ -69,13 +60,11 @@ public class SchController {
 	@PostMapping("/calendar")
 	public ResponseEntity<ResponseDto> insertSchedule(@AuthenticationPrincipal AuthEmpDto authEmp, @RequestBody ScheduleDto scheduleDto) {
 	    
-		log.info("[SchController] : insertSchedule start ===================================== ");
 
-	    log.info("[SchController] : {}", scheduleDto);
 	    
 	    schService.insertSchedule(authEmp.getEmpCode(), scheduleDto);
 
-	    log.info("[SchController] : insertSchedule  end  ===================================== ");
+
 
 	    return ResponseEntity
 	            .ok()
@@ -86,15 +75,13 @@ public class SchController {
 	@PutMapping("/calendar/{schCode}")
 	public ResponseEntity<ResponseDto> deleteSchedule(@AuthenticationPrincipal AuthEmpDto authEmp, @PathVariable("schCode") Integer schCode) {
 	    
-		log.info("[SchController] : deleteSchedule start ===================================== ");
-	    
-		log.info("schCode : {} ", schCode);
+
 	    
 	    // Integer authEmpId = authEmp.getEmpCode(); // 로그인한 사용자의 사원 번호 가져오기
 	    
 	    schService.deleteSchedule(schCode, authEmp.getEmpCode());
 	    
-	    log.info("[SchController] : deleteSchedule end ===================================== ");
+
 	    
 	    return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "일정 삭제 완료"));
 	}
@@ -103,11 +90,9 @@ public class SchController {
 	@PutMapping("calendar")
 	public ResponseEntity<ResponseDto> modifySchedule(@AuthenticationPrincipal AuthEmpDto authEmp, @RequestBody ScheduleDto scheduleDto) {
 	    
-		log.info("[SchController] : modifySchedule start ===================================== ");
 		
 		schService.modifySchedule(authEmp.getEmpCode(), scheduleDto);
 		
-		log.info("[SchController] : modifySchedule  end  ===================================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "일정 수정 완료"));
 	}	
@@ -116,11 +101,9 @@ public class SchController {
 	@GetMapping("/emp/{empCode}")
 	public ResponseEntity<ResponseDto> findPrarEmpList() {
 		
-		log.info("[SchController] : findPrarEmpList start ===================================== ");
 
 //		schService.findPrarEmpList;
 		
-	    log.info("[SchController] : findPrarEmpList  end  ===================================== ");
 	    
 	    return ResponseEntity 
 	            .ok()
