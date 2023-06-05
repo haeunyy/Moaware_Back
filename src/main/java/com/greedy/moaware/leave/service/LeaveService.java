@@ -129,7 +129,7 @@ public class LeaveService {
 			} else if(nowYear > year) {
 				int count = nowYear - year;
 				for(int i = 0; i < count; i++) {
-					if(deCount <= maxDeCount) {
+					if(deCount < maxDeCount) {
 						deCount++;						
 					}
 				}
@@ -146,7 +146,7 @@ public class LeaveService {
 			if(nowYear <= leave.getLeavePk().getLeaveYear() +1) {
 				int count = nowYear+1 - year;
 				for(int i = 0; i < count; i++) {
-					if(deCount2 <= maxDeCount) {
+					if(deCount2 < maxDeCount) {
 						deCount2++;						
 					}
 					
