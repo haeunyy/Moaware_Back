@@ -10,8 +10,6 @@ import com.greedy.moaware.employee.entity.Pdept;
 
 public interface PdeptRepository extends JpaRepository<Pdept, Integer> {
 	
-//	@Query(value="SELECT DEPT_CODE, DEPT_NAME, REF_DEPT_CODE FROM DEPARTMENT ORDER BY DEPT_CODE ASC"
-//			 , nativeQuery = true)
-//	List<Pdept> findAllDept();
+
 
 }
