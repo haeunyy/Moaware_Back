@@ -26,15 +26,11 @@ import com.greedy.moaware.review.repository.ReviewRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class ReviewService { 
 	
 	@Value("${image.image-url}")
 	private String IMAGE_URL;
-	
-	@Value("${image.image-dir}")
-	private String IMAGE_DIR;
 	
 	private ReviewRepository reviewRepository;
 	private TaskRepository taskRepository;
@@ -56,15 +52,10 @@ public class ReviewService {
 	/* 업무 댓글 전체 조회 */
 	public List<TaskReviewDto> selectTaskReviews(int taskCode) {
 	    
-	    log.info("[ReviewService] selectTaskReviews start =============================================");
-	    log.info("[ReviewService] taskCode : {}", taskCode);
-
 	    Task task = taskRepository.findById(taskCode)
 	            .orElseThrow(()-> new IllegalArgumentException(taskCode + "번 업무가 존재하지 않습니다."));
 	    
 	    List<TaskReview> reviewList = reviewRepository.findByTaskAndStatus(task, "Y");
-
-	    log.info("[ReviewService] taskList : {}", reviewList);
 
 	    List<TaskReviewDto> reviewDto = reviewList.stream()
 	            .map(review -> modelMapper.map(review, TaskReviewDto.class))
@@ -88,8 +79,6 @@ public class ReviewService {
 	        }
 	    }
 	    
-	    log.info("[ReviewService] selectTaskReviews end =============================================");
-	    
 	    return reviewDto;
 	}
 
@@ -99,9 +88,6 @@ public class ReviewService {
 	@Transactional
 	public void taskReviewRegist(int taskCode, TaskReviewDto review, AuthEmpDto emp) {
 		
-		log.info("[ReviewService] taskReviewRegist start =============================================");
-		log.info("[ReviewService] emp : {}", emp);
-
 		Task task = taskRepository.findById(taskCode)
 				.orElseThrow(()-> new IllegalArgumentException(taskCode + "번 업무가 존재하지 않습니다."));
 		
@@ -115,33 +101,21 @@ public class ReviewService {
 		review.setStatus("Y");
 
 		reviewRepository.save(modelMapper.map(review, TaskReview.class));
-		
-		log.info("[ReviewService] review : {}", review);
-		log.info("[ReviewService] taskReviewRegist end =============================================");
 	}
 	
 	/* 댓글 수정 */
 	@Transactional
 	public void taskReviewUpdate(AuthEmpDto logEmp, TaskReviewDto review) {
 		
-		log.info("[ReviewService] taskReviewUpdate start =============================================");
-		log.info("[ReviewService] newReview : {}", review);
-
 		TaskReview newReview = reviewRepository.findById(review.getReviewCode())
 				.orElseThrow(()-> new IllegalArgumentException(review.getReviewCode()+ "번 댓글을 찾을 수 없습니다."));
 		
 		newReview.update(review.getContent());
-		
-		log.info("[ReviewService] taskReviewUpdate end =============================================");
-
 	}
 
 	/* 댓글 삭제 */
 	@Transactional
 	public void taskReviewDelete(AuthEmpDto logEmp, int reviewCode) {
-		
-		log.info("[ReviewService] taskReviewDelete start =============================================");
-		log.info("[ReviewService] reviewCode : {}", reviewCode);
 		
 		TaskReview newReview = reviewRepository.findById(reviewCode)
 				.orElseThrow(()-> new IllegalArgumentException(reviewCode+ "번 댓글을 찾을 수 없습니다."));
@@ -151,8 +125,5 @@ public class ReviewService {
 		}
 		
 		newReview.setStatus("N");
-		
-		log.info("[ReviewService] taskReviewDelete end =============================================");
-
 	}
 }

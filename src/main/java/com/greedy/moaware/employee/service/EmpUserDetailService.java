@@ -20,7 +20,6 @@ import com.greedy.moaware.exception.UserNotFoundException;
 import io.jsonwebtoken.lang.Arrays;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class EmpUserDetailService implements UserDetailsService{
 
@@ -34,10 +33,7 @@ public class EmpUserDetailService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-		log.info("[EmpUserDetailService] loadUserByUsername start ======================================");
-		log.info("[CustomUserDetailService] userId : {}", userId);
 		
-		log.info("[EmpUserDetailService] loadUserByUsername end ======================================");
 		return authEmpRepository.findByEmpId(userId)
 				.map(user -> addAuthorities(user))
 				.orElseThrow(()-> new UserNotFoundException(userId + "를 찾을 수 없습니다. "));
@@ -50,12 +46,10 @@ public class EmpUserDetailService implements UserDetailsService{
 	    /* 권한명 추출 */
 	    List<String> roles = emp.getRoleList().stream()
 	    		.map(role -> role.getAuth().getAuthTitle()).collect(Collectors.toList());
-	    log.info("[EmpUserDetailService] roles : {}", roles);
 	    
 	    /* SimpleGrantedAuthority 객체로 변환 */
 	    List<SimpleGrantedAuthority> authorities = roles.stream()
 	            .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-	    log.info("[EmpUserDetailService] authorities : {}", authorities);
 
 	    empDto.setAuthorities(authorities);
 	    

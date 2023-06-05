@@ -31,7 +31,6 @@ import com.greedy.moaware.util.FileUploadUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class AuthEmpService {
 	
@@ -69,9 +68,6 @@ public class AuthEmpService {
 	/* 로그인 */
 	public TokenDto login(AuthEmpDto empDto) {
 		
-		log.info("[AuthService] login start ======================================");
-		log.info("[AuthService] empDto : {}", empDto);
-
 		/* 아이디 매칭 조회 */
 		AuthEmp emp = authEmpRepository.findByEmpId(empDto.getEmpId())
 				.orElseThrow(()-> new LoginFailedException("아이디와 비밀번호를 다시 확인해주세요."));
@@ -83,16 +79,12 @@ public class AuthEmpService {
 		/* 토큰 발급 */
 		TokenDto tokenDto = tokenProvider.generateTokenDto(modelMapper.map(emp, AuthEmpDto.class));
 		
-		log.info("[AuthService] login end ======================================");
 		return tokenDto;
 	}
 
 	/* 아이디 찾기 */
 	public String accountIdFind(AuthEmpDto emp) {
 
-		log.info("[AuthService] accountIdFind start ======================================");
-		log.info("[AuthService] empDto : {}", emp);
-		
 		AuthEmp employee = authEmpRepository.findById(emp.getEmpCode())
 				.orElseThrow(()-> new FindMyAccoutException("입력하신 정보를 다시 확인해주세요."));
 		
@@ -100,7 +92,6 @@ public class AuthEmpService {
 			throw new FindMyAccoutException("입력하신 정보를 다시 확인해주세요.");
 		}
 		
-		log.info("[AuthService] accountIdFind end ======================================");
 		return employee.getEmpId();
 	}
 	
@@ -108,9 +99,6 @@ public class AuthEmpService {
 	/* 비밀번호 찾기 - mailSender 통하여 임시 비밀번호 전송 및 비밀번호 설정 */
 	@Transactional
 	public void accountPwdFind(AuthEmpDto empDto) {
-		
-		log.info("[AuthService] accountPwdFind start ======================================");
-		log.info("[AuthService] emp : {}", empDto);
 		
 		AuthEmp employee = authEmpRepository.findById(empDto.getEmpCode())
 				.orElseThrow(()-> new FindMyAccoutException("입력하신 정보를 다시 확인해주세요."));
@@ -127,8 +115,6 @@ public class AuthEmpService {
 		authEmpRepository.save(employee);
 		
 		mailSender.sendMail(employee.getEmail(), newPwd);
-		
-		log.info("[AuthService] sendEmail end ======================================");
 	}
 	
 	
@@ -153,18 +139,12 @@ public class AuthEmpService {
 			builder.append(charSet[random.nextInt(length)]);
 		}
 		
-		log.info("임시 비밀번호 : {}", builder.toString());
-		
 		return builder.toString();
 	}
 
 	
 	/* 회원 정보 수정 재로그인 */
 	public AuthEmpDto memberCheck(AuthEmpDto empDto, AuthEmpDto empPwd) {
-		
-		log.info("[AuthService] memberInfo start ======================================");
-		log.info("[AuthService] empPwd : {}",empDto);
-		log.info("[AuthService] empPwd : {}",empPwd);
 		
 		AuthEmp emp = authEmpRepository.findByEmpId(empDto.getEmpId())
 				.orElseThrow(()-> new LoginFailedException("비밀번호를 다시 확인해주세요."));
@@ -173,8 +153,6 @@ public class AuthEmpService {
 			throw new LoginFailedException("비밀번호를 다시 확인해주세요.");
 		}
 		
-		log.info("[AuthService] memberInfo end ======================================");
-
 		return modelMapper.map(emp, AuthEmpDto.class);
 	}
 
@@ -183,10 +161,6 @@ public class AuthEmpService {
 	@Transactional
 	public void memberModify(AuthEmpDto emp, AttachedFileDto fileDto) {
 
-		log.info("[AuthService] memberModify start ======================================");
-		log.info("emp : {}", emp);
-		log.info("fileDto : {}", fileDto);
-		
 		Emp originalEmp = empRepository.findById(emp.getEmpCode())
 					.orElseThrow(()-> new IllegalArgumentException("오류가 발생하였습니다. 다시 시도 해주세요."));
 		
@@ -199,7 +173,6 @@ public class AuthEmpService {
 				
 				String imgRandomName = UUID.randomUUID().toString().replace("-","");
 				String uploadDir = IMAGE_DIR+"/profile/";
-				log.info("try-catch originalEmp : ======================\n{}", originalEmp);
 
 				AttachedFileDto originalFile = null;
 				
@@ -235,8 +208,6 @@ public class AuthEmpService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
-		
-		log.info("[AuthService] memberModify end ======================================");
 	}
 	
 	

@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/review")
-@Slf4j
 public class ReviewController {
 	
 	private ReviewService reviewService;
@@ -61,8 +60,6 @@ public class ReviewController {
 			  @AuthenticationPrincipal AuthEmpDto logEmp
 			, @RequestBody TaskReviewDto review ){
 		
-		log.info("TaskReviewDto : {}", review );
-		
 		if(logEmp.getEmpCode() == review.getEmp().getEmpCode()) {
 			reviewService.taskReviewUpdate(logEmp, review);
 		} else {
@@ -79,8 +76,6 @@ public class ReviewController {
 	public ResponseEntity<ResponseDto> taskReviewDelete( 
 			  @AuthenticationPrincipal AuthEmpDto logEmp
 			, @PathVariable int reviewCode ){
-		
-		log.info("reviewCode : {}", reviewCode );
 		
 		reviewService.taskReviewDelete(logEmp, reviewCode); 	
 		

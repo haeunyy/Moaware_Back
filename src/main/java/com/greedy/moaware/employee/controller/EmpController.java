@@ -22,7 +22,6 @@ import com.greedy.moaware.employee.service.EmpService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("/emp")
 public class EmpController {
@@ -38,13 +37,7 @@ public class EmpController {
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> selectEmpList(){
 		
-		log.info("[EmpController] selectEmpList start ============================== ");
-		
 		List<EmpDto> empDtoList =  empService.selectEmpList();
-		
-		log.info("empDtoList : {}" , empDtoList);
-		log.info("[EmpController] selectEmpList end ================================ ");
-		
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", empDtoList ));
 		
@@ -53,12 +46,6 @@ public class EmpController {
 	/* 사원 상세 조회*/
 	@GetMapping("/detail/{empCode}")
 	public ResponseEntity<ResponseDto> selectEmpDetail(@PathVariable Integer empCode){
-		
-		log.info("[EmpController] selectEmpDetail start ============================== ");
-		log.info("empCode : {}" , empCode);
-		
-		
-		log.info("[EmpController] selectEmpDetail end ================================ ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", empService.selectEmpDetail(empCode) ));
 	}	

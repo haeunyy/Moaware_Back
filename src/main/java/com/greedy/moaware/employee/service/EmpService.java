@@ -62,28 +62,8 @@ public class EmpService {
 		
 	}
 
-//	/*사원 상세조회*/
-//	public EmpDto selectEmpDetail(Integer empCode) {
-//		log.info("[EmpService] selectOrgDetail start ============================== ");
-//		log.info("[EmpService] empCode : {}" , empCode);
-//		
-//		Emp empList = empRepository.findById(empCode)
-//				.orElseThrow( ()-> new IllegalArgumentException("해당 사번을 가진 사원이 없습니다. 사번 = " + empCode));
-//		log.info("[EmpService] empList : {}" , empList);
-//		
-//		EmpDto empDto = modelMapper.map(empList, EmpDto.class);
-//		
-//		empDto.getFileCategory().getFile().setFilePath(IMAGE_URL+empDto.getFileCategory().getFile().getFilePath());
-//		
-//		log.info("[EmpService] empDto : {}" , empDto);
-//		
-//		log.info("[EmpService] selectOrgDetail end ================================ ");
-//		return empDto;
-//		
-//	}
 	
 	
-	/* 회원정보 조회 */
 	public EmpDto selectEmpDetail(Integer empCode) {
 		log.info("[EmpService] selectEmpDetail start ============================== ");
 		log.info("[EmpService] empCode : {}" , empCode);
