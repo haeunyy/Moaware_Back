@@ -18,7 +18,6 @@ import com.greedy.moaware.project.service.ProjDetailService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("/proj")
 public class ProjectDetailController {
@@ -28,13 +27,12 @@ public class ProjectDetailController {
 	public ProjectDetailController(ProjDetailService projService) {
 		this.projService = projService;
 	}
-	
-	
+
 	
 	/* 프로젝트의 업무 리스트 조회 */
 	@GetMapping("/tasks/{projCode}")
 	public ResponseEntity<ResponseDto> selectTaskList(@PathVariable int projCode, @AuthenticationPrincipal AuthEmpDto emp){
-		log.info("principal : {} ", emp.getEmpCode());
+
 		return ResponseEntity
 				.ok()
 				.body(new ResponseDto(HttpStatus.OK, "업무 리스트 조회 성공", projService.selectTaskList(projCode)));
@@ -44,7 +42,7 @@ public class ProjectDetailController {
 	/* 업무 상세 조회 */
 	@GetMapping("/task/{taskCode}")
 	public ResponseEntity<ResponseDto> selectTask(@PathVariable int taskCode){
-		log.info("taskCode : {} ",taskCode);
+
 		return ResponseEntity
 				.ok()
 				.body(new ResponseDto(HttpStatus.OK, "업무 상세 조회 성공", projService.selectTask(taskCode)));
@@ -54,8 +52,6 @@ public class ProjectDetailController {
 	/* 업무 등록 */
 	@PostMapping("/task/regist")
 	public ResponseEntity<ResponseDto> taskRegist(@AuthenticationPrincipal AuthEmpDto emp, @RequestBody TaskDto task){
-		log.info("task : {} ", task);
-		log.info("emp : {} ", emp);
 		
 		projService.taskRegist(emp, task);
 		
@@ -80,7 +76,6 @@ public class ProjectDetailController {
 	public ResponseEntity<ResponseDto> taskUpdate(
 			@AuthenticationPrincipal AuthEmpDto emp,
 			@RequestBody TaskDto task){
-		log.info("task : {} ", task);
 		
 		projService.taskUpdate(task);
 		
@@ -93,7 +88,6 @@ public class ProjectDetailController {
 	/* 업무 삭제 */
 	@PutMapping("/task/delete/{taskCode}")
 	public ResponseEntity<ResponseDto> taskDelete(@PathVariable int taskCode){
-		log.info("taskCode : {} ", taskCode);
 		
 		projService.taskDelete(taskCode);
 		
@@ -116,30 +110,3 @@ public class ProjectDetailController {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-//	/* 업무 리스트 조회 */
-//	@GetMapping("/task/stage/{projCode}/{stage}")
-//	public ResponseEntity<ResponseDto> selectTodoList(@PathVariable int projCode, @PathVariable String stage){
-//		
-//		log.info("[ProjectDetailController] selectTodoList stage : {}", stage);
-//
-//		return ResponseEntity
-//				.ok()
-//				.body(new ResponseDto(HttpStatus.OK, "task stage 리스트 조회 성공", projService.selectTaskStageList(projCode, stage)));
-//	}
-//	
-
-
-
-//	

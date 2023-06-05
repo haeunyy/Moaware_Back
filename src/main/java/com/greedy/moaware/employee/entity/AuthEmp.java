@@ -61,9 +61,6 @@ public class AuthEmp {
 	@Column(name="HIRE_DATE") 
 	private Date hireDate;
 	  
-	 /* 
-	 * @Column(name="EMP_SSI") private String empSsi;
-	 */
 	
 	
 	

@@ -35,8 +35,6 @@ public class JwtFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		log.info("[JwtFilter] : doFilterInternal start =====================================");
-		
 		String jwt = resolveToken(request);
 		
 		try {
@@ -57,8 +55,6 @@ public class JwtFilter extends OncePerRequestFilter {
 		} 
 		
 		filterChain.doFilter(request, response);
-		
-		log.info("[JwtFilter] : doFilterInternal end =====================================");
 	}
 
 	private String resolveToken(HttpServletRequest request) {

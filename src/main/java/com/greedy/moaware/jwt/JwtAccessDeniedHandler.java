@@ -17,7 +17,6 @@ import com.greedy.moaware.exception.dto.ApiExceptionDto;
 @Component
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 	
-	/* 필요한 권한이 없는데 접근하여 인가되지 않았을 경우 403 오류를 반환한다. */
 	private final ObjectMapper objectMapper;
 	
 	public JwtAccessDeniedHandler(ObjectMapper objectMapper) {

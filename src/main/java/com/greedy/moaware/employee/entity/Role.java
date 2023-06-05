@@ -21,14 +21,5 @@ public class Role {
 	@ManyToOne
 	@JoinColumn(name="AUTH_CODE", insertable=false, updatable=false)
 	private Auth auth;
-	
-/*	@Id
-	@Column(name="EMP_CODE")
-	private Integer empCode;
-	
-	@Id
-	@Column(name="AUTH_CODE")
-	private Integer authCode; 
-*/
 
 }

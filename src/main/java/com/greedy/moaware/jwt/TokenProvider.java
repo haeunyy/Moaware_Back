@@ -24,7 +24,6 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Slf4j
 public class TokenProvider {
 	
 	private static final String AUTHORITIES_KEY = "auth";
@@ -43,8 +42,6 @@ public class TokenProvider {
 
 	public TokenDto generateTokenDto(AuthEmpDto emp) {
 
-		log.info("[TokenProvider] generateTokenDto Start =====================================");
-	    
 		Claims claims = Jwts.claims().setSubject(emp.getEmpId());
 
 		/* 권한 담기 */
@@ -63,8 +60,7 @@ public class TokenProvider {
 				.setExpiration(accessTokenExpiresIn)
 				.signWith(key,SignatureAlgorithm.HS512)
 				.compact();
-		log.info("[TokenProvider] generateTokenDto end =====================================");
-
+		
 		return new TokenDto(BEARER_TYPE, emp.getEmpName(), accessToken, accessTokenExpiresIn.getTime());
 	}
 
