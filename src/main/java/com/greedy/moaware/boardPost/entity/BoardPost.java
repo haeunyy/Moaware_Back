@@ -83,7 +83,6 @@ public class BoardPost {
 		this.postTitle = postTitle;
 		this.status = status;
 		this.postContent = postContent;
-//		this.writer = writer; 
 
 	}
 
@@ -92,20 +91,8 @@ public class BoardPost {
 		this.status = status;
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 }
-
 
 

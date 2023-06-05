@@ -42,12 +42,9 @@ public class AdminEmpController {
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> selectAdminEmpList(@RequestParam(name="page", defaultValue="1") int page){
 		
-		log.info("[AdminEmpController] selectAdmninEmpList start ============================== ");
-		log.info("[AdminEmpController] : page : {}", page);
 
 	
 		Page<AdminEmpDto> adminEmpDtoList =  adminEmpService.selectAdminEmpList(page);
-		log.info("adminEmpDtoList : {}" , adminEmpDtoList);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(adminEmpDtoList);
 
 		
@@ -58,7 +55,6 @@ public class AdminEmpController {
 		
 		
 		
-		log.info("[AdminEmpController] selectAdminEmpList end ================================ ");
 		
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging ));
@@ -69,11 +65,7 @@ public class AdminEmpController {
 	@GetMapping("/list/{empCode}")
 	public ResponseEntity<ResponseDto> selectAdminEmpDetail(@PathVariable Integer empCode){
 		
-		log.info("[AdminEmpController] selectAdminEmpDetail start ============================== ");
-		log.info("empCode : {}" , empCode);
 		
-		
-		log.info("[AdminEmpController] selectAdminEmpDetail end ================================ ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", adminEmpService.selectAdminEmpDetail(empCode) ));
 	}	
@@ -81,7 +73,6 @@ public class AdminEmpController {
 	/* 계정(회원) 등록 */
 	@PostMapping("/regist")
 	public ResponseEntity<ResponseDto> insertAdminEmp(@ModelAttribute AdminEmpDto adminEmpDto) {
-		//키&밸류 값의 형태를 띄어 url 인코디드 방식으로 전달->포스트맨에서는 바디-> 폼데이터 검색
 		adminEmpService.insertAdminEmp(adminEmpDto);
 		
 		return ResponseEntity
@@ -93,7 +84,6 @@ public class AdminEmpController {
 	/* 계정 수정 */
 	@PutMapping("/modify")
 	public ResponseEntity<ResponseDto> updateAdminEmp(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute AdminEmpDto adminEmpDto) {
-		//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
 		adminEmpService.updateAdminEmp(adminEmpDto.getEmpCode(), adminEmpDto);
 		
 		return ResponseEntity

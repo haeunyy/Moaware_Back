@@ -39,21 +39,16 @@ public class BoardPostController {
 	@GetMapping("/boardPosts")
 	public ResponseEntity<ResponseDto> selectBoardPostList(@RequestParam(name="page", defaultValue="1") int page) {
 		
-		log.info("[BoardPostController] : selectBoardPostList start ==================================== ");
-		log.info("[BoardPostController] : page : {}", page);
 		
 		Page<BoardPostDto> boardPostDtoList = boardPostService.selectBoardPostList(page);
 		
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(boardPostDtoList);
 		
-		log.info("[BoardPostController] : pageInfo : {}", pageInfo);
 		
 		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
 		responseDtoWithPaging.setPageInfo(pageInfo);
-		//responseDtoWithPaging.setData(boardPostDtoList);
 		responseDtoWithPaging.setData(boardPostDtoList.getContent()); //페이지 안에 있는 것을 그대로 보내는 것이 아니라 컨탠츠로 꺼내어 넣어 보낸다
 		
-		log.info("[BoardPostController] : selectBoardPostList end ==================================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 		
@@ -62,21 +57,18 @@ public class BoardPostController {
 	@GetMapping("/boardPosts-management")
 	public ResponseEntity<ResponseDto> selectBoardPostListForAdmin(@RequestParam(name="page", defaultValue="1") int page) {
 		
-		log.info("[BoardPostController] : selectBoardPostListForAdmin start ==================================== ");
-		log.info("[BoardPostController] : page : {}", page);
+		
 		
 		Page<BoardPostDto> boardPostDtoList = boardPostService.selectBoardPostListForAdmin(page);
 		
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(boardPostDtoList);
 		
-		log.info("[BoardPostController] : pageInfo : {}", pageInfo);
 		
 		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
 		responseDtoWithPaging.setPageInfo(pageInfo);
 		//responseDtoWithPaging.setData(boardPostDtoList);
 		responseDtoWithPaging.setData(boardPostDtoList.getContent()); //페이지 안에 있는 것을 그대로 보내는 것이 아니라 컨탠츠로 꺼내어 넣어 보낸다
 		
-		log.info("[BoardPostController] : selectBoardPostListForAdmin end ==================================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 		
@@ -88,20 +80,17 @@ public class BoardPostController {
 public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 		@RequestParam(name="page", defaultValue="1") int page, @PathVariable Long boardCode){
 	
-	log.info("[BoardPostController] : selectBoardPostListByBoard start ==================================== ");
-	log.info("[BoardPostController] : page : {}", page);
+
 	
 	Page<BoardPostDto> boardPostDtoList = boardPostService.selectBoardPostListByBoard(page, boardCode);
 	
 	PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(boardPostDtoList);
 	
-	log.info("[BoardPostController] : pageInfo : {}", pageInfo);
 	
 	ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
 	responseDtoWithPaging.setPageInfo(pageInfo);
 	responseDtoWithPaging.setData(boardPostDtoList.getContent());
 	
-	log.info("[BoardPostController] : selectBoardPosttListByBoard end ==================================== ");
 	
 	return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 }
@@ -112,20 +101,17 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 public ResponseEntity<ResponseDto> selectBoardPostListByBoardForAdmin(
 		@RequestParam(name="page", defaultValue="1") int page, @PathVariable Long boardCode){
 	
-	log.info("[BoardPostController] : selectBoardPostListByBoardForAdmin start ==================================== ");
-	log.info("[BoardPostController] : page : {}", page);
+
 	
 	Page<BoardPostDto> boardPostDtoList = boardPostService.selectBoardPostListByBoardForAdmin(page, boardCode);
 	
 	PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(boardPostDtoList);
 	
-	log.info("[BoardPostController] : pageInfo : {}", pageInfo);
 	
 	ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
 	responseDtoWithPaging.setPageInfo(pageInfo);
 	responseDtoWithPaging.setData(boardPostDtoList.getContent());
 	
-	log.info("[BoardPostController] : selectBoardPostListByBoardForAdmin end ==================================== ");
 	
 	return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 }
@@ -136,21 +122,16 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoardForAdmin(
 			public ResponseEntity<ResponseDto> selectBoardPostListByPostTitle(
 					@RequestParam(name="page", defaultValue="1") int page, @RequestParam(name="search") String postTitle) {
 	
-			log.info("[BoardPostController] : selectBoardPostListByPostTitle start ==================================== ");
-			log.info("[BoardPostController] : page : {}", page);
-			log.info("[BoardPostController] : postTitle : {}", postTitle);
 	
 			Page<BoardPostDto> boardPostDtoList = boardPostService.selectBoardPostListByPostTitle(page, postTitle);
 	
 			PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(boardPostDtoList);
 	
-			log.info("[BoardPostController] : pageInfo : {}", pageInfo);
 	
 			ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
 			responseDtoWithPaging.setPageInfo(pageInfo);
 			responseDtoWithPaging.setData(boardPostDtoList.getContent());
 	
-			log.info("[BoardPostController] : selectBoardPostListByPostTitle end ==================================== ");
 	
 			return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 			}
@@ -199,19 +180,7 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoardForAdmin(
 			
 		}
 
-//		
-//		/* 8. 게시물 수정 */
-//		@PutMapping("/boardPosts")
-//		public ResponseEntity<ResponseDto> updateBoardPost(@ModelAttribute BoardPostDto boardPostDto) {
-//			//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
-//			boardPostService.updateBoardPost(boardPostDto);
-//			
-//			return ResponseEntity
-//					.ok()
-//					.body(new ResponseDto(HttpStatus.OK, "게시물 수정 성공"));
-//		}
 		
-//		
 		/* 9. 게시물 Status N(삭제) */
 		@PutMapping("/delete/{postCode}")
 		public ResponseEntity<ResponseDto> deleteBoardPost(@PathVariable(name="postCode") long postCode) {

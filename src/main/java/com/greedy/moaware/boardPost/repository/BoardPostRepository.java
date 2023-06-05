@@ -28,6 +28,7 @@ public interface BoardPostRepository extends JpaRepository<BoardPost, Long> {
 	/* JpaRepository에 이미 정의 되어 있는 findAll(Pageable pageable) 메소드 사용 가능하므로 별도 정의 필요 없음 */
 	@EntityGraph(attributePaths= {"board"})
 	Page<BoardPost> findAll(Pageable pageable);
+	
 //----------------------------------------------------------------------------------------
 	/* 2. 게시글 목록 조회 - 게시`판` 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 	Page<BoardPost> findByBoardAndStatus(Pageable pageable, Board board, String status);
@@ -36,14 +37,11 @@ public interface BoardPostRepository extends JpaRepository<BoardPost, Long> {
 	Page<BoardPost> findByBoard(Pageable pageable, Board findBoard);
 	//----------------------------------------------------------------------------------------
 
-	
-	
 	/* 4. 게시글 목록 조회 - 게시물제목 검색 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 	@EntityGraph(attributePaths= {"board"})
 	Page<BoardPost> findByPostTitleContainsAndStatus(Pageable pageable, String postTitle, String status);
 	
-	/* 5. 게시물 상세 조회 - postCode로 게시물 1개 조회, 조회 불가 게시물 제외(사용자) 
-	 * 쿼리 메소드로 구현 가능 findByPostCodeAndStatus(Long postCode, String status) * JPQL을 사용해서 구현해보기 */
+	// 5. 게시물 상세 조회 - postCode로 게시물 1개 조회, 조회 불가 게시물 제외(사용자) 
 	@Query("SELECT b " +
 		   "  FROM BoardPost b " +
 		   //"  JOIN fetch b.board " +
@@ -51,11 +49,6 @@ public interface BoardPostRepository extends JpaRepository<BoardPost, Long> {
 		   "   AND b.status = 'Y'")
 	Optional<BoardPost> findByPostCode(@Param("postCode") Long postCode);
 
-	
-	
-			
-		
-	
 	/* 6. 게시글 상세 조회 - postCode로 게시글 1개 조회, 조회 불가 게시글 포함(관리자) => findById 메소드 사용 */
 	
 	/* 7. 게시글 등록(관리자) => save 메소드가 이미 정의 되어 있으므로 별도 정의 필요 없음 */
