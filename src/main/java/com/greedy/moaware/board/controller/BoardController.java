@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/admin/board") 
-public class BoardController {
+public class BoardController { // admin
 
 	private final BoardService boardService;
 

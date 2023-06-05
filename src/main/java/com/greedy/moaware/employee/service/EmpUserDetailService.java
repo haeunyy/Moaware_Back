@@ -55,7 +55,8 @@ public class EmpUserDetailService implements UserDetailsService{
 	    /* SimpleGrantedAuthority 객체로 변환 */
 	    List<SimpleGrantedAuthority> authorities = roles.stream()
 	            .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-	    
+	    log.info("[EmpUserDetailService] authorities : {}", authorities);
+
 	    empDto.setAuthorities(authorities);
 	    
 	    return empDto;
