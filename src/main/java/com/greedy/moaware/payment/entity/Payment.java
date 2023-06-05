@@ -87,6 +87,7 @@ public class Payment {
 		this.refenceMember = refenceMember;
 	}
 	
+	
 	/*임시 저장문서 업데이트 (첨부파일 새로등록) */
 	public void updatePayment(Integer payCode, Date draftDate, String draftTitle, String draftContent,
 			String payStatus, Form form, List<PaymentMember> paymentMember,
