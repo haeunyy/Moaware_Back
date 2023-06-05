@@ -35,10 +35,8 @@ public class SchController {
 	/* 전체 캘린더 조회 */
 	@GetMapping("/calendar")
 	public ResponseEntity<ResponseDto> mySchList(@AuthenticationPrincipal AuthEmpDto authEmp) {
-	
 		
 		List<ScheduleDto> schedules = schService.getScheduleListByUser(authEmp.getEmpCode());
-		
 		
 		return ResponseEntity
 				.ok()
@@ -50,7 +48,6 @@ public class SchController {
 	@GetMapping("/calendar/{schCode}")
 	public ResponseEntity<ResponseDto> mySchDetail(@AuthenticationPrincipal AuthEmpDto authEmp, @PathVariable("schCode") Integer schCode) {
 
-
 	    return ResponseEntity 
 	            .ok()
 	            .body(new ResponseDto(HttpStatus.OK, "상세 일정 조회 완료", schService.getScheduleByCodeAndUser(schCode, authEmp.getEmpCode())));
@@ -60,11 +57,7 @@ public class SchController {
 	@PostMapping("/calendar")
 	public ResponseEntity<ResponseDto> insertSchedule(@AuthenticationPrincipal AuthEmpDto authEmp, @RequestBody ScheduleDto scheduleDto) {
 	    
-
-	    
 	    schService.insertSchedule(authEmp.getEmpCode(), scheduleDto);
-
-
 
 	    return ResponseEntity
 	            .ok()
@@ -75,13 +68,7 @@ public class SchController {
 	@PutMapping("/calendar/{schCode}")
 	public ResponseEntity<ResponseDto> deleteSchedule(@AuthenticationPrincipal AuthEmpDto authEmp, @PathVariable("schCode") Integer schCode) {
 	    
-
-	    
-	    // Integer authEmpId = authEmp.getEmpCode(); // 로그인한 사용자의 사원 번호 가져오기
-	    
 	    schService.deleteSchedule(schCode, authEmp.getEmpCode());
-	    
-
 	    
 	    return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "일정 삭제 완료"));
 	}
@@ -89,25 +76,10 @@ public class SchController {
 	/* 일정 수정 */
 	@PutMapping("calendar")
 	public ResponseEntity<ResponseDto> modifySchedule(@AuthenticationPrincipal AuthEmpDto authEmp, @RequestBody ScheduleDto scheduleDto) {
-	    
 		
 		schService.modifySchedule(authEmp.getEmpCode(), scheduleDto);
 		
-		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "일정 수정 완료"));
 	}	
-	
-	/* 일정 참여자 조회 */
-	@GetMapping("/emp/{empCode}")
-	public ResponseEntity<ResponseDto> findPrarEmpList() {
-		
 
-//		schService.findPrarEmpList;
-		
-	    
-	    return ResponseEntity 
-	            .ok()
-	            .body(new ResponseDto(HttpStatus.OK, "일정 참여자 조회 성공"));
-	}
-	
 }

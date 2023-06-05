@@ -47,7 +47,6 @@ public class SchService {
         
         List<Schedule> schedules = schRepository.findBySchAuthor(employee);
         
-        
         List<ScheduleDto> scheduleDto = schedules.stream()
                 .map(schedule -> modelMapper.map(schedule, ScheduleDto.class))
                 .collect(Collectors.toList());
@@ -64,7 +63,6 @@ public class SchService {
 		Schedule schedule = schRepository.findBySchCodeAndSchAuthor(schCode, employee)
 	            .orElseThrow(() -> new ScheduleNotFoundException(schCode + "번의 일정을 찾을 수 없습니다."));
 
-
 	    return modelMapper.map(schedule, ScheduleDto.class);
 	}
 
@@ -76,13 +74,8 @@ public class SchService {
 
 	    scheduleDto.setSchAuthor(modelMapper.map(employee, EmpDto.class)); // 사원 정보를 scheduleDto의 schAuthor 필드에 설정
 
-
 	    schRepository.save(modelMapper.map(scheduleDto, Schedule.class));
 	}
-
-
-	/* 일정 참여자 검색 */
-	
 
 	/* 일정 삭제 */
 	@Transactional
@@ -96,15 +89,11 @@ public class SchService {
 		
 		schRepository.delete(schedule);
 		
-
-		
 	}
 	
 	/* 일정 수정 */
 	@Transactional
 	public void modifySchedule(Integer authEmp, ScheduleDto scheduleDto) {
-
-
 		
 		Emp employee = empRepository.findById(authEmp)
 	            .orElseThrow(() -> new UserNotFoundException(authEmp + "번의 사원을 찾을 수 없습니다."));
@@ -117,12 +106,6 @@ public class SchService {
 	    sch.setSchDate(scheduleDto.getSchDate());
 	    sch.setSchEndDate(scheduleDto.getSchEndDate());
 	    sch.setSchType(modelMapper.map(scheduleDto.getSchType(), SchCategory.class));
-//	    sch.setSchPrarticipant(modelMapper.map(scheduleDto.getSchPrarticipant(), SchPrarticipant.class));
-	    
-
-	    
-//	    schRepository.save(sch);
-//	    schRepository.save(modelMapper.map(scheduleDto, ScheduleDto.class));
 	    
 	}
 
