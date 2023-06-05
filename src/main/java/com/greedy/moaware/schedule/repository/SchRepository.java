@@ -12,15 +12,6 @@ import com.greedy.moaware.schedule.entity.SchPrarticipant;
 import com.greedy.moaware.schedule.entity.Schedule;
 
 public interface SchRepository extends JpaRepository<Schedule, Integer> {
-
-//	@EntityGraph(attributePaths= {"schType"})
-//	List<Schedule> findBySchAuthor(Integer emp);
-
-//	@EntityGraph(attributePaths = {"schType"})
-//    Optional<Schedule> findBySchCodeAndSchAuthor(Integer schCode, Integer empCode);
-
-//	List<Schedule> findBySchAuthor(Emp employee);
-//	List<Schedule> findBySchAuthorAndSchPrarticipant(Emp author, Emp participant);
 	
 	List<Schedule> findBySchAuthor(Emp employee);
 	
