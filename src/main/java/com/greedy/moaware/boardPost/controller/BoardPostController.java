@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/b")
 public class BoardPostController {
 
 	private final BoardPostService boardPostService;
@@ -230,8 +230,6 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 		
 		
 		
-
-
 
 
 

@@ -34,6 +34,7 @@ public class BoardPostService {
 		this.modelMapper = modelMapper;
 	}
 
+	
 	// 테이블명 BoardPost / 솔트 바이 postCode임 착각하지 말자~
 	/* 1. 게시글 목록 조회 - 페이징, 조회 불가 게시글 제외(사용자) */
 	public Page<BoardPostDto> selectBoardPostList(int page) {
@@ -42,7 +43,7 @@ public class BoardPostService {
 
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("postCode").descending());
 
-		Page<BoardPost> boardPostList = boardPostRepository.findByStatus(pageable, "Y ");
+		Page<BoardPost> boardPostList = boardPostRepository.findByStatus(pageable, "Y");
 		// 페이저블, status y
 		Page<BoardPostDto> boardPostDtoList = boardPostList
 				.map(boardPost -> modelMapper.map(boardPost, BoardPostDto.class));
@@ -55,7 +56,9 @@ public class BoardPostService {
 
 		return boardPostDtoList;
 	}
+	
 
+	
 	/* 2. 게시글 목록 조회 - 페이징, 조회 불가 게시글 포함(관리자) */
 	public Page<BoardPostDto> selectBoardPostListForAdmin(int page) {
 
@@ -64,19 +67,19 @@ public class BoardPostService {
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("postCode").descending());
 
 		Page<BoardPost> boardPostList = boardPostRepository.findAll(pageable);
-		// 페이저블, status y
-		Page<BoardPostDto> boardPostDtoList = boardPostList
-				.map(boardPost -> modelMapper.map(boardPost, BoardPostDto.class));
 
-		/* 클라이언트 측에서 서버에 저장 된 이미지 요청 시 필요한 주소로 가공 */
+		Page<BoardPostDto> boardPostDtoList = boardPostList.map(boardPost -> modelMapper.map(boardPost, BoardPostDto.class));
 
-		log.info("[BoardPostService] boardPostDtoList.getContent() : {}", boardPostDtoList.getContent());
+		/* 클라이언트 측에서 서버에 저장된 이미지 요청 시 필요한 주소로 가공 */
+
+		log.info("[BoardPostService] boardPostDtoList.getContent(): {}", boardPostDtoList.getContent());
 
 		log.info("[BoardPostService] selectBoardPostListForAdmin end ============================== ");
 
 		return boardPostDtoList;
 	}
-
+	
+	
 	/* 3. 게시글 목록 조회 - 게시`판`코드 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 	public Page<BoardPostDto> selectBoardPostListByBoard(int page, Long boardCode) {
 
@@ -89,7 +92,7 @@ public class BoardPostService {
 		Board findBoard = boardRepository.findById(boardCode)
 				.orElseThrow(() -> new IllegalArgumentException("해당 게시판이 없습니다. boardCode = " + boardCode));
 
-		Page<BoardPost> boardPostList = boardPostRepository.findByBoardAndStatus(pageable, findBoard, "Y ");
+		Page<BoardPost> boardPostList = boardPostRepository.findByBoardAndStatus(pageable, findBoard, "Y");
 		// 보드코드 엔티티 단위로 다뤄야 하는 것에 주의
 		Page<BoardPostDto> boardPostDtoList = boardPostList
 				.map(boardPost -> modelMapper.map(boardPost, BoardPostDto.class));
@@ -113,7 +116,7 @@ public class BoardPostService {
 
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("postCode").descending());
 
-		Page<BoardPost> boardPostList = boardPostRepository.findByPostTitleContainsAndStatus(pageable, postTitle, "Y ");
+		Page<BoardPost> boardPostList = boardPostRepository.findByPostTitleContainsAndStatus(pageable, postTitle, "Y");
 		Page<BoardPostDto> boardPostDtoList = boardPostList
 				.map(boardPost -> modelMapper.map(boardPost, BoardPostDto.class));
 
@@ -215,6 +218,32 @@ public class BoardPostService {
 
 	
 
+	/* 9. 게시물 삭제 */
+
+	@Transactional
+	public void deleteBoardPost(BoardPostDto boardPostDto) {
+	   
+		
+			try {
+				BoardPost findBoardPost = boardPostRepository.findById(boardPostDto.getPostCode())
+						.orElseThrow(() -> new IllegalArgumentException("해당 게시물의 정보가 없습니다. findBoardPost=" + boardPostDto.getPostCode()));
+				
+				
+				boardPostDto.setStatus("N");
+				
+			    findBoardPost.update(
+						boardPostDto.getStatus()
+								);
+				
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		
+	
+		}
+	}
+	
 //	
 //	} catch (IOException e) {
 //	e.printStackTrace();
@@ -283,31 +312,7 @@ public class BoardPostService {
 	
 
 	
-	/* 9. 게시물 삭제 */
-
-	@Transactional
-	public void deleteBoardPost(BoardPostDto boardPostDto) {
-	   
-		
-			try {
-				BoardPost findBoardPost = boardPostRepository.findById(boardPostDto.getPostCode())
-						.orElseThrow(() -> new IllegalArgumentException("해당 게시물의 정보가 없습니다. findBoardPost=" + boardPostDto.getPostCode()));
-				
-				
-				boardPostDto.setStatus("N");
-				
-			    findBoardPost.update(
-						boardPostDto.getStatus()
-								);
-				
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
-		
 	
-		}
-	}
 
 //	위의 코드는 다음을 포함하는 삭제 로직을 가지고 있습니다:
 //

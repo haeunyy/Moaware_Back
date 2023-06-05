@@ -3,6 +3,8 @@ package com.greedy.moaware.admin.emp.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -15,9 +17,12 @@ import org.springframework.stereotype.Service;
 import com.greedy.moaware.admin.emp.dto.AdminEmpDto;
 import com.greedy.moaware.admin.emp.entity.AdminEmp;
 import com.greedy.moaware.admin.emp.repository.AdminEmpRepository;
+import com.greedy.moaware.boardPost.entity.Board;
 import com.greedy.moaware.boardPost.entity.BoardPost;
 import com.greedy.moaware.employee.dto.EmpDto;
+import com.greedy.moaware.employee.entity.Dept;
 import com.greedy.moaware.employee.entity.Emp;
+import com.greedy.moaware.employee.entity.Job;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,7 +62,7 @@ public class AdminEmpService {
 		
 		
 		Page<AdminEmpDto> adminEmpDtoList = adminEmpList
-				.map( adminEmp -> modelMapper.map(adminEmp, AdminEmpDto.class));
+				.map(adminEmp -> modelMapper.map(adminEmp, AdminEmpDto.class));
 		
 		
 		
@@ -102,8 +107,71 @@ public class AdminEmpService {
 		
 	}
 
-	
+
+	/* 계정(사원) 퇴직 처리 */
+	@Transactional
+	public void deleteAdminEmp(AdminEmpDto adminEmpDto) {
+		
+		
+		try {
+		AdminEmp findAdminEmp = adminEmpRepository.findById(adminEmpDto.getEmpCode())
+				.orElseThrow(() -> new IllegalArgumentException("해당 계정의 정보가 없습니다. findAdminEmp=" + adminEmpDto.getEmpCode()));
+		
+		adminEmpDto.setRetireYn("Y");
+		
+	    findAdminEmp.update(
+	    		adminEmpDto.getRetireYn()
+						);
+		
+
+					
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}			
 	}
+
+
+	/* 계정(사원) 수정 */
+	@Transactional
+	public void updateAdminEmp(Integer empCode, AdminEmpDto adminEmpDto) {
+	
+		log.info("[AdminEmpService] updateAdminEmp start ============================== ");
+		log.info("[AdminEmpService] adminEmpDto : {}", adminEmpDto);
+
+		if (empCode == 1) {
+
+			AdminEmp originAdminEmp = adminEmpRepository.findById(adminEmpDto.getEmpCode())
+					.orElseThrow(() -> new IllegalArgumentException("해당 코드의 계정이 없습니다. empCode=" + adminEmpDto.getEmpCode()));
+
+			/* 조회했던 기존 엔티티의 내용을 수정 -> 별도의 수정 메소드를 정의해서 사용하면 다른 방식의 수정을 막을 수 있다. */
+			originAdminEmp.update(
+						adminEmpDto.getEmpCode(),
+						adminEmpDto.getEmpName(),
+						adminEmpDto.getPhone(),
+						adminEmpDto.getEmpID(),
+						adminEmpDto.getEmpPwd(),
+						modelMapper.map(adminEmpDto.getJob(), Job.class),
+						modelMapper.map(adminEmpDto.getDept(), Dept.class)
+
+						
+						
+
+					
+					);
+	
+			
+		} else {
+			throw new IllegalArgumentException("수정 권한이 없습니다.");
+		}
+			log.info("[BoardPostService] updateBoardPost end ============================== ");
+	}
+		
+		
+	}
+
+	
+	
 	
 	
 	

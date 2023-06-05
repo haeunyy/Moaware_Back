@@ -1,6 +1,5 @@
 package com.greedy.moaware.admin.emp.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -55,7 +54,6 @@ Page<AdminEmp> findByEmpName(@Param("empName") String empName, Pageable pageable
 	
 	
 	
-
 
 
 

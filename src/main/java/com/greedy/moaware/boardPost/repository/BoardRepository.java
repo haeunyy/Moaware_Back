@@ -26,44 +26,23 @@ public interface BoardRepository extends JpaRepository <Board, Long>{
 //	@EntityGraph(attributePaths= {"boardPost"})
 //	Page<Board> findByStatus(Pageable pageable, String status);
 	
-	/* 게시 판 목록 조회 (사용자) */
+	
 	/* JpaRepository에 이미 정의 되어 있는 findAll(Pageable pageable) 메소드 사용 가능하므로 별도 정의 필요 없음 */
 	//@EntityGraph(attributePaths= {"boardPost"})
-	Page<Board> findAll(Pageable pageable);
-}
 	
+	/* 게시 판 목록 조회 (사용자용) */
+	Page<Board> findByStatus(Pageable pageable, String string);
+	
+	/* 게시 판 목록 조회 (관리자용) */
+	Page<Board> findAll(Pageable pageable);
 
 	
-//	
-//	
-//	/* 게시 판 상세 조회 - boardCode로 게시 판 조회 
-//	 * 쿼리 메소드로 구현 가능 findByBoardCode(Long BoardCode) 
-//	 * JPQL을 사용해서 구현해보기 */
-//	@Query("SELECT b " +
-//		   "  FROM Board b " +
-//		   //"  JOIN fetch b.board " +
-//		   " WHERE b.boardCode = :boardCode ") 
-//		   //"   AND b.status = 'Y'")
-//	Optional<Board> findByBoardCode(@Param("boardCode") Long boardCode);
-//
-//
-//	
-//	
-//	
-//	
-//	
-//	/* 게시 판 목록 조회 - 게시 판 코드 검색 기준 (사용자) */
-//	@EntityGraph(attributePaths= {"boardPost"})
-//	Page<Board> findByBoardCode(Pageable pageable, Long boardCode);
-//
-//	
-//
-//	Page<Board> findByBoard(Pageable pageable, String boardName);
-//
-//
-//
-//
-//
-//	Page<Board> findByBoard(Pageable pageable, Board boardName, String string);
-//
-//}
+}
+
+	
+
+
+
+
+
+

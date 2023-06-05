@@ -240,22 +240,6 @@ public class WorkService {
 		return workDtoList;
 	}
 
-	
-	public Optional<WorkDto> selectMywork(Integer empCode, Date workDate) {
-	    AuthEmp emp = authEmpRepository.findByEmpCode(empCode)
-	            .orElseThrow(() -> new IllegalArgumentException("해당코드의 기록이 없습니다. emp=" + empCode));
-
-	    Optional<Work> workOptional = workRepository.findByWorkPkEmpCodeAndWorkPkWorkDate(emp.getEmpCode(), workDate);
-	    if (workOptional.isEmpty()) {
-	        return Optional.empty();
-	    }
-
-	    Work work = workOptional.get();
-	    WorkDto workDto = modelMapper.map(work, WorkDto.class);
-	    return Optional.ofNullable(workDto);
-	}
-
-
 	public Page<WorkDto> empNameWorkList(String name, Date workDate2, Date workDate, int page) {
 		
 		log.info("[WorkController] : 이름 조회 투  서비스  시작~~~~~~~~~~~~~{}", name);
@@ -267,30 +251,28 @@ public class WorkService {
 				workDate2, workDate, pageable);
 		
 		workList.forEach(work -> Hibernate.initialize(work.getAuth().getRoleList()));
-
+		
 		Page<WorkDto> workDtoList = workList.map(work -> modelMapper.map(work, WorkDto.class));
-
+		
 		log.info("[WorkService] workDtoList.getContent() : {}", workDtoList.getContent());
-
+		
 		log.info("[WorkService] selectMyWorkList end ======================= ");
-
+		
 		return workDtoList;
 	}
-
 	
+	public Optional<WorkDto> selectMywork(Integer empCode, Date workDate) {
+	    AuthEmp emp = authEmpRepository.findByEmpCode(empCode)
+	            .orElseThrow(() -> new IllegalArgumentException("해당코드의 기록이 없습니다. emp=" + empCode));
 
-//	public Page<WorkDto> selectDateAllList(Date parsedDate, int page) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	    Optional<Work> workOptional = workRepository.findByWorkPkEmpCodeAndWorkPkWorkDate(emp.getEmpCode(), workDate);
+	    if (workOptional.isEmpty()) {
+	        return Optional.empty();
+	    }
+	    
+	    Work work = workOptional.get();
+	    WorkDto workDto = modelMapper.map(work, WorkDto.class);
+	    return Optional.ofNullable(workDto);
+	}
 
-	/* 이름 + 날짜로 근무 조회 */
-
-//    public Page<Work> findWorksByNameAndDate(String empName, LocalDate workDate, int page) {
-//        
-//    	Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
-//    	Page<Emp> employee = empRepository.findByEmpName(empName, );
-//
-//        return workRepository.findByWorkPkEmpCodeAndWorkPkWorkDate(((Emp) employee).getEmpCode(), workDate, page);
-//    }
 }

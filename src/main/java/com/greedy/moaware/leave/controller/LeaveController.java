@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -126,13 +127,43 @@ public class LeaveController {
 	}
 	
 	@PostMapping("request")
-	public ResponseEntity<ResponseDto> requestLeave(@AuthenticationPrincipal AuthEmpDto emp, @RequestBody LeavePaymentDto leavePayDto){
+	public ResponseEntity<ResponseDto> requestLeave(@AuthenticationPrincipal AuthEmpDto emp, @ModelAttribute LeavePaymentDto leavePayDto){
+		
+		log.info("연차신청 시작 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		log.info("리브페이먼트 DTO 값 leavePayDto {}", leavePayDto);
 		
 		leaveService.insertLeaveRequest(leavePayDto, emp);
 		
 		
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "연차 신청 성공"));
+	}
+	
+	@GetMapping("request/list")
+	public ResponseEntity<ResponseDto> leaveRequestList(@AuthenticationPrincipal AuthEmpDto emp,
+			@RequestParam(name = "page", defaultValue = "1") int page) {
+		
+
+		
+		Page<LeavePaymentDto> LeavePaymentDtoList = leaveService.myLeaveRequestList(emp.getEmpCode(), page);
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(LeavePaymentDtoList);
+		
+		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+		responseDtoWithPaging.setPageInfo(pageInfo);
+		responseDtoWithPaging.setData(LeavePaymentDtoList.getContent());
+
+		log.info("[LeaveController] : leaveList end =========================================================");
+
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "연차 신청 조회 완료", responseDtoWithPaging));
+	}
+	
+	@GetMapping("/request/{leaveCode}")
+	public ResponseEntity<ResponseDto> selectLeaveDetail (@PathVariable Integer leaveCode) {
+			
+		log.info("[LeaveController] : selectLeaveDetail start =========================================================");
+
+		return ResponseEntity.ok().body(
+				new ResponseDto(HttpStatus.OK, "조회 성공", leaveService.selectLeaveDetail(leaveCode)));
 	}
 	
 	
@@ -149,8 +180,4 @@ public class LeaveController {
 	
 	
 	
-	
-	
-	
 }
-

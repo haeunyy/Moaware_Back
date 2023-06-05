@@ -105,7 +105,7 @@ public class SchService {
 	
 	/* 일정 수정 */
 	@Transactional
-	public void modifySchedule(Integer authEmp, @ModelAttribute ScheduleDto scheduleDto) {
+	public void modifySchedule(Integer authEmp, ScheduleDto scheduleDto) {
 
 	    log.info("[SchService] modifySchedule : {}", scheduleDto);
 		
@@ -124,7 +124,7 @@ public class SchService {
 	    
 	    log.info("sch : {}", sch);
 	    
-//	    schRepository.save(schedule);
+//	    schRepository.save(sch);
 //	    schRepository.save(modelMapper.map(scheduleDto, ScheduleDto.class));
 	    
 	}
