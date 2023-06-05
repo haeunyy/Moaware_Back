@@ -14,6 +14,7 @@ public class LeavePaymentDto {
 	
 	private Integer leaveCode;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date leaveStartDay;
 	
 	private String leaveType;
