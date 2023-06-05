@@ -69,6 +69,27 @@ public class AdminEmp {
 	@ManyToOne
 	@JoinColumn(name="DEPT_CODE")
 	private Dept dept;
+
+	
+	public void update(String retireYn) {
+		this.retireYn = retireYn;
+		
+	}
+
+
+	public void update
+	(Integer empCode, String empName, String phone,
+			String empID, String empPwd, Job job, Dept dept) {
+	
+		this.empCode = empCode;
+		this.empName = empName;
+		this.phone = phone;
+		this.empID = empID;
+		this.empPwd = empPwd;
+		this.job = job;
+		this.dept = dept;
+
+	}
 	
 
 	

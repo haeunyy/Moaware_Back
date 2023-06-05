@@ -41,7 +41,10 @@ public class BoardController {
 		this.boardService = boardService;
 	}
 	
-	/* 1. 게시 판 목록 조회 - 페이징(사용자) */
+	
+	
+	
+	/* 게시 판 목록 조회 - 페이징(사용자) (관리자) 컨트롤러는 차이 없음 */
 	@GetMapping("/list")
 		public ResponseEntity<ResponseDto> selectBoardList(@RequestParam(name="page", defaultValue="1") int page) {
 		
@@ -54,11 +57,14 @@ public class BoardController {
 		
 		log.info("[BoardController] : pageInfo : {}", pageInfo);
 		
+		//1) ResponseDtoWithPaging 객체를 생성하고
 		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
 		responseDtoWithPaging.setPageInfo(pageInfo);
-		//responseDtoWithPaging.setData(boardDtoList);
-		responseDtoWithPaging.setData(boardDtoList.getContent()); //페이지 안에 있는 것을 그대로 보내는 것이 아니라 컨탠츠로 꺼내어 넣어 보낸다
+		//2)pageInfo를          responseDtoWithPaging 객체의 pageInfo 속성 밸류 값으로 set하는 것을 보여줍니다.
 		
+		responseDtoWithPaging.setData(boardDtoList.getContent());
+		//페이지 안에 있는 것을 그대로 보내는 것이 아니라 Content에서 꺼내어 Data에넣어 보낸다
+
 		log.info("[BoardController] : selectBoardList end ==================================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
@@ -108,7 +114,7 @@ public class BoardController {
 //	}
 
 	
-	/* 8. 게시판 수정 */
+	/* 게시판 수정 */
 	@PutMapping("/modify")
 	public ResponseEntity<ResponseDto> updateBoard(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute BoardDto boardDto) {
 		//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
@@ -122,7 +128,7 @@ public class BoardController {
 	
 	
 
-/* 9. 게시판 Status N(삭제) */
+/* 게시판 Status N(삭제) */
 @PutMapping("/delete/{boardCode}")
 public ResponseEntity<ResponseDto> deleteBoard(@PathVariable(name="boardCode") long boardCode) {
 
