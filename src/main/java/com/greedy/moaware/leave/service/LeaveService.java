@@ -98,7 +98,6 @@ public class LeaveService {
 		
 		Leave findLeave2 = leaveRepository.findByLeavePkEmpCodeAndLeavePkLeaveYear(leave.getLeavePk().getEmpCode(), leave.getLeavePk().getLeaveYear() +1 )
 				.orElse(null);
-		log.info("입사일 확인 ㅇㅇㅇㅇㅇㅇㅇㅇemp.getHireDate(){},", emp.getHireDate());
 		
 		Date hireDate = emp.getHireDate();
 		Calendar calendar = Calendar.getInstance();
@@ -113,7 +112,7 @@ public class LeaveService {
 		//입사월 
 		int month = calendar.get(Calendar.MONTH);
 		int yearMonth = year + month;
-		log.info("yearMonth{},", yearMonth);
+	
 		//현재년도
 		Integer nowYear = leave.getLeavePk().getLeaveYear();
 		int deCount = 15;  
@@ -125,7 +124,6 @@ public class LeaveService {
 				leave.setLeaveTotalDay("10");
 				leave.setLeaveUseDay("0");
 				leaveRepository.save(leave);
-				log.info("저장 완료1");
 			} else if(nowYear > year) {
 				int count = nowYear - year;
 				for(int i = 0; i < count; i++) {
@@ -135,11 +133,9 @@ public class LeaveService {
 				}
 				leave.setLeaveUseDay("0");
 				leave.setLeaveTotalDay(Integer.toString(deCount));
-				leaveRepository.save(leave);
-				log.info("저장 완료2");				
+				leaveRepository.save(leave);		
 			}
-		} else {
-			log.info("저장 실패");						
+		} else {				
 		}
 		
 		if(findLeave2 == null) {
@@ -157,7 +153,6 @@ public class LeaveService {
 				leave.setLeaveUseDay("0");
 				leave.setLeaveTotalDay(Integer.toString(deCount2));
 				leaveRepository.save(leave);
-				log.info("저장 완료3");
 			}
 		}
 		
@@ -167,15 +162,12 @@ public class LeaveService {
 	@Transactional
 	public void insertLeaveRequest(LeavePaymentDto leavePayDto, AuthEmpDto emp) {
 		
-		log.info("[LeaveService] insertLeaveRequest start ======================= ");
-		
-		log.info("연차 신청 시작------------------------------------------------------------------");
 	
 		leavePayDto.setEmployee(emp);
 		leavePayDto.setLPayStatus("대기중");
 		
 		leavePaymentRepository.save(modelMapper.map(leavePayDto, LeavePayment.class));
-		log.info("[LeaveService] insertLeaveRequest end ======================= ");
+		
 	}
 
 	public Page<LeavePaymentDto> myLeaveRequestList(Integer empCode, int page) {
