@@ -44,11 +44,6 @@ public class PaymentController {
 	@GetMapping("/main")
 	public ResponseEntity<ResponseDto> PaymentAllList(@AuthenticationPrincipal AuthEmpDto payEmp){
 		
-		log.info("[PaymentController] PaymentList start ============================== ");
-
-		
-		log.info("[PaymentController] PaymentList end ============================== ");
-		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 전자결재 조회.", paymentService.paymentAllList(payEmp.getEmpCode()) ));
 	}
 	
@@ -56,9 +51,7 @@ public class PaymentController {
 	/* 기안자로 기안문 진행중 조회 */
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> PaymentList(@AuthenticationPrincipal AuthEmpDto payEmp, @RequestParam(name="page", defaultValue="1") int page){
-		
-		log.info("[PaymentController] PaymentList start ============================== ");
-		
+				
 		Page<PaymentDto> paymentDtoList = paymentService.paymentList(payEmp.getEmpCode(), page);
 		
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(paymentDtoList);
@@ -66,8 +59,6 @@ public class PaymentController {
 		ResponseDtoWithPaging responseDtoPage = new ResponseDtoWithPaging();
 		responseDtoPage.setPageInfo(pageInfo);
 		responseDtoPage.setData(paymentDtoList);
-		
-		log.info("[PaymentController] PaymentList end ============================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 진행 문서 조회.", responseDtoPage ));
 	}
@@ -77,17 +68,8 @@ public class PaymentController {
 	/* 기안서 양식 조회*/
 	@GetMapping("/draft")
 	public ResponseEntity<ResponseDto> FormSelect(@AuthenticationPrincipal AuthEmpDto payEmp){
-		
-		log.info("[PaymentController] FormSelect start ============================== ");
-		
-		log.info("[PaymentController] FormSelect payEmp :  {}", payEmp.getEmpCode());
 				
 		Map<String, Object> resultMap = paymentService.formSelect(payEmp.getEmpCode());
-		
-		log.info("[PaymentController] FormSelect pay :  {}", resultMap);
-
-		
-		log.info("[PaymentController] FormSelect end ============================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 전자결재 양식 조회.", resultMap));
 	}
@@ -96,15 +78,8 @@ public class PaymentController {
 	/* 기안서 저장*/
 	@PostMapping("/draft")
 	public ResponseEntity<ResponseDto> insertPayment(@AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PayAttachedFileDto payAttachedFile){
-		
-		log.info("[PaymentController] insertPayment start ============================== ");
-		
-		log.info("[PaymentController] insertPayment payEmp :  {}", payEmp);
-		log.info("[PaymentController] insertPayment payAttachedFile :  {}", payAttachedFile);
 				
 		paymentService.insertPayment(payEmp.getEmpCode(), payAttachedFile);
-		
-		log.info("[PaymentController] insertPayment end ============================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, " 기안문 저장 완료"));
 	}
@@ -112,8 +87,6 @@ public class PaymentController {
 	/* 결재 대기 문서 전체 조회 */
 	@GetMapping("/memberList")
 	public ResponseEntity<ResponseDto> PaymentMemberList(@AuthenticationPrincipal AuthEmpDto payEmp, @RequestParam(name="page", defaultValue="1") int page){
-		
-		log.info("[PaymentController] PaymentList start ============================== ");
 		
 		Page<PaymentDto> paymentDtoList = paymentService.paymentMemberList(payEmp.getEmpCode(), page);
 		
@@ -124,10 +97,6 @@ public class PaymentController {
 		responseDtoPage.setData(paymentDtoList);
 		
 		long totalElements = paymentDtoList.getTotalElements();
-		log.info("[PaymentController] PaymentList 총 요소 수 : {} ", totalElements);
-	
-		
-		log.info("[PaymentController] PaymentList end ============================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 대기 문서 조회.", responseDtoPage ));
 	}
@@ -145,12 +114,7 @@ public class PaymentController {
 	@PutMapping("/updateSign")
 	public ResponseEntity<ResponseDto> PaymentUpdate (@AuthenticationPrincipal AuthEmpDto payEmp, @RequestBody PaymentDto paymentDto) {
 		
-		log.info("[PaymentController] PaymentUpdateSign start ============================== ");
-		log.info("[PaymentController] PaymentUpdateSign paymentDto {} ", paymentDto);
-		
 		paymentService.PaymentUpdate(payEmp.getEmpCode(), paymentDto);
-		
-		log.info("[PaymentController] PaymentUpdateSign end ============================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 처리 완료"));
 	};
@@ -161,8 +125,6 @@ public class PaymentController {
 	@GetMapping("/complete")
 	public ResponseEntity<ResponseDto> PaymentCompleteList(@AuthenticationPrincipal AuthEmpDto payEmp, @RequestParam(name="page", defaultValue="1") int page){
 		
-		log.info("[PaymentController] PaymentCompleteList start ============================== ");
-		
 		Page<PaymentDto> paymentDtoList = paymentService.PaymentCompleteList(payEmp.getEmpCode(), page);
 		
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(paymentDtoList);
@@ -172,10 +134,6 @@ public class PaymentController {
 		responseDtoPage.setData(paymentDtoList);
 		
 		long totalElements = paymentDtoList.getTotalElements();
-		log.info("[PaymentController] PaymentCompleteList 총 요소 수 : {} ", totalElements);
-	
-		
-		log.info("[PaymentController] PaymentCompleteList end ============================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 완료 문서 조회.", responseDtoPage ));
 	}
@@ -184,7 +142,6 @@ public class PaymentController {
 	@GetMapping("/refuse")
 	public ResponseEntity<ResponseDto> PaymentRefuseList(@AuthenticationPrincipal AuthEmpDto payEmp, @RequestParam(name="page", defaultValue="1") int page){
 		
-		log.info("[PaymentController] PaymentCompleteList start ============================== ");
 		
 		Page<PaymentDto> paymentDtoList = paymentService.PaymentRefuseList(payEmp.getEmpCode(), page);
 		
@@ -195,10 +152,6 @@ public class PaymentController {
 		responseDtoPage.setData(paymentDtoList);
 		
 		long totalElements = paymentDtoList.getTotalElements();
-		log.info("[PaymentController] PaymentCompleteList 총 요소 수 : {} ", totalElements);
-	
-		
-		log.info("[PaymentController] PaymentCompleteList end ============================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 반려 문서 조회.", responseDtoPage ));
 	}
@@ -208,7 +161,6 @@ public class PaymentController {
 	@GetMapping("/storage")
 	public ResponseEntity<ResponseDto> PaymentStorageList(@AuthenticationPrincipal AuthEmpDto payEmp, @RequestParam(name="page", defaultValue="1") int page){
 		
-		log.info("[PaymentController] PaymentStorageList start ============================== ");
 		
 		Page<PaymentDto> paymentDtoList = paymentService.PaymentStorageList(payEmp.getEmpCode(), page);
 		
@@ -219,10 +171,6 @@ public class PaymentController {
 		responseDtoPage.setData(paymentDtoList);
 		
 		long totalElements = paymentDtoList.getTotalElements();
-		log.info("[PaymentController] PaymentStorageList 총 요소 수 : {} ", totalElements);
-	
-		
-		log.info("[PaymentController] PaymentStorageList end ============================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 임시 저장 문서 조회.", responseDtoPage ));
 	}
@@ -230,15 +178,8 @@ public class PaymentController {
 	/* 결재 문서 업데이트*/
 	@PutMapping("/storage")
 	public ResponseEntity<ResponseDto> updatePaymentStorage(@AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PayAttachedFileDto payAttachedFile){
-		
-		log.info("[PaymentController] updatePaymentStorage start ============================== ");
-		
-		log.info("[PaymentController] updatePaymentStorage payEmp :  {}", payEmp);
-		log.info("[PaymentController] updatePaymentStorage payAttachedFile :  {}", payAttachedFile);
 				
-		paymentService.updatePaymentStorage(payEmp.getEmpCode(), payAttachedFile);
-		
-		log.info("[PaymentController] updatePaymentStorage end ============================== ");
+		paymentService.updatePaymentStorage(payEmp.getEmpCode(), payAttachedFile);		
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 문서 업데이트 완료"));
 	}
@@ -247,12 +188,7 @@ public class PaymentController {
 	@GetMapping("/sign")
 	public ResponseEntity<ResponseDto> PaymentSign( @AuthenticationPrincipal AuthEmpDto payEmp){
 		
-		log.info("[PaymentController] PaymentSign start ============================== ");
-		
-		EmpDto empsign = paymentService.paymentSign(payEmp.getEmpCode());
-		
-		log.info("[PaymentController] PaymentSign end ============================== ");
-		
+		EmpDto empsign = paymentService.paymentSign(payEmp.getEmpCode());	
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "사인 조회.", empsign ));
 				
@@ -262,14 +198,8 @@ public class PaymentController {
 	@PostMapping("/sign")
 	public ResponseEntity<ResponseDto> PaymentSignSaved( @AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PayAttachedFileDto payAttachedFile){
 		
-		log.info("[PaymentController] PaymentSign start ============================== ");
-		log.info("[PaymentController] PaymentSign emp : {} " , payAttachedFile);
-		
 		paymentService.paymentSignSaved(payEmp.getEmpCode(), payAttachedFile);
-		
-		log.info("[PaymentController] PaymentSign end ============================== ");
-		
-		
+
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "사인 저장 완료." ));
 				
 	}
@@ -277,14 +207,8 @@ public class PaymentController {
 	/* 서명 수정 */
 	@PutMapping("/sign")
 	public ResponseEntity<ResponseDto> PaymentSignUpdate( @AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PayAttachedFileDto payAttachedFile){
-		
-		log.info("[PaymentController] PaymentSign start ============================== ");
-		log.info("[PaymentController] PaymentSign emp : {} " , payAttachedFile);
-		
+
 		paymentService.paymentSignUpdate(payEmp.getEmpCode(), payAttachedFile);
-		
-		log.info("[PaymentController] PaymentSign end ============================== ");
-		
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "사인 수정 완료." ));
 				

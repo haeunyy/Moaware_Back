@@ -32,15 +32,8 @@ public class OrganizationController {
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> selectOrganizationList(){
 		
-		log.info("[OrganizationController] selectOrganizationList start ============================== ");
-		
 		List<OrganizationDto> orgDtoList = organizationService.selectOranizationList();
-		
-		
-		log.info("[OrganizationController] selectOrganizationList orgDtoList : {}", orgDtoList );
-		log.info("[OrganizationController] selectOrganizationList end ================================ ");
-		
-		
+	
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 상위 부서 조회가 성공하였습니다.", orgDtoList ));
 		
 	}
@@ -48,19 +41,9 @@ public class OrganizationController {
 	/* 조직도 하위 부서 및 직원 검색 */
 	@GetMapping("/subList/{deptCode}")
 	public ResponseEntity<ResponseDto> selectOrganizationList(@PathVariable(name="deptCode") Integer refdeptCode){
-		
-		log.info("[OrganizationController] selectOrganizationList start ============================== ");
-		log.info("[OrganizationController] selectOrganizationList org : {}", refdeptCode );
-		
 
-		
 		List<OrganizationDto> orgDtoList = organizationService.selectOranizationSubList(refdeptCode);
-		
-		
-		log.info("[OrganizationController] selectOrganizationList orgDtoList : {}", orgDtoList );
-		log.info("[OrganizationController] selectOrganizationList end ================================ ");
-		
-		
+
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "전체 조직도 하위 부서 및 직원 검색 조회가 성공하였습니다.", orgDtoList ));
 		
 	}
@@ -69,16 +52,9 @@ public class OrganizationController {
 	/* 조직도 이름,직급,직책으로 검색 */
 	@GetMapping("/search")
 	public ResponseEntity<ResponseDto> selectOrgSearch(@RequestParam(name="search") String search){
-		
-		log.info("[EmpController] selectOrgSearch start ============================== ");
-		log.info("search : {}" , search);
-		
+
 		List<SearchOrganizationDto> orgDtoList = organizationService.selectOrgSearch(search);
-		
-		
-		log.info("[EmpController] selectOrgSearch orgDtoList : {}", orgDtoList );
-		log.info("[EmpController] selectOrgSearch end ================================ ");
-		
+
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", orgDtoList ));
 	}
 	

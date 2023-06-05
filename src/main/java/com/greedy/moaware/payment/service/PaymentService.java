@@ -77,24 +77,15 @@ public class PaymentService {
 	/* 기안자 기안문 전체 조회 */
 	public List<PaymentDto> paymentAllList(Integer empCode) {
 		
-		log.info("[PaymentService] payMentList start ============================== ");
-		
-		
+			
 		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
 		
 		
 		List<Payment> payList = paymentRepository.findByEmp(emp);
-
-		
-		log.info("[PaymentService] payMentList payList : {}" , payList);
+	
 		
 		List<PaymentDto> paysDto = payList.stream().map( pay -> modelMapper.map(pay, PaymentDto.class)).collect(Collectors.toList());
 		
-		
-		
-		log.info("[PaymentService] payMentList paysDto : {}" , paysDto);
-		
-		log.info("[PaymentService] payMentList end ============================== ");
 		
 		return paysDto;
 	}
@@ -104,30 +95,21 @@ public class PaymentService {
 	/* 기안문 조회 */
 	public Map<String, Object> formSelect(Integer empCode) {
 		
-		log.info("[PaymentService] formSelect start ============================== ");
-		log.info("[PaymentService] formSelect EmpCode : {}" , empCode);
 		
 		List<Form> formList = formRepository.findAll();
 		
 		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
 		
 		
-		log.info("[PaymentService] formSelect formList : {}" , formList);
-		
-		
 		List<FormDto> formDtoList = formList.stream().map( form-> modelMapper.map(form, FormDto.class)).collect(Collectors.toList());
 		
 		PayEmpDto empDto = modelMapper.map(emp, PayEmpDto.class);
 		
-		log.info("[PaymentService] formSelect formDtoList : {}" , formDtoList);
-		log.info("[PaymentService] formSelect empDto : {}" , empDto);
 		
 		if(empDto.getPayFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).count() != 0) {
 			List<PayFileCategoryDto> empFileCategoryDto = empDto.getPayFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).collect(Collectors.toList());
 			
 			empFileCategoryDto.get(0).getFile().setFilePath(IMAGE_URL + empFileCategoryDto.get(0).getFile().getFilePath());
-			
-			log.info("[PaymentService] empFileCategoryDto : {}" , empFileCategoryDto);
 			
 			empDto.setPayFileCategory(empFileCategoryDto);
 			}
@@ -138,8 +120,6 @@ public class PaymentService {
 		result.put("payEmp", empDto);
 		
 		
-		log.info("[PaymentService] formSelect end ============================== ");
-		
 		return result;
 		
 	}
@@ -147,8 +127,6 @@ public class PaymentService {
 	/* 기안문 저장*/
 	@Transactional
 	public void insertPayment(Integer empCode, PayAttachedFileDto payAttachedFile) {
-		log.info("[PaymentService] insertPayment start ============================== ");
-		log.info("[PaymentService] insertPayment payAttachedFile : {}" , payAttachedFile);
 		
 		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
 		
@@ -164,12 +142,9 @@ public class PaymentService {
 			
 			String uploadDir = IMAGE_DIR+"/payment";
 			
-			log.info("업로드 dir  : {}", uploadDir);
-			
 			String replaceFileName = FileUploadUtils.saveFile(uploadDir, fileName, payAttachedFile.getFileInfo());
 			String path = "/payment/" + replaceFileName;
-			
-			log.info("업로드 path  : {}", path);
+
 			payAttachedFile.setFilePath(path);
 			
 		} catch (IOException e) {
@@ -181,9 +156,6 @@ public class PaymentService {
 		
 		file.getPayFileCategory().getPay().setEmp(emp);
 		
-		
-		log.info("[PaymentService] insertPayment file : {} ", file);
-		
 		payAttachedFileRepository.save(file);
 				
 		}
@@ -192,23 +164,15 @@ public class PaymentService {
 		
 		pay.setEmp(emp);
 		
-		log.info("[PaymentService] insertPayment pay : {} ", pay);
-		
 		paymentRepository.save(pay);
 		
-		
 		}
-		
-		
-		log.info("[PaymentService] insertPayment end ============================== ");
 		
 	}
 	
 	
 	/* 기안자로 기안문 진행중 조회 */
 	public Page<PaymentDto> paymentList(Integer empCode, int page) {
-		
-		log.info("[PaymentService] payMentList start ============================== ");
 		
 		Pageable pageable = PageRequest.of(page -1, 10, Sort.by("payCode").descending());
 		
@@ -218,14 +182,8 @@ public class PaymentService {
 		
 		Page<Payment> payList = paymentRepository.findByEmpAndPayStatus(pageable, emp, payStatus);
 		
-		log.info("[PaymentService] payMentList payList : {}" , payList);
 		
 		Page<PaymentDto> payDtoList = payList.map( pay -> modelMapper.map(pay, PaymentDto.class));
-			
-		
-		log.info("[PaymentService] payMentList payDtoList : {}" , payDtoList);
-		
-		log.info("[PaymentService] payMentList end ============================== ");
 		
 		return payDtoList;
 	}
@@ -233,11 +191,9 @@ public class PaymentService {
 	
 	/* 결재 대기 조회 */
 	public Page<PaymentDto> paymentMemberList(Integer empCode, int page) {
-		log.info("[PaymentService] paymentMemberList start ============================== ");
 		
 		Pageable pageable = PageRequest.of(page -1, 10, Sort.by("payCode").descending());
 		
-		log.info("[PaymentService] paymentMemberList empCode : {} ", empCode);
 		PaymentMemberPk paymentMemberPk = new PaymentMemberPk();
 		
 		paymentMemberPk.setEmpCode(empCode);
@@ -246,13 +202,9 @@ public class PaymentService {
 		
 		List<PaymentMember> paymentMemberList = paymentMemberRepository.findByPaymentMemberPkEmpCodeAndPayType(empCode, PayType);
 		
-		log.info("[PaymentService] paymentMemberList paymentMemberList : {} ", paymentMemberList);
-		
 		String payStatus = "진행중";
 		
 		Page<Payment> paymentList = paymentRepository.findByPayStatusAndPaymentMemberInOrderByPayCode(pageable, payStatus, paymentMemberList);
-				
-		log.info("[PaymentService] paymentMemberList paymentList : {} ", paymentList);
 		
 		Page<PaymentDto> paymentListDto = paymentList.map( pay -> modelMapper.map(pay, PaymentDto.class));
 
@@ -280,23 +232,14 @@ public class PaymentService {
 		
 		Page<PaymentDto> filteredPage = new PageImpl<>(filterPay, paymentListDto.getPageable(), filterPay.size());
 		
-		log.info("[PaymentService] paymentMemberList filterPay : {} ", filterPay);
-		
-		log.info("[PaymentService] paymentMemberList filteredPage : {} ", filteredPage	);
-		
-		log.info("[PaymentService] paymentMemberList end ============================== ");
-		
 		return filteredPage;
 	}
 	
 	/* 결재 문서 상세 조회 */
 	public PaymentDto paymentDetail ( Integer payCode) {
-		
-		log.info("[PaymentService] paymentDetail start ============================== ");
-		
+	
 		Payment payment = paymentRepository.findById(payCode).orElseThrow( () -> new IllegalArgumentException("해당 결재문서가 없습니다. payCode=" + payCode) );
 		
-		log.info("[PaymentService] paymentDetail payment : {} " , payment);
 		
 		PaymentDto paymentDto = modelMapper.map(payment, PaymentDto.class);
 		
@@ -308,7 +251,6 @@ public class PaymentService {
 			
 			empFileCategoryDto.get(0).getFile().setFilePath(IMAGE_URL + empFileCategoryDto.get(0).getFile().getFilePath());
 			
-			log.info("[PaymentService] paymentDetail empFileCategoryDto : {}" , empFileCategoryDto);
 			
 			payEmpDto.setPayFileCategory(empFileCategoryDto);
 		}
@@ -329,7 +271,6 @@ public class PaymentService {
 				return false;
 			}).collect(Collectors.toList());
 			
-			log.info("[PaymentService] paymentDetail fileCategory : {} " , payFileCategory);
 			member.getEmp().setPayFileCategory(payFileCategory);
 			return member;
 			}).collect(Collectors.toList());
@@ -339,11 +280,6 @@ public class PaymentService {
 			paymentDto.getPayFileCategory().getFile().setFilePath(IMAGE_URL + paymentDto.getPayFileCategory().getFile().getFilePath());
 		}
 		
-		log.info("[PaymentService] paymentDetail payMember : {} " , payMember);
-		
-		log.info("[PaymentService] paymentDetail paymentDto : {} " , paymentDto.getPayFileCategory());
-		
-		log.info("[PaymentService] paymentDetail end ============================== ");
 		
 		return paymentDto;
 	}
@@ -352,15 +288,10 @@ public class PaymentService {
 	@Transactional
 	public void PaymentUpdate (Integer empCode, PaymentDto paymentDto) {
 		
-		log.info("[PaymentService] PaymentUpdate start ============================== ");
-		
 		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
 		
 		Payment payment = paymentRepository.findById(paymentDto.getPayCode()).orElseThrow( () -> new IllegalArgumentException("해당 결재 문서가 없습니다. payCode=" + paymentDto.getPayCode()) );
-		
-		log.info("[PaymentService] PaymentUpdate paymentMember : {} " , payment);
-		
-		
+			
 		 payment.getPaymentMember().stream().map( member ->{
 		
 		if(member.getPaymentMemberPk().getEmpCode() == empCode) {
@@ -376,9 +307,6 @@ public class PaymentService {
 					paymentDto.setPayStatus(paymentDto.getPayStatus());
 				} else {
 
-					log.info("[PaymentService] PaymentUpdate paymentMember12 : {} " , member.getPayFinalYn());
-					log.info("[PaymentService] PaymentUpdate paymentMember12 : {} " , member.getPayFinalYn().equals("Y "));
-					log.info("[PaymentService] PaymentUpdate paymentMember12 : {} " , member.getPayFinalYn()=="Y");
 					if(member.getPayFinalYn().equals("Y")) {
 						paymentDto.setPayStatus("결재완료");
 					} else {
@@ -401,22 +329,14 @@ public class PaymentService {
 		return member;
 		
 		}).collect(Collectors.toList());
-	
-		log.info("[PaymentService] PaymentUpdate paymentMember2 : {} " , paymentDto);
 		
 		payment.setPayStatus(paymentDto.getPayStatus());
-
-		log.info("[PaymentService] PaymentUpdate paymentMember3 : {} " , payment);
-		
-		
-		log.info("[PaymentService] PaymentUpdate end ============================== ");
 		
 	}
 	
 	
 	/* 결재 완료 조회 */
 	public Page<PaymentDto> PaymentCompleteList(Integer empCode, int page) {
-		log.info("[PaymentService] PaymentCompleteList start ============================== ");
 		
 		Pageable pageable = PageRequest.of(page -1, 10, Sort.by("payCode").descending());
 		
@@ -425,16 +345,9 @@ public class PaymentService {
 		String payStatus = "결재완료";
 		
 		Page<Payment> payList = paymentRepository.findByEmpAndPayStatus(pageable, emp, payStatus);
-		
-		log.info("[PaymentService] PaymentCompleteList payList : {}" , payList);
-		
-		Page<PaymentDto> payDtoList = payList.map( pay -> modelMapper.map(pay, PaymentDto.class));
 			
-		
-		log.info("[PaymentService] PaymentCompleteList payDtoList : {}" , payDtoList);
-		
-		log.info("[PaymentService] PaymentCompleteList end ============================== ");
-		
+		Page<PaymentDto> payDtoList = payList.map( pay -> modelMapper.map(pay, PaymentDto.class));
+	
 		return payDtoList;
 	}
 	
