@@ -70,7 +70,36 @@ public class Payment {
 				+ draftTitle  + ", payStatus=" + payStatus + ", payFileCategory="
 				+ payFileCategory + ", paymentMember=" + paymentMember + ", refenceMember=" + refenceMember + "]";
 	}
+
 	
+	/*임시 저장문서 업데이트 (첨부파일 변경시) */
+	public void updatePayment(Integer payCode, Date draftDate, String draftTitle, String draftContent,
+			String payStatus, Form form, PayFileCategory payFileCategory, List<PaymentMember> paymentMember,
+			List<RefenceMember> refenceMember) {
+		this.payCode = payCode;
+		this.draftDate = draftDate;
+		this.draftTitle = draftTitle;
+		this.draftContent = draftContent;
+		this.payStatus = payStatus;
+		this.form = form;
+		this.payFileCategory = payFileCategory;
+		this.paymentMember = paymentMember;
+		this.refenceMember = refenceMember;
+	}
+	
+	/*임시 저장문서 업데이트 (첨부파일 새로등록) */
+	public void updatePayment(Integer payCode, Date draftDate, String draftTitle, String draftContent,
+			String payStatus, Form form, List<PaymentMember> paymentMember,
+			List<RefenceMember> refenceMember) {
+		this.payCode = payCode;
+		this.draftDate = draftDate;
+		this.draftTitle = draftTitle;
+		this.draftContent = draftContent;
+		this.payStatus = payStatus;
+		this.form = form;
+		this.paymentMember = paymentMember;
+		this.refenceMember = refenceMember;
+	}
 	
 	
 	

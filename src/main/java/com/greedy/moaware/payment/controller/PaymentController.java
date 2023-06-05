@@ -227,6 +227,22 @@ public class PaymentController {
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 임시 저장 문서 조회.", responseDtoPage ));
 	}
 	
+	/* 결재 문서 업데이트*/
+	@PutMapping("/storage")
+	public ResponseEntity<ResponseDto> updatePaymentStorage(@AuthenticationPrincipal AuthEmpDto payEmp, @ModelAttribute PayAttachedFileDto payAttachedFile){
+		
+		log.info("[PaymentController] updatePaymentStorage start ============================== ");
+		
+		log.info("[PaymentController] updatePaymentStorage payEmp :  {}", payEmp);
+		log.info("[PaymentController] updatePaymentStorage payAttachedFile :  {}", payAttachedFile);
+				
+		paymentService.updatePaymentStorage(payEmp.getEmpCode(), payAttachedFile);
+		
+		log.info("[PaymentController] updatePaymentStorage end ============================== ");
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "결재 문서 업데이트 완료"));
+	}
+	
 	/* 서명 조회 */
 	@GetMapping("/sign")
 	public ResponseEntity<ResponseDto> PaymentSign( @AuthenticationPrincipal AuthEmpDto payEmp){
