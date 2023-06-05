@@ -159,10 +159,7 @@ public class LeaveController {
 	
 	@GetMapping("/request/{leaveCode}")
 	public ResponseEntity<ResponseDto> selectLeaveDetail (@PathVariable Integer leaveCode) {
-		
-//		LeavePaymentDto LeavePaymentDtoList = leaveService.selectLeaveDetail(leaveCode);
-
-	
+			
 		log.info("[LeaveController] : selectLeaveDetail start =========================================================");
 
 		return ResponseEntity.ok().body(

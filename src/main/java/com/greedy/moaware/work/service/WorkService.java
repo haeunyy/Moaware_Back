@@ -275,22 +275,4 @@ public class WorkService {
 	    return Optional.ofNullable(workDto);
 	}
 
-
-
-	
-
-//	public Page<WorkDto> selectDateAllList(Date parsedDate, int page) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-	/* 이름 + 날짜로 근무 조회 */
-
-//    public Page<Work> findWorksByNameAndDate(String empName, LocalDate workDate, int page) {
-//        
-//    	Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
-//    	Page<Emp> employee = empRepository.findByEmpName(empName, );
-//
-//        return workRepository.findByWorkPkEmpCodeAndWorkPkWorkDate(((Emp) employee).getEmpCode(), workDate, page);
-//    }
 }
