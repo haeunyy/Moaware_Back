@@ -59,7 +59,7 @@ public class BoardPostService {
 	
 
 	
-	/* 2. 게시글 목록 조회 - 페이징, 조회 불가 게시글 포함(관리자) */
+	/* 1-1. 게시글 목록 조회 - 페이징, 조회 불가 게시글 포함(관리자) */
 	public Page<BoardPostDto> selectBoardPostListForAdmin(int page) {
 
 		log.info("[BoardPostService] selectBoardPostListForAdmin start ============================== ");
@@ -78,9 +78,9 @@ public class BoardPostService {
 
 		return boardPostDtoList;
 	}
+	//-------------------------------------------------------------------------------------------------------------
 	
-	
-	/* 3. 게시글 목록 조회 - 게시`판`코드 기준, 페이징, 조회 불가 게시물 제외(사용자) */
+	/* 2. 게시글 목록 조회 - 게시`판`코드 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 	public Page<BoardPostDto> selectBoardPostListByBoard(int page, Long boardCode) {
 
 		log.info("[BoardPostService] selectBoardPostListByBoard start ============================== ");
@@ -103,11 +103,44 @@ public class BoardPostService {
 
 		log.info("[BoardPostService] boardPostDtoList.getContent() : {}", boardPostDtoList.getContent());
 
-		log.info("[BoardPostService] selectBoardPostListByStatus end ============================== ");
+		log.info("[BoardPostService] selectBoardPostListByBoard end ============================== ");
 
 		return boardPostDtoList;
 
 	}
+	
+	
+	/* 2-1. 게시글 목록 조회 - 게시`판`코드 기준, 페이징, 조회 불가 게시물 포함(사용자) */
+
+	public Page<BoardPostDto> selectBoardPostListByBoardForAdmin(int page, Long boardCode) {
+		
+
+		log.info("[BoardPostService] selectBoardPostListByBoardForAdmin start ============================== ");
+
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("postCode").descending());
+
+		/* 전달할 게시판코드 엔티티를 먼저 조회한다. */
+
+		Board findBoard = boardRepository.findById(boardCode)
+				.orElseThrow(() -> new IllegalArgumentException("해당 게시판이 없습니다. boardCode = " + boardCode));
+
+		Page<BoardPost> boardPostList = boardPostRepository.findByBoard(pageable, findBoard);
+		// 보드코드 엔티티 단위로 다뤄야 하는 것에 주의
+		Page<BoardPostDto> boardPostDtoList = boardPostList
+				.map(boardPost -> modelMapper.map(boardPost, BoardPostDto.class));
+
+		/* 클라이언트 측에서 서버에 저장 된 이미지 요청 시 필요한 주소로 가공 */
+		// boardPostDtoList.forEach(boardPost -> boardPost.setBoardPostImgUrl(IMAGE_URL
+		// + boardPost.getBoardPostImgUrl()));
+
+		log.info("[BoardPostService] boardPostDtoList.getContent() : {}", boardPostDtoList.getContent());
+
+		log.info("[BoardPostService] selectBoardPostListByBoardForAdmin end ============================== ");
+
+		return boardPostDtoList;
+		
+	}
+	//-------------------------------------------------------------------------------------------------------------
 
 	/* 4. 게시글 목록 조회 - 게시글제목 검색 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 	public Page<BoardPostDto> selectBoardPostListByPostTitle(int page, String postTitle) {
@@ -241,6 +274,9 @@ public class BoardPostService {
 		
 	
 		}
+
+
+	
 	}
 	
 //	

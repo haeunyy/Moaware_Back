@@ -83,7 +83,7 @@ public class BoardPostController {
 	}
 //---------------------------------------------------------------------------
 
-/* 3. 게시글 목록 조회 - 게시판코드 기준, 페이징, 조회 불가 게시물 제외(사용자) */
+/* 2. 게시글 목록 조회 - 게시판코드 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 @GetMapping("/boardPosts/boards/{boardCode}")
 public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 		@RequestParam(name="page", defaultValue="1") int page, @PathVariable Long boardCode){
@@ -102,6 +102,30 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 	responseDtoWithPaging.setData(boardPostDtoList.getContent());
 	
 	log.info("[BoardPostController] : selectBoardPosttListByBoard end ==================================== ");
+	
+	return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
+}
+
+
+/* 2-1. 게시글 목록 조회 - 게시판코드 기준, 페이징, 조회 불가 게시물 포함(사용자) */
+@GetMapping("/boardPosts-management/boards/{boardCode}")
+public ResponseEntity<ResponseDto> selectBoardPostListByBoardForAdmin(
+		@RequestParam(name="page", defaultValue="1") int page, @PathVariable Long boardCode){
+	
+	log.info("[BoardPostController] : selectBoardPostListByBoardForAdmin start ==================================== ");
+	log.info("[BoardPostController] : page : {}", page);
+	
+	Page<BoardPostDto> boardPostDtoList = boardPostService.selectBoardPostListByBoardForAdmin(page, boardCode);
+	
+	PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(boardPostDtoList);
+	
+	log.info("[BoardPostController] : pageInfo : {}", pageInfo);
+	
+	ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+	responseDtoWithPaging.setPageInfo(pageInfo);
+	responseDtoWithPaging.setData(boardPostDtoList.getContent());
+	
+	log.info("[BoardPostController] : selectBoardPostListByBoardForAdmin end ==================================== ");
 	
 	return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 }
