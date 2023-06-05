@@ -24,6 +24,7 @@ import com.greedy.moaware.common.ResponseDto;
 import com.greedy.moaware.common.paging.Pagenation;
 import com.greedy.moaware.common.paging.PagingButtonInfo;
 import com.greedy.moaware.common.paging.ResponseDtoWithPaging;
+import com.greedy.moaware.employee.dto.AuthEmpDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,14 +46,23 @@ public class AdminEmpController {
 		log.info("[AdminEmpController] selectAdmninEmpList start ============================== ");
 		log.info("[BoardController] : page : {}", page);
 
-		
+	
 		Page<AdminEmpDto> adminEmpDtoList =  adminEmpService.selectAdminEmpList(page);
-		
 		log.info("adminEmpDtoList : {}" , adminEmpDtoList);
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(adminEmpDtoList);
+
+		
+		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+		responseDtoWithPaging.setPageInfo(pageInfo);
+
+		responseDtoWithPaging.setData(adminEmpDtoList.getContent()); //페이지 안에 있는 것을 그대로 보내는 것이 아니라 컨탠츠로 꺼내어 넣어 보낸다
+		
+		
+		
 		log.info("[AdminEmpController] selectAdminEmpList end ================================ ");
 		
 		
-		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", adminEmpDtoList ));
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging ));
 		
 }
 	
@@ -78,8 +88,37 @@ public class AdminEmpController {
 		return ResponseEntity
 				.ok()
 				.body(new ResponseDto(HttpStatus.OK, "게시물 등록 성공"));
+}
+	
+	
+	/* 계정 수정 */
+	@PutMapping("/modify")
+	public ResponseEntity<ResponseDto> updateBoardPost(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute AdminEmpDto adminEmpDto) {
+		//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
+		adminEmpService.updateAdminEmp(adminEmpDto.getEmpCode(), adminEmpDto);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "게시물 수정 성공"));
+		
+	}
+	
+	
+	/* 계정(회원) 퇴직 처리 retire Y(삭제) */
+	@PutMapping("/delete/{empCode}")
+	public ResponseEntity<ResponseDto> deleteAdminEmp(@PathVariable(name="empCode") Integer empCode) {
 
+		AdminEmpDto adminEmpDto = new AdminEmpDto();
 
+		adminEmpDto.setEmpCode(empCode);
+	
+		adminEmpService.deleteAdminEmp(adminEmpDto);
+
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDto(HttpStatus.OK, "퇴직 처리 완료"));
+		
 	}
 	
 	

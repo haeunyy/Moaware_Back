@@ -33,9 +33,31 @@ public class BoardService {
 	}
 
 	
-
-	/* 게시 판 목록 조회 - 페이징(관리자) */
+	/* 1.게시 판 목록 조회 - 페이징, 조회불가 게시판 제외(사용자) */
 	public Page<BoardDto> selectBoardList(int page) {
+
+		log.info("[BoardService] selectBoardList start ============================== ");
+
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("boardCode").ascending());
+
+		Page<Board> boardList = boardRepository.findByStatus(pageable, "Y");
+		// 페이저블,
+		Page<BoardDto> boardDtoList = boardList
+				.map(board -> modelMapper.map(board, BoardDto.class));
+
+
+		log.info("[BoardService] boardDtoList.getContent() : {}", boardDtoList.getContent());
+
+		log.info("[BoardService] selectBoardList end ============================== ");
+
+		return boardDtoList;
+	}
+
+	
+	
+
+	/* 2.게시 판 목록 조회 - 페이징(관리자) */
+	public Page<BoardDto> selectBoardListForAdmin(int page) {
 
 		log.info("[BoardService] selectBoardList start ============================== ");
 
