@@ -37,7 +37,7 @@ public class BoardPostController {
 	
 	/* 1. 게시글 목록 조회 - 페이징, 조회 불가 게시글 제외(사용자) */
 	@GetMapping("/boardPosts")
-public ResponseEntity<ResponseDto> selectBoardPostList(@RequestParam(name="page", defaultValue="1") int page) {
+	public ResponseEntity<ResponseDto> selectBoardPostList(@RequestParam(name="page", defaultValue="1") int page) {
 		
 		log.info("[BoardPostController] : selectBoardPostList start ==================================== ");
 		log.info("[BoardPostController] : page : {}", page);
@@ -58,7 +58,7 @@ public ResponseEntity<ResponseDto> selectBoardPostList(@RequestParam(name="page"
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 		
 	}
-	/* 2. 게시글 목록 조회 - 페이징, 조회 불가 게시글 포함(관리자) */
+	/* 1-1. 게시글 목록 조회 - 페이징, 조회 불가 게시글 포함(관리자) */
 	@GetMapping("/boardPosts-management")
 	public ResponseEntity<ResponseDto> selectBoardPostListForAdmin(@RequestParam(name="page", defaultValue="1") int page) {
 		
@@ -81,7 +81,7 @@ public ResponseEntity<ResponseDto> selectBoardPostList(@RequestParam(name="page"
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 		
 	}
-
+//---------------------------------------------------------------------------
 
 /* 3. 게시글 목록 조회 - 게시판코드 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 @GetMapping("/boardPosts/boards/{boardCode}")
@@ -208,29 +208,3 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoard(
 		
 		
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-
-
-

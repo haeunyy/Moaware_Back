@@ -202,11 +202,10 @@ public class BoardPostService {
 			originBoardPost.update(
 									boardPostDto.getPostCode(), 
 									modelMapper.map(boardPostDto.getBoard(), Board.class),
-									//modelMapper.map(boardPostDto.getWriter(), Emp.class),
-											//엔티티로 값을 바꿔서 처리하는 과정
+									//modelMapper.map(boardPostDto.getWriter(), Emp.class), //엔티티로 값을 바꿔서 처리하는 과정
 								        boardPostDto.getPostTitle(),
 										boardPostDto.getStatus(),
-									       boardPostDto.getPostContent()
+									    boardPostDto.getPostContent()
 								    );
 	
 			
@@ -303,22 +302,3 @@ public class BoardPostService {
 //		log.info("[BoardPostService] updateBoardPost end ============================== ");
 //	}
 //	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-
-//	위의 코드는 다음을 포함하는 삭제 로직을 가지고 있습니다:
-//
-//	사용자가 삭제를 요청한 게시물을 postCode를 기반으로 조회합니다.
-//	조회된 게시물이 있으면 삭제 작업을 진행하고, 없으면 예외를 발생시킵니다.
-//	삭제 권한 체크를 위해 empCode를 확인하고, empCode가 1인 경우에만 삭제 작업을 수행합니다.
-//	boardPostRepository의 delete() 메서드를 사용하여 게시물을 삭제합니다.
-//	위의 코드를 참고하여 원하는 대로 수정하시면 됩니다.
-

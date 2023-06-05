@@ -79,13 +79,12 @@ public class AdminEmp {
 
 	public void update
 	(Integer empCode, String empName, String phone,
-			String empID, String empPwd, Job job, Dept dept) {
+			String empID, Job job, Dept dept) {
 	
 		this.empCode = empCode;
 		this.empName = empName;
 		this.phone = phone;
 		this.empID = empID;
-		this.empPwd = empPwd;
 		this.job = job;
 		this.dept = dept;
 

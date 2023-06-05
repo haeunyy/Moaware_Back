@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.greedy.moaware.admin.emp.dto.AdminEmpDto;
 import com.greedy.moaware.admin.emp.service.AdminEmpService;
-import com.greedy.moaware.boardPost.dto.BoardPostDto;
 import com.greedy.moaware.common.ResponseDto;
 
 import com.greedy.moaware.common.paging.Pagenation;
@@ -44,7 +43,7 @@ public class AdminEmpController {
 	public ResponseEntity<ResponseDto> selectAdminEmpList(@RequestParam(name="page", defaultValue="1") int page){
 		
 		log.info("[AdminEmpController] selectAdmninEmpList start ============================== ");
-		log.info("[BoardController] : page : {}", page);
+		log.info("[AdminEmpController] : page : {}", page);
 
 	
 		Page<AdminEmpDto> adminEmpDtoList =  adminEmpService.selectAdminEmpList(page);
@@ -87,19 +86,19 @@ public class AdminEmpController {
 		
 		return ResponseEntity
 				.ok()
-				.body(new ResponseDto(HttpStatus.OK, "게시물 등록 성공"));
+				.body(new ResponseDto(HttpStatus.OK, "계정 등록 성공"));
 }
 	
 	
 	/* 계정 수정 */
 	@PutMapping("/modify")
-	public ResponseEntity<ResponseDto> updateBoardPost(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute AdminEmpDto adminEmpDto) {
+	public ResponseEntity<ResponseDto> updateAdminEmp(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute AdminEmpDto adminEmpDto) {
 		//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
 		adminEmpService.updateAdminEmp(adminEmpDto.getEmpCode(), adminEmpDto);
 		
 		return ResponseEntity
 				.ok()
-				.body(new ResponseDto(HttpStatus.OK, "게시물 수정 성공"));
+				.body(new ResponseDto(HttpStatus.OK, "계정 수정 성공"));
 		
 	}
 	
