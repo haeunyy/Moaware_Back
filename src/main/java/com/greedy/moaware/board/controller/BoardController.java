@@ -48,24 +48,12 @@ public class BoardController { // admin
 	@GetMapping("/list")
 		public ResponseEntity<ResponseDto> selectBoardList(@RequestParam(name="page", defaultValue="1") int page) {
 		
-		log.info("[BoardController] : selectBoardList start ==================================== ");
-		log.info("[BoardController] : page : {}", page);
-		
 		Page<BoardDto> boardDtoList = boardService.selectBoardList(page);
-		
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(boardDtoList);
-		
-		log.info("[BoardController] : pageInfo : {}", pageInfo);
-		
-		//1) ResponseDtoWithPaging 객체를 생성하고
+	
 		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
 		responseDtoWithPaging.setPageInfo(pageInfo);
-		//2)pageInfo를          responseDtoWithPaging 객체의 pageInfo 속성 밸류 값으로 set하는 것을 보여줍니다.
-		
 		responseDtoWithPaging.setData(boardDtoList.getContent());
-		//페이지 안에 있는 것을 그대로 보내는 것이 아니라 Content에서 꺼내어 Data에넣어 보낸다
-
-		log.info("[BoardController] : selectBoardList end ==================================== ");
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 		
@@ -77,7 +65,6 @@ public class BoardController { // admin
 	/* 게시판 등록 */
 	@PostMapping("/regist")
 	public ResponseEntity<ResponseDto> insertBoard(@ModelAttribute BoardDto boardDto) {
-		//키&밸류 값의 형태를 띄어 url 인코디드 방식으로 전달->포스트맨에서는 바디-> 폼데이터 검색
 		boardService.insertBoard(boardDto);
 		
 		return ResponseEntity
@@ -86,32 +73,6 @@ public class BoardController { // admin
 
 
 	}
-
-	
-	/* 2. 게시 판 목록 조회 - 페이징(관리자) */
-//	@GetMapping("/boards-management")
-//	public ResponseEntity<ResponseDto> selectBoardListForAdmin(@RequestParam(name="page", defaultValue="1") int page) {
-//		
-//		log.info("[BoardController] : selectBoardListForAdmin start ==================================== ");
-//		log.info("[BoardController] : page : {}", page);
-//		
-//		Page<BoardDto> boardDtoList = boardService.selectBoardListForAdmin(page);
-//		
-//		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(boardDtoList);
-//		
-//		log.info("[BoardController] : pageInfo : {}", pageInfo);
-//		
-//		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
-//		responseDtoWithPaging.setPageInfo(pageInfo);
-//		//responseDtoWithPaging.setData(boardDtoList);
-//		responseDtoWithPaging.setData(boardDtoList.getContent()); //페이지 안에 있는 것을 그대로 보내는 것이 아니라 컨탠츠로 꺼내어 넣어 보낸다
-//		
-//		log.info("[BoardController] : selectBoardListForAdmin end ==================================== ");
-//		
-//		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
-//		
-//	}
-//	}
 
 	
 	/* 게시판 수정 */
