@@ -217,7 +217,7 @@ public class ProjectService {
 		
 		try {
 			CreateProject findProj = createProjectRepository.findById(proj.getProjCode())
-					.orElseThrow(() -> new IllegalArgumentException("해당 사원의 정보가 없습니다. findProj=" + proj.getProjCode()));			
+					.orElseThrow(() -> new IllegalArgumentException("해당 프로젝트 정보가 없습니다. findProj=" + proj.getProjCode()));			
 			
 			proj.setProjStatus("삭제");
 			
@@ -232,6 +232,23 @@ public class ProjectService {
 	
 		
 		
+		
+	}
+	@Transactional
+	public void upDateDone(CreateProjectDto proj) {
+		try {
+			CreateProject findProj = createProjectRepository.findById(proj.getProjCode())
+					.orElseThrow(() -> new IllegalArgumentException("해당 프로젝트 정보가 없습니다. findProj=" + proj.getProjCode()));			
+			
+			proj.setProjStatus("완료");
+			
+			findProj.update(
+							proj.getProjStatus()
+							);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}	
 

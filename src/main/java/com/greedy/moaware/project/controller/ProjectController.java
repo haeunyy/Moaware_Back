@@ -122,4 +122,16 @@ public class ProjectController {
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "프로젝트 삭제 완료"));
 	}
+	
+	@PutMapping("/update/done/{projCode}")
+	public ResponseEntity<ResponseDto> upDateDone(@PathVariable(name="projCode") Integer prodCode) {
+		
+		CreateProjectDto proj = new CreateProjectDto();
+		
+		proj.setProjCode(prodCode);
+		
+		projectService.upDateDone(proj);
+		
+		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "프로젝트 삭제 완료"));
+	}
 }
