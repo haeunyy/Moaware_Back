@@ -34,9 +34,7 @@ public class ReviewController {
 	
 	
 	@GetMapping("/{taskCode}")
-	public ResponseEntity<ResponseDto> selectTaskReviews(@PathVariable int taskCode
-//			, @RequestParam(name = "page", defaultValue = "1") int page
-			){
+	public ResponseEntity<ResponseDto> selectTaskReviews(@PathVariable int taskCode){
 		
 		return ResponseEntity
 				.ok()
