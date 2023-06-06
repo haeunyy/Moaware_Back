@@ -26,6 +26,7 @@ import com.greedy.moaware.review.repository.ReviewRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class ReviewService { 
 	
@@ -66,19 +67,22 @@ public class ReviewService {
 
 	    for (TaskReviewDto review : reviewDto ) {
 	        
-	        for(FileCategoryDto file : review.getEmp().getFileCategory() ) {
+	        for(FileCategoryDto files : review.getEmp().getFileCategory() ) {
 	            
 	            String type = "emp";
-	            
-	            if (file.getFCategoryType().equals(type)) {
-	                file.getFile().setFilePath(
-	                        IMAGE_URL + file.getFile().getFilePath());
-	            } else if (!file.getFCategoryType().equals(type)){
-	            	file.getFile().setFilePath(null);
+
+//	            if (files.getFCategoryType().equals("emp")) {
+	            if (files.getFCategoryType().equals("emp")) {
+	            	files.getFile().setFilePath(
+	            			IMAGE_URL + files.getFile().getFilePath());
+	            } 
+	            else if (files.getFCategoryType().equals("sign")){
+	            	files.getFile().setFilePath(null);
 	            }
 	        }
 	    }
 	    
+	    log.info("review.getEmp().getFileCategory() : {}", reviewDto);
 	    return reviewDto;
 	}
 
