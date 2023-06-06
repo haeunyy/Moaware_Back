@@ -323,7 +323,7 @@ public class PaymentService {
 				paymentDto.setPayStatus("반려");
 
 			}
-		} else { member.setPayType("전결");}
+		} 
 		
 			
 		return member;
