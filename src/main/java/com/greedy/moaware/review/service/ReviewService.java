@@ -62,27 +62,22 @@ public class ReviewService {
 	            .map(review -> modelMapper.map(review, TaskReviewDto.class))
 	            .collect(Collectors.toList());
 
-	    // taskCode를 기준으로 오름차순 정렬
 	    reviewDto.sort(Comparator.comparing(TaskReviewDto::getReviewCode).reversed()); 
 
 	    for (TaskReviewDto review : reviewDto ) {
 	        
+	    	log.info("review.getEmp().getFileCategory() : {}", review);
 	        for(FileCategoryDto files : review.getEmp().getFileCategory() ) {
 	            
-	            String type = "emp";
-
-//	            if (files.getFCategoryType().equals("emp")) {
-	            if (files.getFCategoryType().equals("emp")) {
+	            if (files.getFCategoryType().equals("emp") && !files.getFile().getFilePath().contains("http")){
 	            	files.getFile().setFilePath(
 	            			IMAGE_URL + files.getFile().getFilePath());
-	            } 
-	            else if (files.getFCategoryType().equals("sign")){
+	            } else if (files.getFCategoryType().equals("sign")){
 	            	files.getFile().setFilePath(null);
 	            }
 	        }
 	    }
 	    
-	    log.info("review.getEmp().getFileCategory() : {}", reviewDto);
 	    return reviewDto;
 	}
 
