@@ -1,6 +1,6 @@
 package com.greedy.moaware.admin.emp.entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.greedy.moaware.employee.entity.Dept;
 import com.greedy.moaware.employee.entity.FileCategory;
@@ -53,7 +54,9 @@ public class AdminEmp {
 	@Column(name="RETIRE_YN")
 	private String retireYn;
 	
+	
 	@Column(name="HIRE_DATE")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date hireDate;
 	
 	@Column(name="EXTENSION_NUM")
