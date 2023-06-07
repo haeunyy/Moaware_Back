@@ -44,14 +44,25 @@ public interface BoardPostRepository extends JpaRepository<BoardPost, Long> {
 	// 5. 게시물 상세 조회 - postCode로 게시물 1개 조회, 조회 불가 게시물 제외(사용자) 
 	@Query("SELECT b " +
 		   "  FROM BoardPost b " +
-		   //"  JOIN fetch b.board " +
 		   " WHERE b.postCode = :postCode " +
 		   "   AND b.status = 'Y'")
 	Optional<BoardPost> findByPostCode(@Param("postCode") Long postCode);
 
-	/* 6. 게시글 상세 조회 - postCode로 게시글 1개 조회, 조회 불가 게시글 포함(관리자) => findById 메소드 사용 */
 	
+	//위의 jpql을 sql로 바꾼 형태가 아래 소스코드입니다.(SQL에서 직접 실행해 봄)//	SELECT b.*
+//	FROM BOARD_POST b
+//	WHERE b.post_Code = 1
+//	AND b.status = 'Y'
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/* 6. 게시글 상세 조회 - postCode로 게시글 1개 조회, 조회 불가 게시글 포함(관리자) => findById 메소드 사용 */
 	/* 7. 게시글 등록(관리자) => save 메소드가 이미 정의 되어 있으므로 별도 정의 필요 없음 */
-
 	/* 8. 게시글 수정(관리자) => findById 메소드로 조회 후 필드 값 수정하면 변화를 감지하여 update 구문이 생성 되므로 별도의 정의 필요 없음 */
 }
