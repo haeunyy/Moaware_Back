@@ -47,16 +47,9 @@ public class EmpService {
 	/* 사원 전체 조회*/
 	public List<EmpDto> selectEmpList() {
 		
-		log.info("[EmpService] selectEmpList start ============================== ");
-		
 		List<Emp> empList = empRepository.findAll();
 		
-		log.info("{}", empList.get(0).getDept());
-		
 		List<EmpDto>empDtoList = empList.stream().map( emp -> modelMapper.map(emp, EmpDto.class)).collect(Collectors.toList());
-		
-		
-		log.info("[EmpService] selectEmpList end ================================ ");
 		
 		return empDtoList;
 		
@@ -65,12 +58,9 @@ public class EmpService {
 	
 	
 	public EmpDto selectEmpDetail(Integer empCode) {
-		log.info("[EmpService] selectEmpDetail start ============================== ");
-		log.info("[EmpService] empCode : {}" , empCode);
 		
 		Emp emp = empRepository.findById(empCode)
 				.orElseThrow( ()-> new IllegalArgumentException(empCode + " 사번을 가진 사원이 없습니다."));
-		log.info("[EmpService] emp : {}" , emp);
 		
 		EmpDto empDto = modelMapper.map(emp, EmpDto.class);
 		
@@ -79,14 +69,10 @@ public class EmpService {
 		
 		empFileCategoryDto.get(0).getFile().setFilePath(IMAGE_URL + empFileCategoryDto.get(0).getFile().getFilePath());
 		
-		log.info("[EmpService] empFileCategoryDto : {}" , empFileCategoryDto);
-		
 		empDto.setFileCategory(empFileCategoryDto);
 
 		
 		}
-		log.info("[EmpService] empDto : {}" , empDto);
-		log.info("[EmpService] selectEmpDetail end ================================ ");
 		return empDto;
 		
 	}
