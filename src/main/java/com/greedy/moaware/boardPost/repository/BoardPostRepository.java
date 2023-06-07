@@ -49,7 +49,8 @@ public interface BoardPostRepository extends JpaRepository<BoardPost, Long> {
 	Optional<BoardPost> findByPostCode(@Param("postCode") Long postCode);
 
 	
-	//위의 jpql을 sql로 바꾼 형태가 아래 소스코드입니다.(SQL에서 직접 실행해 봄)//	SELECT b.*
+	//위의 jpql을 mysql로 바꾼 형태가 아래 소스코드입니다.(SQL에서 직접 실행해 봄)
+//	SELECT b.*
 //	FROM BOARD_POST b
 //	WHERE b.post_Code = 1
 //	AND b.status = 'Y'
