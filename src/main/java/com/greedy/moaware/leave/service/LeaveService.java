@@ -121,7 +121,7 @@ public class LeaveService {
 		
 		if(findLeave == null) {
 			if(year == nowYear) {
-				leave.setLeaveTotalDay("10");
+				leave.setLeaveTotalDay("15");
 				leave.setLeaveUseDay("0");
 				leaveRepository.save(leave);
 			} else if(nowYear > year) {

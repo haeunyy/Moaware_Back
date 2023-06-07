@@ -10,6 +10,6 @@ import com.greedy.moaware.work.entity.WorkTime;
 public interface WorkTimeRepository extends JpaRepository<WorkTime, WorkPk>{
 	
 	//코드번호로 work 테이블의 마지막 행 조회 native쿼리 방법
-	@Query(value = "SELECT * FROM WORK w WHERE w.EMP_CODE = :empCode" + " ORDER BY w.WORK_DATE DESC FETCH FIRST 1 ROWS ONLY", nativeQuery = true)
+	@Query(value = "SELECT * FROM WORK w WHERE w.EMP_CODE = :empCode ORDER BY w.WORK_DATE DESC LIMIT 1", nativeQuery = true)
 	WorkTime findAllByWorkPkEmpCode(@Param("empCode") Integer empCode);
 }

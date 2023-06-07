@@ -31,5 +31,7 @@ public interface CreateProjectRepository extends JpaRepository<CreateProject, In
 			+ "GROUP BY p.PROJ_CODE, p.PROJ_NAME, p.PROJ_CONTENT, p.PROJ_START_DATE, p.PROJ_END_DATE, p.PROJ_STATUS, p.PROJ_AUTHOR "
 			+ "ORDER BY p.PROJ_CODE DESC"
 			, nativeQuery = true)
+	
+	
 	Page<CreateProject> findByProjStatus(Pageable pageable, @Param("projStatus") String string);
 }
