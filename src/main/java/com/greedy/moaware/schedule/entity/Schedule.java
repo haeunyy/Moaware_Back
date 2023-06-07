@@ -24,12 +24,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="SCHEDULE")
-@SequenceGenerator(name="SCH_SEQ_GENERATOR", sequenceName="SEQ_SCH_CODE", initialValue=1, allocationSize=1)
 public class Schedule {
 
 	@Id
 	@Column(name="SCH_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SCH_SEQ_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer schCode;
 	
 	@Column(name="SCH_NAME")  

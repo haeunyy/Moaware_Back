@@ -25,12 +25,11 @@ import lombok.ToString;
 @Setter
 @Entity
 @Table(name="PAYMENT")
-@SequenceGenerator(name="PAY_SEQ_GENERATOR", sequenceName="SEQ_PAY_CODE", initialValue=1, allocationSize=1)
 public class Payment {
 	
 	@Id
 	@Column(name="PAY_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAY_SEQ_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer payCode;
 	
 	@Column(name="DRAFT_DATE")
