@@ -27,12 +27,11 @@ import lombok.Setter;
 @Entity
 @DynamicInsert
 @Table(name="EMPLOYEE")
-@SequenceGenerator(name="EMP_SEQ_GENERATOR", sequenceName="SEQ_EMP_CODE", initialValue=1, allocationSize=1)
 public class AdminEmp {
 	
 	@Id
 	@Column(name="EMP_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EMP_SEQ_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer empCode;
 	
 	@Column(name="EMP_NAME")

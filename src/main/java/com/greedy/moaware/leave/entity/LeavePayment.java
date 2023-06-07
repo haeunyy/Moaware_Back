@@ -23,12 +23,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="LEAVE_PAYMENT")
-@SequenceGenerator(name="LEAVE_SEQ_GENERATOR", sequenceName="SEQ_LEAVE_CODE", initialValue=1, allocationSize=1)
 public class LeavePayment {
 	
 	@Id
 	@Column(name="LEAVE_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="LEAVE_SEQ_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer leaveCode;
 	
 	@Column(name="LEAVE_START_DAY")

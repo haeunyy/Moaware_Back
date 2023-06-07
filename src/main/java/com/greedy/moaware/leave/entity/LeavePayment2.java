@@ -23,14 +23,13 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="LEAVE_PAYMENT")
-@SequenceGenerator(name="LEAVE_SEQ_GENERATOR", sequenceName="SEQ_LEAVE_CODE", initialValue=1, allocationSize=1)
 public class LeavePayment2 implements Serializable {
 	
 	//leave 에서 leavePayment 정보를 받기 위해 새로운 Serializable 객체 생성 해서 leave에 참조하도록 추가
 	
 	@Id
 	@Column(name="LEAVE_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="LEAVE_SEQ_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer leaveCode;
 	
 	@Column(name="LEAVE_START_DAY")
