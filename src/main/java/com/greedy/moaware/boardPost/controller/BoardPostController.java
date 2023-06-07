@@ -115,8 +115,9 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoardForAdmin(
 	
 	return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 }
+//---------------------------------------------------------------------------
 
-	/* 4. 게시물 목록 조회 - 게시물제목 검색 기준, 페이징, 조회 불가 게시물 제외(사용자) 
+	/* 3. 게시물 목록 조회 - 게시물제목 검색 기준, 페이징, 조회 불가 게시물 제외(사용자) 
 	 * postTitle 값은 parameter로 전달 받도록 하여 URL 설정 */
 		@GetMapping("/boardPosts/search")
 			public ResponseEntity<ResponseDto> selectBoardPostListByPostTitle(
@@ -135,8 +136,9 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoardForAdmin(
 	
 			return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 			}
+		//---------------------------------------------------------------------------
 
-		/* 5. 게시물 상세 조회 - postCode로 게시물 1개 조회, 조회 불가 게시물 제외(사용자) */
+		/* 4. 게시물 상세 조회 - postCode로 게시물 1개 조회, 조회 불가 게시물 제외(사용자) */
 		@GetMapping("boardPosts/{postCode}") //특정 고유값을 pk 통해 조회 할 경우 path v.
 			public ResponseEntity<ResponseDto> selectBoardPostDetail(@PathVariable Long postCode) {
 	
@@ -145,7 +147,7 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoardForAdmin(
 			.body(new ResponseDto(HttpStatus.OK, "조회 성공", boardPostService.selectBoardPost(postCode)));
 		} // 가공하는 처리 없이 넣는 PROCESS
 
-		/* 6. 게시물 상세 조회 - postCode로 게시물 1개 조회, 조회 불가 게시물 포함(관리자) => findById 메소드 사용 */
+		/* 4-1. 게시물 상세 조회 - postCode로 게시물 1개 조회, 조회 불가 게시물 포함(관리자) => findById 메소드 사용 */
 		@GetMapping("boardPosts-management/{postCode}") //url 매핑 주소 가 다르면 문제-> 중복 없게 수정
 		public ResponseEntity<ResponseDto> selectBoardPostDetailForAdmin(@PathVariable Long postCode) {
 			
@@ -153,8 +155,10 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoardForAdmin(
 					.ok()
 					.body(new ResponseDto(HttpStatus.OK, "조회 성공", boardPostService.selectBoardPostForAdmin(postCode)));
 		}
+		//---------------------------------------------------------------------------
+
 		
-		/* 7.게시물 등록 */
+		/* 5.게시물 등록 */
 		@PostMapping("/boardPosts")
 		public ResponseEntity<ResponseDto> insertBoardPost(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute BoardPostDto boardPostDto) {
 			//키&밸류 값의 형태를 띄어 url 인코디드 방식으로 전달->포스트맨에서는 바디-> 폼데이터 검색
@@ -168,7 +172,7 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoardForAdmin(
 	
 		}
 		
-		/* 8. 게시물 수정 */
+		/* 6. 게시물 수정 */
 		@PutMapping("/boardPosts")
 		public ResponseEntity<ResponseDto> updateBoardPost(@AuthenticationPrincipal AuthEmpDto authEmpDto, @ModelAttribute BoardPostDto boardPostDto) {
 			//@ModelAttribute 키 밸류 값을 받되, url 인코디드 형식으로 받는 다는 뜻
@@ -181,7 +185,7 @@ public ResponseEntity<ResponseDto> selectBoardPostListByBoardForAdmin(
 		}
 
 		
-		/* 9. 게시물 Status N(삭제) */
+		/* 7. 게시물 Status N(삭제) */
 		@PutMapping("/delete/{postCode}")
 		public ResponseEntity<ResponseDto> deleteBoardPost(@PathVariable(name="postCode") long postCode) {
 

@@ -104,7 +104,7 @@ public class BoardPostService {
 	}
 	//-------------------------------------------------------------------------------------------------------------
 
-	/* 4. 게시글 목록 조회 - 게시글제목 검색 기준, 페이징, 조회 불가 게시물 제외(사용자) */
+	/* 3. 게시글 목록 조회 - 게시글제목 검색 기준, 페이징, 조회 불가 게시물 제외(사용자) */
 	public Page<BoardPostDto> selectBoardPostListByPostTitle(int page, String postTitle) {
 
 
@@ -118,7 +118,7 @@ public class BoardPostService {
 		return boardPostDtoList;
 	}
 
-	/* 5. 게시글 상세 조회 - postCode로 게시글 1개 조회, 조회 불가 게시물 제외(사용자) */
+	/* 4. 게시글 상세 조회 - postCode로 게시글 1개 조회, 조회 불가 게시물 제외(사용자) */
 	public BoardPostDto selectBoardPost(Long postCode) {
 		
 
@@ -130,7 +130,7 @@ public class BoardPostService {
 		return boardPostDto;
 	}
 
-	/* 6. 게시글 상세 조회 - postCode로 게시글 1개 조회, 조회 불가 게시글 포함(관리자) => findById 메소드 사용 */
+	/* 4-1. 게시글 상세 조회 - postCode로 게시글 1개 조회, 조회 불가 게시글 포함(관리자) => findById 메소드 사용 */
 	public BoardPostDto selectBoardPostForAdmin(Long postCode) {
 
 
@@ -142,7 +142,7 @@ public class BoardPostService {
 		return boardPostDto;
 	}
 
-	/* 7. 게시글 작성 */
+	/* 5. 게시글 작성 */
 	@Transactional
 	public void insertBoardPost(Integer empCode, BoardPostDto boardPostDto) {
 
@@ -154,13 +154,11 @@ public class BoardPostService {
 
 	}	
 
-	/* 8. 게시물 수정 */
+	/* 6. 게시물 수정 */
 
 	@Transactional
 	public void updateBoardPost(Integer empCode, BoardPostDto boardPostDto) {
 
-		log.info("[BoardPostService] updateBoardPost start ============================== ");
-		log.info("[BoardPostService] boardPostDto : {}", boardPostDto);
 
 	
 
@@ -182,7 +180,7 @@ public class BoardPostService {
 
 	
 
-	/* 9. 게시물 삭제 */
+	/* 7. 게시물 삭제 */
 
 	@Transactional
 	public void deleteBoardPost(BoardPostDto boardPostDto) {
