@@ -15,12 +15,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="JOB")
-@SequenceGenerator(name="JOB_SEQ_GENERATOR", sequenceName="SEQ_JOB_CODE", initialValue=1, allocationSize=1)
 public class Job {
 	
 	@Id
 	@Column(name="JOB_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="JOB_SEQ_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer jobCode;
 	
 	@Column(name="JOB_NAME")

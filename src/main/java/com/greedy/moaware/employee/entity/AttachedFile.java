@@ -20,12 +20,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="ATTACHED_FILE")
-@SequenceGenerator(name="FILE_SEQ_GENERATOR", sequenceName="SEQ_ATTACHMENT_FILE_CODE", initialValue=1, allocationSize=1)
 public class AttachedFile {
 	
 	@Id
 	@Column(name="FILE_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="FILE_SEQ_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer fileCode;
 	
 	@Column(name="ORIGINAL_FILE_NAME")

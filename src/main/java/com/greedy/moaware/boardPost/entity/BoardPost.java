@@ -28,20 +28,13 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name="BOARD_POST")
-@SequenceGenerator(name="BOARD_POST_SEQ_GENERATOR",
-		sequenceName="SEQ_POST_CODE",
-		initialValue=1, allocationSize=1)
-
 public class BoardPost {
 	
 	@Id
 	@Column(name="POST_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="BOARD_POST_SEQ_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long postCode;
 	
-	/* cascade = CascadeType.PERSIST : 
-	 * 영속성 전이 설정을 넣으면 BoardCode에 새로운 값이 있을 경우 insert 될 수 있음 */
-//@ManyToOne(cascade= CascadeType.PERSIST)
 	@ManyToOne
 	@JoinColumn(name="BOARD_CODE")
 	private Board board;

@@ -20,12 +20,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="FILE_CATEGORY")
-@SequenceGenerator(name="FILE_CATEGORY_SEQ_GENERATOR", sequenceName="SEQ_F_CATEGORY_CODE", initialValue=1, allocationSize=1)
 public class FileCategory {
 	
 	@Id
 	@Column(name="F_CATEGORY_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="FILE_CATEGORY_SEQ_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer fCategoryCode;
 	
 	@Column(name="F_CATEGORY_NAME")

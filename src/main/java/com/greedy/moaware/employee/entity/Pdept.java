@@ -21,12 +21,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "DEPARTMENT")
-@SequenceGenerator(name = "DEPT_SEQ_GENERATOR", sequenceName = "SEQ_DEPT_CODE", initialValue = 1, allocationSize = 1)
 public class Pdept {
 
 	@Id
 	@Column(name = "DEPT_CODE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DEPT_SEQ_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer deptCode;
 
 	@Column(name = "DEPT_NAME")
