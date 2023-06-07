@@ -25,12 +25,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="PROJECT")
-@SequenceGenerator(name="PROJ_SEQ_GENERATOR", sequenceName="SEQ_PROJ_CODE", initialValue=1, allocationSize=1)
 public class CreateProject {
 
 	@Id
 	@Column(name="PROJ_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJ_SEQ_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer projCode;
 	
 	@Column(name="PROJ_NAME")

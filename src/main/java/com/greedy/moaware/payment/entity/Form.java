@@ -15,12 +15,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="FORM")
-@SequenceGenerator(name="FORM_SEQ_GENERATOR", sequenceName="SEQ_FORM_CODE", initialValue=1, allocationSize=1)
 public class Form {
 	
 	@Id
 	@Column(name="FORM_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="FORM_SEQ_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer formCode;
 	
 	@Column(name="FORM_TITLE")

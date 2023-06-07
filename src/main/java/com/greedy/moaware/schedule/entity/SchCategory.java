@@ -15,12 +15,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="SCHEDULE_CATEGORY")
-@SequenceGenerator(name="SCH_CATEGORY_SEQ_GENERATOR", sequenceName="SEQ_SCH_CATEGORY_CODE", initialValue=1, allocationSize=1)
 public class SchCategory {
 
 	@Id
 	@Column(name="SCH_CATEGORY_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SCH_CATEGORY_SEQ_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer schCategoryCode;
 	
 	@Column(name="SCH_CATEGORY_NAME")

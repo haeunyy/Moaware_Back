@@ -23,12 +23,11 @@ import lombok.Setter;
 @Entity
 @DynamicInsert
 @Table(name="TASK")
-@SequenceGenerator(name="TASK_SEQ_GENERATOR", sequenceName="SEQ_TASK_CODE", initialValue=1, allocationSize=1)
 public class Task {
 
 	@Id	
 	@Column(name="TASK_CODE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TASK_SEQ_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer taskCode;
 	
 	@Column(name="TASK_NAME")

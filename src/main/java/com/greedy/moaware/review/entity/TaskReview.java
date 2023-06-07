@@ -27,12 +27,11 @@ import lombok.ToString;
 @Entity
 @Table(name="REVIEW")
 @DynamicUpdate
-@SequenceGenerator(name="REVIEW_SEQ_GENERATOR", sequenceName="SEQ_REVIEW_CODE", initialValue=1, allocationSize=1)
 public class TaskReview {
 	
 	@Id
 	@Column(name="REVIEW_CODE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REVIEW_SEQ_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer reviewCode;
 	
 	@Column(name="REVIEW_CONTENT")
