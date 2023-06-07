@@ -32,9 +32,13 @@ public interface AdminEmpRepository extends JpaRepository<AdminEmp, Integer> {
 //	@EntityGraph(attributePaths = {"job", "dept"})
 //	List<Emp> findByRefDeptCode( Long refDetpCode);
 	
+	
 	@Query("SELECT e FROM Emp e WHERE e.empName LIKE :empName% "
 			+ " AND e.retireYn = 'N'")
-Page<AdminEmp> findByEmpName(@Param("empName") String empName, Pageable pageable);
+	Page<AdminEmp> findByEmpName(@Param("empName") String empName, Pageable pageable);
+
+	//위의 jpql을 sql로 바꾼 형태가 아래 소스코드입니다.(SQL에서 직접 실행해 봄)
+	//SELECT * FROM EMPLOYEE e WHERE e.emp_Name LIKE CONCAT(:emp_Name, '%') AND e.retire_Yn = 'N'
 
 	
 	
