@@ -38,6 +38,8 @@ public class AdminEmpController {
 		this.adminEmpService = adminEmpService;
 	}
 	
+	
+	/* 회원탈퇴, 수정 추가하기 그리고 태스크 옮기기*/
 	/* 계정(회원) 전체 조회 */
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> selectAdminEmpList(@RequestParam(name="page", defaultValue="1") int page){

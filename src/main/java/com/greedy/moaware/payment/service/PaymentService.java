@@ -461,7 +461,6 @@ public class PaymentService {
 			FileUploadUtils.deleteFile(uploadDir, originFile.getSavedFileName());
 		
 			originFile.update( payAttachedFile.getOriginalFileName(), path, savedName);
-
 			
 		} catch (IOException e) {
 			e.printStackTrace();
