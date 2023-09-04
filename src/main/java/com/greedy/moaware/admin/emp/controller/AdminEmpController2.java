@@ -44,13 +44,20 @@ public class AdminEmpController {
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> selectAdminEmpList(@RequestParam(name="page", defaultValue="1") int page){
 		
+
+	
 		Page<AdminEmpDto> adminEmpDtoList =  adminEmpService.selectAdminEmpList(page);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(adminEmpDtoList);
+
 		
 		ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
 		responseDtoWithPaging.setPageInfo(pageInfo);
 
 		responseDtoWithPaging.setData(adminEmpDtoList.getContent()); //페이지 안에 있는 것을 그대로 보내는 것이 아니라 컨탠츠로 꺼내어 넣어 보낸다
+		
+		
+		
+		
 		
 		return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공", responseDtoWithPaging ));
 		
