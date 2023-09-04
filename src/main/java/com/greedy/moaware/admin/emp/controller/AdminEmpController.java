@@ -41,9 +41,15 @@ public class AdminEmpController {
 	
 	/* 회원탈퇴, 수정 추가하기 그리고 태스크 옮기기*/
 	/* 계정(회원) 전체 조회 */
+	
+
 	@GetMapping("/list")
 	public ResponseEntity<ResponseDto> selectAdminEmpList(@RequestParam(name="page", defaultValue="1") int page){
 		
+		//delete
+		int a = page;
+		System.out.println(a);
+		// delete
 		Page<AdminEmpDto> adminEmpDtoList =  adminEmpService.selectAdminEmpList(page);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(adminEmpDtoList);
 		
