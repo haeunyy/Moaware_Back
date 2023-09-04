@@ -76,16 +76,12 @@ public class PaymentService {
 	
 	/* 기안자 기안문 전체 조회 */
 	public List<PaymentDto> paymentAllList(Integer empCode) {
-		
 			
 		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
 		
-		
 		List<Payment> payList = paymentRepository.findByEmp(emp);
-	
 		
 		List<PaymentDto> paysDto = payList.stream().map( pay -> modelMapper.map(pay, PaymentDto.class)).collect(Collectors.toList());
-		
 		
 		return paysDto;
 	}
@@ -95,16 +91,13 @@ public class PaymentService {
 	/* 기안문 조회 */
 	public Map<String, Object> formSelect(Integer empCode) {
 		
-		
 		List<Form> formList = formRepository.findAll();
 		
 		PayEmp emp = payEmpRepository.findById(empCode).orElseThrow( () -> new IllegalArgumentException("해당 사원이 없습니다. empCode=" + empCode));
 		
-		
 		List<FormDto> formDtoList = formList.stream().map( form-> modelMapper.map(form, FormDto.class)).collect(Collectors.toList());
 		
 		PayEmpDto empDto = modelMapper.map(emp, PayEmpDto.class);
-		
 		
 		if(empDto.getPayFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).count() != 0) {
 			List<PayFileCategoryDto> empFileCategoryDto = empDto.getPayFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).collect(Collectors.toList());
@@ -240,11 +233,9 @@ public class PaymentService {
 	
 		Payment payment = paymentRepository.findById(payCode).orElseThrow( () -> new IllegalArgumentException("해당 결재문서가 없습니다. payCode=" + payCode) );
 		
-		
 		PaymentDto paymentDto = modelMapper.map(payment, PaymentDto.class);
 		
 		PayEmpDto payEmpDto = paymentDto.getEmp();
-		
 		
 		if(payEmpDto.getPayFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).count() != 0) {
 			List<PayFileCategoryDto> empFileCategoryDto = payEmpDto.getPayFileCategory().stream().filter( fileCategory -> fileCategory.getFCategoryType().equals("sign")).collect(Collectors.toList());
