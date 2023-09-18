@@ -1,12 +1,14 @@
-# 프로젝트 소개
+# ✅ 프로젝트 소개
 
-프로젝트 협업을 위한 그룹웨어
+**$“$ Manage of All $”$**
 
-# 개발기간
+프로젝트 협업을 위한 그룹웨어 프로그램 
+
+# ✅ 개발기간
 
 23.04.24 ~ 23.06.08
 
-## 멤버구성
+# ✅ 멤버구성
   - 팀장 강병오 - 일정조율 및 전자결재, 조직도, 예약관리
   
   - 팀원 신현준 - 게시판, 계정 생성, 발표
@@ -17,17 +19,30 @@
   
   - 팀원 전효진 - 메인페이지,CSS 총괄, 일정관리, 산출물 관리
 
-### 개발환경
+# ⚡Tech Stack⚡
+<b>front-end</b><br>
 
-HTML. CSS. JS, REACT
+html, css, javaScript, react
 
-JAVA,JPA,Spring Boot
+<b>front-end</b><br>
 
-Oracle, MySql
+JDK 11, springboot, JPA
 
-### 주요기능
+<b>DBMS</b><br>
 
----
+oracle, Mysql
+
+<b>server</b><br>
+
+linux, docker, aws
+
+<b>tool</b><br>
+
+github, slack, figma
+
+
+# ✅주요기능
+
 
 - 로그인 - 아이디 비밀번호 입력, 아이디 찾기, 비밀번호 찾기
 - 메인 페이지 - 출 퇴근 버튼 연동, 게시판 및 프로젝트 조회, 날씨 확인
